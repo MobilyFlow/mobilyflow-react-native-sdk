@@ -1,12 +1,22 @@
 import { Text, View, StyleSheet } from 'react-native';
-import { multiply } from 'mobilyflow-react-native-sdk';
-
-const result = multiply(3, 7);
+import { instantiate } from 'mobilyflow-react-native-sdk';
+import { useEffect, useRef, useState } from 'react';
 
 export default function App() {
+  const [uuid, setUUID] = useState('');
+  const firstTime = useRef(true);
+  useEffect(() => {
+    if (firstTime.current) {
+      firstTime.current = false;
+      console.log('Instanciate');
+      const instanceId = instantiate('', '', 0, {});
+      console.log('Instance = ', instanceId);
+      setUUID(instanceId);
+    }
+  }, []);
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Result: {uuid}</Text>
     </View>
   );
 }

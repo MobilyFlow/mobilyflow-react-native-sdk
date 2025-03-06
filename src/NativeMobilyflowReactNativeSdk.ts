@@ -1,8 +1,25 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
+export type MobilyPurchaseSDKOptions = {
+  languages?: string[];
+  debug?: boolean;
+  apiURL?: string;
+};
+
 export interface Spec extends TurboModule {
-  multiply(a: number, b: number): number;
+  instantiate(
+    appId: string,
+    apiKey: string,
+    environment: number,
+    options?: MobilyPurchaseSDKOptions
+  ): string;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');
+const MobilyflowReactNativeSdk = TurboModuleRegistry.getEnforcing<Spec>(
+  'MobilyflowReactNativeSdk'
+);
+
+console.log('Module = ', MobilyflowReactNativeSdk);
+
+export default MobilyflowReactNativeSdk;

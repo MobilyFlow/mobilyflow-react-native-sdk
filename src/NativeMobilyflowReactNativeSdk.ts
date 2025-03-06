@@ -8,18 +8,16 @@ export type MobilyPurchaseSDKOptions = {
 };
 
 export interface Spec extends TurboModule {
+  playground(): string;
   instantiate(
     appId: string,
     apiKey: string,
     environment: number,
     options?: MobilyPurchaseSDKOptions
   ): string;
+  login(uuid: string, externalId: string): void;
 }
 
-const MobilyflowReactNativeSdk = TurboModuleRegistry.getEnforcing<Spec>(
+export default TurboModuleRegistry.getEnforcing<Spec>(
   'MobilyflowReactNativeSdk'
 );
-
-console.log('Module = ', MobilyflowReactNativeSdk);
-
-export default MobilyflowReactNativeSdk;

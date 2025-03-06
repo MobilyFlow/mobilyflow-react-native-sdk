@@ -2,6 +2,10 @@ import MobilyflowReactNativeSdk, {
   type MobilyPurchaseSDKOptions,
 } from './NativeMobilyflowReactNativeSdk';
 
+export function playground() {
+  return MobilyflowReactNativeSdk.playground();
+}
+
 export function instantiate(
   appId: string,
   apiKey: string,
@@ -14,4 +18,8 @@ export function instantiate(
     environment,
     options
   );
+}
+
+export function login(uuid: string, externalId: string) {
+  MobilyflowReactNativeSdk.login(uuid, externalId);
 }

@@ -24,10 +24,17 @@ RCT_EXPORT_MODULE()
   return self;
 }
 
-- (NSString*)instantiate:(NSString*)appId apiKey:(NSString*)apiKey environment:(NSNumber*)environment options:(NSDictionary*)options {
+- (NSString*)playground {
+  return [[NSUUID UUID] UUIDString];
+}
+
+- (NSString *)instantiate:(NSString *)appId
+                   apiKey:(NSString *)apiKey
+              environment:(double)environment
+                  options:(JS::NativeMobilyflowReactNativeSdk::MobilyPurchaseSDKOptions &)options {
   NSString* uuid = [[NSUUID UUID] UUIDString];
   
-  MobilyPurchaseSDK *sdk = [[MobilyPurchaseSDK alloc] initWithAppId:appId apiKey:apiKey environment:(MobilyEnvironment) [environment intValue] options:nil];
+  MobilyPurchaseSDK *sdk = [[MobilyPurchaseSDK alloc] initWithAppId:appId apiKey:apiKey environment:(MobilyEnvironment) environment options:[ParserMobilyPurchaseSDKOptions parseFromJSI:options]];
   [_sdkInstances setObject:sdk forKey:uuid];
   
   return uuid;
@@ -42,14 +49,15 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)login:(NSString*)uuid externalId:(NSString*)externalId {
-  [[self getInstance:uuid] loginWithExternalId:externalId completionHandler:^(NSError * _Nullable err) {
-    if (err) {
-      NSLog(@"Error %@\n", err);
-    } else {
-      // Ok magle
+  NSLog(@"Avant le drame\n");
+  NSError* error = nil;
+  
+  [[self getInstance:uuid] loginWithExternalId:externalId error:&error completionHandler:^{
       NSLog(@"Ok logged\n");
-    }
   }];
+  NSLog(@"Ok finished\n");
+  
+  NSLog(@"Error final %@\n", error);
 }
 
 @end

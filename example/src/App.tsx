@@ -1,22 +1,22 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { instantiate } from 'mobilyflow-react-native-sdk';
+import { StyleSheet, Text, View } from 'react-native';
+import { instantiate, login } from 'mobilyflow-react-native-sdk';
 import { useEffect, useRef, useState } from 'react';
 
 export default function App() {
-  const [uuid, setUUID] = useState('');
+  const [result, setResult] = useState('');
   const firstTime = useRef(true);
   useEffect(() => {
     if (firstTime.current) {
       firstTime.current = false;
-      console.log('Instanciate');
-      const instanceId = instantiate('', '', 0, {});
-      console.log('Instance = ', instanceId);
-      setUUID(instanceId);
+      const instanceId = instantiate('', '', 0, { languages: ['en', 'fr'] });
+      instantiate('', '', 0, { languages: ['en', 'fr'] });
+      login(instanceId, 'user-external-id');
+      setResult(instanceId);
     }
   }, []);
   return (
     <View style={styles.container}>
-      <Text>Result: {uuid}</Text>
+      <Text>Result: {result}</Text>
     </View>
   );
 }

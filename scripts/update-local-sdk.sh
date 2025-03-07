@@ -1,12 +1,13 @@
-#!/bin/sh
+#!/bin/zsh
 HEADER_FILE=Sources/MobilyflowSDK/MobilyflowSDK.h
 SCRIPT_DIR="$( dirname -- "$0" )"
 
 # 1. Go to SDK
 cd $SCRIPT_DIR/../../mobilyflow-ios-sdk
+pwd
 
 # 2. Build header file
-rm $HEADER_FILE
+rm -f $HEADER_FILE
 swiftc -emit-objc-header -emit-objc-header-path $HEADER_FILE \
   -sdk $(xcrun --show-sdk-path --sdk iphoneos) -target arm64-apple-ios15.0 \
   -framework UIKit -framework Foundation -module-name MobilyflowSDK Sources/**/*
@@ -22,4 +23,4 @@ sed -i '' -E "s/( *s.version *= *)'([0-9a-zA-Z.-]+)'/\1 '${VERSION}-alpha${ALPHA
 
 # 4. Back to this project
 cd ../mobilyflow-react-native-sdk/example
-cd ios && pos install && cd ..
+cd ios && pod install && cd ..

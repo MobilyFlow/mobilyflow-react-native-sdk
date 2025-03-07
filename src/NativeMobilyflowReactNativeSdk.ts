@@ -1,6 +1,11 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
+/*export type NativeError = {
+  domain: string;
+  code: number;
+};*/
+
 export type MobilyPurchaseSDKOptions = {
   languages?: string[];
   debug?: boolean;
@@ -15,7 +20,11 @@ export interface Spec extends TurboModule {
     environment: number,
     options?: MobilyPurchaseSDKOptions
   ): string;
-  login(uuid: string, externalId: string): void;
+  login(uuid: string, externalId: string): Promise<void>;
+  getProducts(
+    uuid: string,
+    identifiers?: string[]
+  ): Promise<{ hello: string }[]>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>(

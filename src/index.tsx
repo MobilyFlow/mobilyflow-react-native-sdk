@@ -20,6 +20,10 @@ export function instantiate(
   );
 }
 
-export function login(uuid: string, externalId: string) {
-  MobilyflowReactNativeSdk.login(uuid, externalId);
+export async function login(uuid: string, externalId: string) {
+  await MobilyflowReactNativeSdk.login(uuid, externalId);
+}
+
+export async function getProducts(uuid: string, identifiers?: string[]) {
+  return await MobilyflowReactNativeSdk.getProducts(uuid, identifiers);
 }

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { instantiate, login } from 'mobilyflow-react-native-sdk';
+import { getProducts, instantiate, login } from 'mobilyflow-react-native-sdk';
 import { useEffect, useRef, useState } from 'react';
 
 export default function App() {
@@ -8,10 +8,27 @@ export default function App() {
   useEffect(() => {
     if (firstTime.current) {
       firstTime.current = false;
-      const instanceId = instantiate('', '', 0, { languages: ['en', 'fr'] });
-      instantiate('', '', 0, { languages: ['en', 'fr'] });
-      login(instanceId, 'user-external-id');
-      setResult(instanceId);
+      (async () => {
+        const instanceId = instantiate('', '', 0, { languages: ['en', 'fr'] });
+        instantiate('', '', 0, { languages: ['en', 'fr'] });
+        try {
+          console.log('Login...');
+          await login(instanceId, 'user-external-id');
+          console.log('Logged');
+        } catch (error: any) {
+          console.error('Login error: ', error.code, error.domain);
+        }
+
+        try {
+          console.log('Get Products...');
+          const products = await getProducts(instanceId, undefined);
+          console.log('Get Products done: ', products);
+        } catch (error: any) {
+          console.error('Get Products: ', error.code, error.domain);
+        }
+
+        setResult(instanceId);
+      })();
     }
   }, []);
   return (

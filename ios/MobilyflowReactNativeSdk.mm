@@ -48,16 +48,31 @@ RCT_EXPORT_MODULE()
   return [[self getInstance:uuid] close];
 }
 
-- (void)login:(NSString*)uuid externalId:(NSString*)externalId {
-  NSLog(@"Avant le drame\n");
-  NSError* error = nil;
-  
-  [[self getInstance:uuid] loginWithExternalId:externalId error:&error completionHandler:^{
-      NSLog(@"Error final %@\n", error == nil ? @"nil" : @"error");
-      NSLog(@"Ok logged\n");
+- (void)login:(NSString*)uuid externalId:(NSString*)externalId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  [[self getInstance:uuid] loginObjcWithExternalId:externalId completionHandler:^(NSError * _Nullable error) {
+    if (error) {
+      reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
+    } else {
+      resolve(0);
+    }
   }];
-  NSLog(@"Ok finished\n");
-  NSLog(@"Error finished %@\n", error == nil ? @"nil" : @"error");
+}
+
+- (void)getProducts:(NSString *)uuid
+        identifiers:(NSArray *)identifiers
+            resolve:(RCTPromiseResolveBlock)resolve
+             reject:(RCTPromiseRejectBlock)reject {
+  
+  [[self getInstance:uuid] getProductsObjcWithIdentifiers:identifiers completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
+    if (error) {
+      resolve(@{@"hello": @"world"});
+//      reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
+    } else {
+      resolve(@{@"hello": @"world"});
+      // TODO: Parse
+      // resolve(products);
+    }
+  }];
 }
 
 @end

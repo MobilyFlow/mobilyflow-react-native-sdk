@@ -53,11 +53,11 @@ RCT_EXPORT_MODULE()
   NSError* error = nil;
   
   [[self getInstance:uuid] loginWithExternalId:externalId error:&error completionHandler:^{
+      NSLog(@"Error final %@\n", error == nil ? @"nil" : @"error");
       NSLog(@"Ok logged\n");
   }];
   NSLog(@"Ok finished\n");
-  
-  NSLog(@"Error final %@\n", error);
+  NSLog(@"Error finished %@\n", error == nil ? @"nil" : @"error");
 }
 
 @end

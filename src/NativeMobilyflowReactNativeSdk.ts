@@ -39,3 +39,5 @@ export interface Spec extends TurboModule {
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');
+
+// [dict setObject:product.name forKey:@"name"];

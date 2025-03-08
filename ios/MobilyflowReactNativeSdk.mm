@@ -58,9 +58,7 @@ RCT_EXPORT_MODULE()
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
-      resolve(@{@"hello": @"world"});
-      // TODO: Parse
-      // resolve(products);
+      resolve([ParserMobilyProduct toDictionnaryArray:products]);
     }
   }];
 }

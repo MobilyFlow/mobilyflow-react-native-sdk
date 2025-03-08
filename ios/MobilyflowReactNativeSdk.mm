@@ -24,14 +24,13 @@ RCT_EXPORT_MODULE()
   return self;
 }
 
-- (NSString*)playground {
-  return [[NSUUID UUID] UUIDString];
+
+-(MobilyPurchaseSDK*)getInstance:(NSString*)uuid {
+  return [_sdkInstances objectForKey:uuid];
 }
 
-- (NSString *)instantiate:(NSString *)appId
-                   apiKey:(NSString *)apiKey
-              environment:(double)environment
-                  options:(JS::NativeMobilyflowReactNativeSdk::MobilyPurchaseSDKOptions &)options {
+- (NSString *)instantiate:(NSString *)appId apiKey:(NSString *)apiKey environment:(double)environment options:(JS::NativeMobilyflowReactNativeSdk::MobilyPurchaseSDKOptions &)options {
+  
   NSString* uuid = [[NSUUID UUID] UUIDString];
   
   MobilyPurchaseSDK *sdk = [[MobilyPurchaseSDK alloc] initWithAppId:appId apiKey:apiKey environment:(MobilyEnvironment) environment options:[ParserMobilyPurchaseSDKOptions parseFromJSI:options]];
@@ -40,16 +39,12 @@ RCT_EXPORT_MODULE()
   return uuid;
 }
 
--(MobilyPurchaseSDK*)getInstance:(NSString*)uuid {
-  return [_sdkInstances objectForKey:uuid];
-}
-
-- (void)close:(NSString*)uuid {
+- (void)close:(NSString *)uuid {
   return [[self getInstance:uuid] close];
 }
 
-- (void)login:(NSString*)uuid externalId:(NSString*)externalId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  [[self getInstance:uuid] loginObjcWithExternalId:externalId completionHandler:^(NSError * _Nullable error) {
+- (void)login:(NSString *)uuid externalId:(NSString *)externalId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  [[self getInstance:uuid] loginWithExternalId:externalId completionHandler:^(NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
@@ -58,11 +53,7 @@ RCT_EXPORT_MODULE()
   }];
 }
 
-- (void)getProducts:(NSString *)uuid
-        identifiers:(NSArray *)identifiers
-            resolve:(RCTPromiseResolveBlock)resolve
-             reject:(RCTPromiseRejectBlock)reject {
-  
+- (void)getProducts:(NSString *)uuid identifiers:(NSArray *)identifiers resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   [[self getInstance:uuid] getProductsWithIdentifiers:identifiers completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
@@ -74,16 +65,40 @@ RCT_EXPORT_MODULE()
   }];
 }
 
-- (NSDictionary * _Nullable)getEntitlementForSubscription:(NSString *)uuid
-                                      subscriptionGroupId:(NSString *)subscriptionGroupId {
-  NSError *error = nil;
-  MobilyCustomerEntitlement* result = [[self getInstance:uuid] getEntitlementForSubscriptionWithSubscriptionGroupId:subscriptionGroupId error:&error];
-  if (error != nil) {
-    NSLog(@"getEntitlement Error: %@", error);
-  } else {
-    NSLog(@"getEntitlement Result: %@", result);
-  }
-  return nil;
+- (void)getSubscriptionGroups:(NSString *)uuid identifiers:(NSArray *)identifiers resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  
+}
+
+- (void)getEntitlementForSubscription:(NSString *)uuid subscriptionGroupId:(NSString *)subscriptionGroupId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  
+}
+
+- (void)getEntitlement:(NSString *)uuid productId:(NSString *)productId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  
+}
+
+- (void)getEntitlements:(NSString *)uuid productIds:(NSArray *)productIds resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  
+}
+
+- (void)requestTransferOwnership:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  
+}
+
+- (void)openManageSubscription:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  
+}
+
+- (void)purchaseProduct:(NSString *)uuid productId:(NSString *)productId options:(JS::NativeMobilyflowReactNativeSdk::PurchaseOptions &)options resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  
+}
+
+- (void)sendDiagnotic:(NSString *)uuid {
+  
+}
+
+- (void)getStoreCountry:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  
 }
 
 @end

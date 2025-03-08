@@ -17,7 +17,6 @@ export type PurchaseOptions = {
 };
 
 export interface Spec extends TurboModule {
-  playground(): string;
   instantiate(appId: string, apiKey: string, environment: number, options?: MobilyPurchaseSDKOptions): string;
   close(uuid: string): void;
 

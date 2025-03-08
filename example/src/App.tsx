@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { getProducts, instantiate, login } from 'mobilyflow-react-native-sdk';
+import { getEntitlementForSubscription, instantiate } from 'mobilyflow-react-native-sdk';
 import { useEffect, useRef, useState } from 'react';
 
 export default function App() {
@@ -11,7 +11,7 @@ export default function App() {
       (async () => {
         const instanceId = instantiate('', '', 0, { languages: ['en', 'fr'] });
         instantiate('', '', 0, { languages: ['en', 'fr'] });
-        try {
+        /*try {
           console.log('Login...');
           await login(instanceId, 'user-external-id');
           console.log('Logged');
@@ -24,7 +24,15 @@ export default function App() {
           const products = await getProducts(instanceId, undefined);
           console.log('Get Products done: ', products);
         } catch (error: any) {
-          console.error('Get Products: ', error.code, error.domain);
+          console.error('Get Products Error: ', error.code, error.domain);
+        }*/
+
+        try {
+          console.log('getEntitlementForSubscription...');
+          const entitlements = getEntitlementForSubscription(instanceId, 'xxx');
+          console.log('getEntitlementForSubscription done: ', entitlements);
+        } catch (error: any) {
+          console.error('Login error: ', error.code, error.domain);
         }
 
         setResult(instanceId);

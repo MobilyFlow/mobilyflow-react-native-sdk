@@ -4,6 +4,7 @@
     "paths": {
       "mobilyflow-react-native-sdk": ["./src/index"]
     },
+    "strictNullChecks": false,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,

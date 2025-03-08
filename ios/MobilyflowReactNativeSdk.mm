@@ -63,16 +63,27 @@ RCT_EXPORT_MODULE()
             resolve:(RCTPromiseResolveBlock)resolve
              reject:(RCTPromiseRejectBlock)reject {
   
-  [[self getInstance:uuid] getProductsObjcWithIdentifiers:identifiers completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
+  [[self getInstance:uuid] getProductsWithIdentifiers:identifiers completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
     if (error) {
-      resolve(@{@"hello": @"world"});
-//      reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
+      reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
       resolve(@{@"hello": @"world"});
       // TODO: Parse
       // resolve(products);
     }
   }];
+}
+
+- (NSDictionary * _Nullable)getEntitlementForSubscription:(NSString *)uuid
+                                      subscriptionGroupId:(NSString *)subscriptionGroupId {
+  NSError *error = nil;
+  MobilyCustomerEntitlement* result = [[self getInstance:uuid] getEntitlementForSubscriptionWithSubscriptionGroupId:subscriptionGroupId error:&error];
+  if (error != nil) {
+    NSLog(@"getEntitlement Error: %@", error);
+  } else {
+    NSLog(@"getEntitlement Result: %@", result);
+  }
+  return nil;
 }
 
 @end

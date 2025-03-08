@@ -27,3 +27,13 @@ export async function login(uuid: string, externalId: string) {
 export async function getProducts(uuid: string, identifiers?: string[]) {
   return await MobilyflowReactNativeSdk.getProducts(uuid, identifiers);
 }
+
+export function getEntitlementForSubscription(
+  uuid: string,
+  subscriptionGroupId: string
+) {
+  return MobilyflowReactNativeSdk.getEntitlementForSubscription(
+    uuid,
+    subscriptionGroupId
+  );
+}

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { getEntitlementForSubscription, instantiate } from 'mobilyflow-react-native-sdk';
+import { MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
 import { useEffect, useRef, useState } from 'react';
 
 export default function App() {
@@ -9,8 +9,7 @@ export default function App() {
     if (firstTime.current) {
       firstTime.current = false;
       (async () => {
-        const instanceId = instantiate('', '', 0, { languages: ['en', 'fr'] });
-        instantiate('', '', 0, { languages: ['en', 'fr'] });
+        const sdk = new MobilyPurchaseSDK('', '', 0, { languages: ['en', 'fr'] });
         /*try {
           console.log('Login...');
           await login(instanceId, 'user-external-id');
@@ -29,13 +28,13 @@ export default function App() {
 
         try {
           console.log('getEntitlementForSubscription...');
-          const entitlements = getEntitlementForSubscription(instanceId, 'xxx');
+          const entitlements = sdk.getEntitlementForSubscription('xxx');
           console.log('getEntitlementForSubscription done: ', entitlements);
         } catch (error: any) {
           console.error('Login error: ', error.code, error.domain);
         }
 
-        setResult(instanceId);
+        setResult(sdk['_uuid']);
       })();
     }
   }, []);

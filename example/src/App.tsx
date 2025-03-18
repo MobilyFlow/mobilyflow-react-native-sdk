@@ -34,13 +34,13 @@ export default function App() {
           console.error('Get Products Error: ', error.code, error.domain);
         }
 
-        try {
+        /*try {
           console.log('getEntitlementForSubscription...');
           const entitlements = await sdk.getEntitlementForSubscription('xxx');
           console.log('getEntitlementForSubscription done: ', entitlements);
         } catch (error: any) {
           console.error('Login error: ', error.code, error.domain);
-        }
+        }*/
 
         setResult(sdk['_uuid']);
       })();

@@ -1,10 +1,11 @@
 #import "MobilyflowReactNativeSdk.h"
 #import <MobilyflowSDK/MobilyflowSDK.h>
 #import <Foundation/NSUUID.h>
-#import "Parsers/ParserMobilyPurchaseSDKOptions.h"
-#import "Parsers/ParserMobilyProduct.h"
-#import "Parsers/ParserMobilySubscriptionGroup.h"
-#import "Parsers/ParserMobilyCustomerEntitlement.h"
+#import "Utils/ParserMobilyPurchaseSDKOptions.h"
+#import "Utils/ParserMobilyProduct.h"
+#import "Utils/ParserMobilySubscriptionGroup.h"
+#import "Utils/ParserMobilyCustomerEntitlement.h"
+#import "Utils/Utils.h"
 
 @interface MobilyflowReactNativeSdk()
 @property (strong, nonatomic) NSMutableDictionary* sdkInstances;
@@ -62,7 +63,9 @@ RCT_EXPORT_MODULE()
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
-      resolve([ParserMobilyProduct toDictionnaryArray:products]);
+      resolve([Utils arrayMap:products withBlock:^id _Nonnull(Serializable*  _Nonnull obj, NSUInteger idx) {
+        return [obj toDictionary];
+      }]);
     }
   }];
 }
@@ -73,7 +76,9 @@ RCT_EXPORT_MODULE()
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
-      resolve([ParserMobilySubscriptionGroup toDictionnaryArray:groups]);
+      resolve([Utils arrayMap:groups withBlock:^id _Nonnull(Serializable*  _Nonnull obj, NSUInteger idx) {
+        return [obj toDictionary];
+      }]);
     }
   }];
 }
@@ -84,7 +89,7 @@ RCT_EXPORT_MODULE()
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
-      resolve([ParserMobilyCustomerEntitlement toDictionary:entitlement]);
+      resolve([entitlement toDictionary]);
     }
   }];
 }
@@ -95,7 +100,7 @@ RCT_EXPORT_MODULE()
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
-      resolve([ParserMobilyCustomerEntitlement toDictionary:entitlement]);
+      resolve([entitlement toDictionary]);
     }
   }];
 }
@@ -106,7 +111,9 @@ RCT_EXPORT_MODULE()
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
-      resolve([ParserMobilyCustomerEntitlement toDictionnaryArray:entitlements]);
+      resolve([Utils arrayMap:entitlements withBlock:^id _Nonnull(Serializable*  _Nonnull obj, NSUInteger idx) {
+        return [obj toDictionary];
+      }]);
     }
   }];
 }

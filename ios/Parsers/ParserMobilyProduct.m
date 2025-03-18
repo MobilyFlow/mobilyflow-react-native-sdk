@@ -20,16 +20,24 @@
 +(NSDictionary*)subscriptionOfferToDictionnary:(MobilySubscriptionOffer*)offer {
   NSMutableDictionary* dict = [NSMutableDictionary dictionary];
   
-  [dict setObject:offer.id forKey:@"id"];
-  [dict setObject:offer.name forKey:@"name"];
+  if (offer.id != nil) {
+    [dict setObject:offer.id forKey:@"id"];
+  }
+  if (offer.name != nil) {
+    [dict setObject:offer.name forKey:@"name"];
+  }
   [dict setObject:[NSDecimalNumber decimalNumberWithDecimal:offer.price] forKey:@"price"];
   [dict setObject:offer.currencyCode forKey:@"currencyCode"];
   [dict setObject:offer.priceFormatted forKey:@"priceFormatted"];
   [dict setObject:[NSNumber numberWithBool:offer.isFreeTrial] forKey:@"isFreeTrial"];
   [dict setObject:[NSNumber numberWithInt:(int)offer.periodCount] forKey:@"periodCount"];
   [dict setObject:[NSNumber numberWithInt:(int)offer.periodUnit] forKey:@"periodUnit"];
-  [dict setObject:offer.ios_offerId forKey:@"ios_offerId"];
-  [dict setObject:offer.extras forKey:@"extras"];
+  if (offer.ios_offerId != nil) {
+    [dict setObject:offer.ios_offerId forKey:@"ios_offerId"];
+  }
+  if (offer.extras != nil) {
+    [dict setObject:offer.extras forKey:@"extras"];
+  }
   [dict setObject:[NSNumber numberWithInt:(int)offer.status] forKey:@"status"];
   
   return dict;
@@ -62,7 +70,9 @@
   [dict setObject:product.details forKey:@"details"];
   [dict setObject:product.ios_sku forKey:@"ios_sku"];
   [dict setObject:[NSNumber numberWithInt:(int)product.type] forKey:@"type"];
-  [dict setObject:product.extras forKey:@"extras"];
+  if (product.extras != nil) {
+    [dict setObject:product.extras forKey:@"extras"];
+  }
   [dict setObject:[NSNumber numberWithInt:(int)product.status] forKey:@"status"];
   
   if (product.type == ProductTypeOne_time) {
@@ -80,8 +90,14 @@
   } else {
     NSMutableDictionary* subscriptionProduct = [NSMutableDictionary dictionary];
     
-    [subscriptionProduct setObject:[ParserMobilyProduct subscriptionOfferToDictionnary:product.subscriptionProduct.baseOffer] forKey:@"baseOffer"];
-    [subscriptionProduct setObject:[ParserMobilyProduct subscriptionOfferToDictionnary:product.subscriptionProduct.freeTrial] forKey:@"freeTrial"];
+    if (product.subscriptionProduct.baseOffer != nil) {
+      [subscriptionProduct setObject:[ParserMobilyProduct subscriptionOfferToDictionnary:product.subscriptionProduct.baseOffer] forKey:@"baseOffer"];
+    }
+    
+    if (product.subscriptionProduct.freeTrial != nil) {
+      [subscriptionProduct setObject:[ParserMobilyProduct subscriptionOfferToDictionnary:product.subscriptionProduct.freeTrial] forKey:@"freeTrial"];
+    }
+    
     [subscriptionProduct setObject:[ParserMobilyProduct subscriptionOffersToDictionnaryArray:product.subscriptionProduct.promotionalOffers] forKey:@"promotionalOffers"];
     [subscriptionProduct setObject:[NSNumber numberWithInt:(int)product.subscriptionProduct.status] forKey:@"status"];
     [subscriptionProduct setObject:[NSNumber numberWithInt:(int)product.subscriptionProduct.groupLevel] forKey:@"groupLevel"];

@@ -19,10 +19,16 @@
 }
 
 +(NSDictionary*)toDictionary:(MobilyCustomerEntitlement*)entitlement {
+  if (entitlement == nil) {
+    return nil;
+  }
+  
   NSMutableDictionary* dict = [NSMutableDictionary dictionary];
   
   [dict setObject:[NSNumber numberWithInt:entitlement.type] forKey:@"type"];
-  [dict setObject:[ParserMobilyProduct toDictionary:entitlement.product] forKey:@"product"];
+  if (entitlement.product != nil) {
+    [dict setObject:[ParserMobilyProduct toDictionary:entitlement.product] forKey:@"product"];
+  }
   [dict setObject:entitlement.platformOriginalTransactionId forKey:@"platformOriginalTransactionId"];
 
   if (entitlement.item != nil) {

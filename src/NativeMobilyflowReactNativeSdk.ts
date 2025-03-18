@@ -11,7 +11,7 @@ export type MobilyPurchaseSDKOptions = {
   apiURL?: string;
 };
 
-export type PurchaseOptions = {
+type PurchaseOptions = {
   offerId: string;
   quantity: number;
 };
@@ -39,5 +39,3 @@ export interface Spec extends TurboModule {
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');
-
-// [dict setObject:product.name forKey:@"name"];

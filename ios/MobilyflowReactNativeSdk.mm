@@ -137,27 +137,33 @@ RCT_EXPORT_MODULE()
   
   MobilyPurchaseSDK* sdk = [self getInstance:uuid];
   
+  NSString *offerId = options.offerId();
+  int quantity = (int)options.quantity();
+  
   [sdk getProductsWithIdentifiers:nil completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
+    
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
-      
       PurchaseOptions *purchaseOptions = [[PurchaseOptions alloc] init];
+      if (quantity > 1) {
+        purchaseOptions = [purchaseOptions setQuantity:quantity];
+      }
+      
       MobilyProduct *product = nil;
-      NSString *offerId = options.offerId();
       
       for (MobilyProduct *it in products) {
-        if (it.id == productId) {
+        if ([it.id isEqualToString:productId]) {
           product = it;
           
           if (offerId != nil) {
-            if (it.subscriptionProduct.baseOffer.id == offerId) {
+            if ([it.subscriptionProduct.baseOffer.id isEqualToString:offerId]) {
               purchaseOptions = [purchaseOptions setOffer:it.subscriptionProduct.baseOffer];
-            } else if (it.subscriptionProduct.freeTrial != nil && it.subscriptionProduct.freeTrial.id == offerId) {
+            } else if (it.subscriptionProduct.freeTrial != nil && [it.subscriptionProduct.freeTrial.id isEqualToString:offerId]) {
               purchaseOptions = [purchaseOptions setOffer:it.subscriptionProduct.freeTrial];
             } else {
               for (MobilySubscriptionOffer *off in it.subscriptionProduct.promotionalOffers) {
-                if (off.id == offerId) {
+                if ([off.id isEqualToString:offerId]) {
                   purchaseOptions = [purchaseOptions setOffer:off];
                   break;
                 }

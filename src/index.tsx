@@ -6,8 +6,8 @@ import { MobilySubscriptionGroup } from './entities/mobily-subscription-group';
 import { MobilyCustomerEntitlement } from './entities/mobily-customer-entitlement';
 
 export type PurchaseOptions = {
-  offer: MobilySubscriptionOffer;
-  quantity: number;
+  offer?: MobilySubscriptionOffer;
+  quantity?: number;
 };
 
 export class MobilyPurchaseSDK {
@@ -57,12 +57,13 @@ export class MobilyPurchaseSDK {
   async openManageSubscription() {
     return await MobilyflowReactNativeSdk.openManageSubscription(this._uuid);
   }
+
   // openRefundDialog(transactionId: string): Promise<void>;
 
   async purchaseProduct(product: MobilyProduct, options?: PurchaseOptions): Promise<WebhookStatus> {
     return await MobilyflowReactNativeSdk.purchaseProduct(this._uuid, product.id, {
-      offerId: options?.offer?.id,
-      quantity: options?.quantity,
+      offerId: options?.offer?.id || null,
+      quantity: options?.quantity || null,
     });
   }
 

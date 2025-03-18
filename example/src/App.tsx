@@ -43,12 +43,27 @@ export default function App() {
     }
   }, [init]);
 
-  const handlePress = (product: MobilyProduct, offer?: MobilySubscriptionOffer) => {
-    console.log(`Click ${product.identifier} ${offer?.ios_offerId}`);
+  const handlePurchase = async (product: MobilyProduct, offer?: MobilySubscriptionOffer) => {
+    try {
+      console.log(`Click ${product.identifier} ${offer?.ios_offerId}`);
+      const result = await sdk.purchaseProduct(product, { offer });
+      console.log('Purchase result = ', result);
+    } catch (e) {
+      console.error('Purchase error = ', e);
+    }
   };
 
   const handleRefresh = async () => {
-    await init();
+    // await init();
+    new MobilyPurchaseSDK(
+      'caecc000-45ce-49b3-b218-46c1d985ae85',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBwLXRva2VuIiwic3ViIjoiY2FlY2MwMDAtNDVjZS00OWIzLWIyMTgtNDZjMWQ5ODVhZTg1Iiwic2NvcGUiOjEwLCJpYXQiOjE3MzczNTYyNzIsImV4cCI6MzMyOTQ5NTYyNzJ9.2GDcRmX2dJEfN3S4HANygmOwXqSyGOIsTXVHu5LrLtc',
+      0,
+      {
+        languages: ['en', 'fr'],
+        apiURL: 'https://staging.mobilyflow-api.com/v1/',
+      }
+    );
   };
 
   const handleManageSubscriptions = async () => {
@@ -77,11 +92,11 @@ export default function App() {
         <View style={{ alignItems: 'stretch', alignSelf: 'stretch', gap: 10, padding: 10 }}>
           {products?.map((product) => (
             <View key={product.id} style={{ gap: 10 }}>
-              <ProductButton product={product} handlePress={handlePress} />
+              <ProductButton product={product} handlePress={handlePurchase} />
               {product?.subscriptionProduct?.promotionalOffers?.length > 0 && (
                 <View style={{ gap: 10, paddingHorizontal: 10 }}>
                   {product?.subscriptionProduct?.promotionalOffers?.map((offer) => (
-                    <ProductButton key={offer.id} product={product} offer={offer} handlePress={handlePress} />
+                    <ProductButton key={offer.id} product={product} offer={offer} handlePress={handlePurchase} />
                   ))}
                 </View>
               )}

@@ -4,14 +4,15 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { MobilyProduct } from '../../src/entities/mobily-product';
 import { ProductButton } from './ProductButton';
 import type { MobilySubscriptionOffer } from '../../src/entities/mobily-subscription-offer';
+import { MobilyEnvironment } from '../../src/enums/mobily-environment';
 
 const sdk = new MobilyPurchaseSDK(
   'caecc000-45ce-49b3-b218-46c1d985ae85',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBwLXRva2VuIiwic3ViIjoiY2FlY2MwMDAtNDVjZS00OWIzLWIyMTgtNDZjMWQ5ODVhZTg1Iiwic2NvcGUiOjEwLCJpYXQiOjE3MzczNTYyNzIsImV4cCI6MzMyOTQ5NTYyNzJ9.2GDcRmX2dJEfN3S4HANygmOwXqSyGOIsTXVHu5LrLtc',
-  0,
+  MobilyEnvironment.DEVELOPMENT,
   {
-    languages: ['en', 'fr'],
-    apiURL: 'https://staging.mobilyflow-api.com/v1/',
+    // languages: ['en', 'fr'],
+    apiURL: 'https://api-staging.mobilyflow.com/v1/',
   }
 );
 
@@ -54,16 +55,7 @@ export default function App() {
   };
 
   const handleRefresh = async () => {
-    // await init();
-    new MobilyPurchaseSDK(
-      'caecc000-45ce-49b3-b218-46c1d985ae85',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBwLXRva2VuIiwic3ViIjoiY2FlY2MwMDAtNDVjZS00OWIzLWIyMTgtNDZjMWQ5ODVhZTg1Iiwic2NvcGUiOjEwLCJpYXQiOjE3MzczNTYyNzIsImV4cCI6MzMyOTQ5NTYyNzJ9.2GDcRmX2dJEfN3S4HANygmOwXqSyGOIsTXVHu5LrLtc',
-      0,
-      {
-        languages: ['en', 'fr'],
-        apiURL: 'https://staging.mobilyflow-api.com/v1/',
-      }
-    );
+    await init();
   };
 
   const handleManageSubscriptions = async () => {

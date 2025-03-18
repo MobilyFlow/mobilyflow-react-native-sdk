@@ -1,7 +1,7 @@
 import type { ProductStatus } from '../enums/product-status';
 import type { PeriodUnit } from '../enums/period-unit';
 
-export interface MobilySubscriptionOffer {
+export class MobilySubscriptionOffer {
   id: string;
   name: string;
   price: number;

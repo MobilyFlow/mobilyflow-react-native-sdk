@@ -1,7 +1,9 @@
 import MobilyflowReactNativeSdk, { type MobilyPurchaseSDKOptions } from './NativeMobilyflowReactNativeSdk';
-import type { MobilyProduct } from './entities/mobily-product';
+import { MobilyProduct } from './entities/mobily-product';
 import type { WebhookStatus } from './enums/webhook-status';
 import type { MobilySubscriptionOffer } from './entities/mobily-subscription-offer';
+import { MobilySubscriptionGroup } from './entities/mobily-subscription-group';
+import { MobilyCustomerEntitlement } from './entities/mobily-customer-entitlement';
 
 export type PurchaseOptions = {
   offer: MobilySubscriptionOffer;
@@ -24,23 +26,28 @@ export class MobilyPurchaseSDK {
   }
 
   async getProducts(identifiers?: string[]) {
-    return await MobilyflowReactNativeSdk.getProducts(this._uuid, identifiers);
+    const products = await MobilyflowReactNativeSdk.getProducts(this._uuid, identifiers);
+    return products.map(MobilyProduct.parseFromAPI);
   }
 
   async getSubscriptionGroups(identifiers?: string[]) {
-    return await MobilyflowReactNativeSdk.getSubscriptionGroups(this._uuid, identifiers);
+    const groups = await MobilyflowReactNativeSdk.getSubscriptionGroups(this._uuid, identifiers);
+    return groups.map(MobilySubscriptionGroup.parseFromAPI);
   }
 
   async getEntitlementForSubscription(subscriptionGroupId: string) {
-    return await MobilyflowReactNativeSdk.getEntitlementForSubscription(this._uuid, subscriptionGroupId);
+    const entitlement = await MobilyflowReactNativeSdk.getEntitlementForSubscription(this._uuid, subscriptionGroupId);
+    return MobilyCustomerEntitlement.parseFromAPI(entitlement);
   }
 
   async getEntitlement(productId: string) {
-    return await MobilyflowReactNativeSdk.getEntitlement(this._uuid, productId);
+    const entitlement = await MobilyflowReactNativeSdk.getEntitlement(this._uuid, productId);
+    return MobilyCustomerEntitlement.parseFromAPI(entitlement);
   }
 
   async getEntitlements(productIds: string[]) {
-    return await MobilyflowReactNativeSdk.getEntitlements(this._uuid, productIds);
+    const entitlements = await MobilyflowReactNativeSdk.getEntitlements(this._uuid, productIds);
+    return entitlements.map(MobilyCustomerEntitlement.parseFromAPI);
   }
 
   async requestTransferOwnership() {

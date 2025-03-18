@@ -1,6 +1,7 @@
-import type { MobilyProduct } from './mobily-product';
+import { MobilyProduct } from './mobily-product';
+import { objectTransformer } from '../utils/object-transformer';
 
-export interface MobilySubscriptionGroup {
+export class MobilySubscriptionGroup {
   id: string;
   identifier: string;
   name: string;
@@ -8,4 +9,12 @@ export interface MobilySubscriptionGroup {
   ios_groupId: string;
   extras: any;
   products: MobilyProduct[];
+
+  static parseFromAPI(obj: MobilySubscriptionGroup) {
+    return objectTransformer(obj, {
+      mapping: {
+        products: MobilyProduct.parseFromAPI,
+      },
+    });
+  }
 }

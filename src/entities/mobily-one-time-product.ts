@@ -1,6 +1,6 @@
 import type { ProductStatus } from '../enums/product-status';
 
-export interface MobilyOneTimeProduct {
+export class MobilyOneTimeProduct {
   price: number;
   currencyCode: string;
   priceFormatted: string;

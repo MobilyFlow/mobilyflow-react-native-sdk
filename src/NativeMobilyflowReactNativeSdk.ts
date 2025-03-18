@@ -1,9 +1,9 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
-import type { MobilyProduct } from './entities/mobily-product';
-import type { MobilySubscriptionGroup } from './entities/mobily-subscription-group';
-import type { MobilyCustomerEntitlement } from './entities/mobily-customer-entitlement';
-import type { WebhookStatus } from './enums/webhook-status';
+import { MobilyProduct } from './entities/mobily-product';
+import { MobilySubscriptionGroup } from './entities/mobily-subscription-group';
+import { MobilyCustomerEntitlement } from './entities/mobily-customer-entitlement';
+import { WebhookStatus } from './enums/webhook-status';
 
 export type MobilyPurchaseSDKOptions = {
   languages?: string[];

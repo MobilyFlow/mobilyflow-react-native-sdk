@@ -1,8 +1,8 @@
 import type { ProductStatus } from '../enums/product-status';
-import type { MobilySubscriptionOffer } from './mobily-subscription-offer';
-import type { MobilySubscriptionGroup } from './mobily-subscription-group';
+import { MobilySubscriptionOffer } from './mobily-subscription-offer';
+import { MobilySubscriptionGroup } from './mobily-subscription-group';
 
-export interface MobilySubscriptionProduct {
+export class MobilySubscriptionProduct {
   baseOffer: MobilySubscriptionOffer;
   freeTrial: MobilySubscriptionOffer;
   promotionalOffers: MobilySubscriptionOffer[];

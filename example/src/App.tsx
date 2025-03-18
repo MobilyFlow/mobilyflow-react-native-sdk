@@ -1,62 +1,110 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import type { MobilyProduct } from '../../src/entities/mobily-product';
+import { ProductButton } from './ProductButton';
+import type { MobilySubscriptionOffer } from '../../src/entities/mobily-subscription-offer';
+
+const sdk = new MobilyPurchaseSDK(
+  'caecc000-45ce-49b3-b218-46c1d985ae85',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBwLXRva2VuIiwic3ViIjoiY2FlY2MwMDAtNDVjZS00OWIzLWIyMTgtNDZjMWQ5ODVhZTg1Iiwic2NvcGUiOjEwLCJpYXQiOjE3MzczNTYyNzIsImV4cCI6MzMyOTQ5NTYyNzJ9.2GDcRmX2dJEfN3S4HANygmOwXqSyGOIsTXVHu5LrLtc',
+  0,
+  {
+    languages: ['en', 'fr'],
+    apiURL: 'https://staging.mobilyflow-api.com/v1/',
+  }
+);
 
 export default function App() {
-  const [result, setResult] = useState('');
+  const [products, setProducts] = useState<MobilyProduct[]>();
+  const [storeCountry, setStoreCountry] = useState<string>();
+  const [error, setError] = useState('');
+
   const firstTime = useRef(true);
+
+  const init = useCallback(async () => {
+    try {
+      await sdk.login('914b9a20-950b-44f7-bd7b-d81d57992294'); // gregoire
+      const p = await sdk.getProducts();
+      console.log('Products: ', p);
+      setProducts(p);
+      setStoreCountry(await sdk.getStoreCountry());
+      console.log('Done');
+    } catch (e: any) {
+      setError(`Error: ${e.code} ${e.domain}`);
+      console.error('Login error: ', e.code, e.domain);
+    }
+  }, []);
+
   useEffect(() => {
     if (firstTime.current) {
       firstTime.current = false;
-      (async () => {
-        const sdk = new MobilyPurchaseSDK(
-          'caecc000-45ce-49b3-b218-46c1d985ae85',
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBwLXRva2VuIiwic3ViIjoiY2FlY2MwMDAtNDVjZS00OWIzLWIyMTgtNDZjMWQ5ODVhZTg1Iiwic2NvcGUiOjEwLCJpYXQiOjE3MzczNTYyNzIsImV4cCI6MzMyOTQ5NTYyNzJ9.2GDcRmX2dJEfN3S4HANygmOwXqSyGOIsTXVHu5LrLtc',
-          0,
-          {
-            languages: ['en', 'fr'],
-            apiURL: 'https://staging.mobilyflow-api.com/v1/',
-          }
-        );
-        try {
-          console.log('Login...');
-          await sdk.login('user-external-id');
-          console.log('Logged');
-        } catch (error: any) {
-          console.error('Login error: ', error.code, error.domain);
-        }
-
-        try {
-          console.log('Get Products...');
-          const products = await sdk.getProducts(undefined);
-          console.log('Get Products done: ', products);
-        } catch (error: any) {
-          console.error('Get Products Error: ', error.code, error.domain);
-        }
-
-        /*try {
-          console.log('getEntitlementForSubscription...');
-          const entitlements = await sdk.getEntitlementForSubscription('xxx');
-          console.log('getEntitlementForSubscription done: ', entitlements);
-        } catch (error: any) {
-          console.error('Login error: ', error.code, error.domain);
-        }*/
-
-        setResult(sdk['_uuid']);
-      })();
+      init().then();
     }
-  }, []);
+  }, [init]);
+
+  const handlePress = (product: MobilyProduct, offer?: MobilySubscriptionOffer) => {
+    console.log(`Click ${product.identifier} ${offer?.ios_offerId}`);
+  };
+
+  const handleRefresh = async () => {
+    await init();
+  };
+
+  const handleManageSubscriptions = async () => {
+    await sdk.openManageSubscription();
+  };
+
+  const handleTransferOwnership = async () => {
+    await sdk.requestTransferOwnership();
+  };
+
+  const handleSendDiagnostic = () => {
+    sdk.sendDiagnotic();
+  };
+
+  const handleRefundRequest = () => {
+    // sdk.re
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Text>MobilyFlow React Native</Text>
+      <Text>{storeCountry}</Text>
+      {error && <Text style={{ color: 'red' }}>{error}</Text>}
+
+      <ScrollView style={{ alignSelf: 'stretch', marginTop: 20 }}>
+        <View style={{ alignItems: 'stretch', alignSelf: 'stretch', gap: 10, padding: 10 }}>
+          {products?.map((product) => (
+            <View key={product.id} style={{ gap: 10 }}>
+              <ProductButton product={product} handlePress={handlePress} />
+              {product?.subscriptionProduct?.promotionalOffers?.length > 0 && (
+                <View style={{ gap: 10, paddingHorizontal: 10 }}>
+                  {product?.subscriptionProduct?.promotionalOffers?.map((offer) => (
+                    <ProductButton key={offer.id} product={product} offer={offer} handlePress={handlePress} />
+                  ))}
+                </View>
+              )}
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+      <View style={{ marginTop: 20 }}>
+        <Button title="Refresh" onPress={handleRefresh} />
+        <Button title="Manage subscriptions" onPress={handleManageSubscriptions} />
+        <Button title="Transfer Ownership" onPress={handleTransferOwnership} />
+        <Button title="Send diagnostic" onPress={handleSendDiagnostic} />
+        <Button title="Refund Request" onPress={handleRefundRequest} />
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
 });

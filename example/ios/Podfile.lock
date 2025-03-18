@@ -30,7 +30,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - MobilyflowSDK (0.0.6-alpha16)
+  - MobilyflowSDK (0.0.6-alpha19)
   - RCT-Folly (2024.11.18.00):
     - boost
     - DoubleConversion
@@ -1775,7 +1775,7 @@ SPEC CHECKSUMS:
   glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
   hermes-engine: b417d2b2aee3b89b58e63e23a51e02be91dc876d
   MobilyflowReactNativeSdk: 8d87eea288ca42fb88952c8073d99a7c0f78989a
-  MobilyflowSDK: 6696860c2a590ab74af945d3427f1f1e80d741e4
+  MobilyflowSDK: b123973401cfa0999cff1955107a6910daf83d65
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: b2eecf2d60216df56bc5e6be5f063826d3c1ee35
   RCTRequired: 78522de7dc73b81f3ed7890d145fa341f5bb32ea

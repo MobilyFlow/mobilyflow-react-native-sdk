@@ -100,7 +100,8 @@ def kotlin_version = getExtOrDefault("kotlinVersion")
 dependencies {
   implementation "com.facebook.react:react-android"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation "com.mobilyflow:mobilyflow-android-sdk:0.0.2"
+  implementation "com.mobilyflow:mobilyflow-android-sdk:0.0.3-beta2"
+  implementation "org.jetbrains.kotlinx:kotlinx-datetime:0.6.2"
   implementation "org.jetbrains.kotlin:kotlin-reflect"
 }
 

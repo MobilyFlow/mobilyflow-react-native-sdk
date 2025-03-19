@@ -62,7 +62,7 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
   override fun getProducts(uuid: String, identifiers: ReadableArray?, promise: Promise) {
     try {
       val products = _sdkInstances[uuid]!!.getProducts(identifiers.toStringArray(), false)
-      promise.resolve(products.toReadableMap())
+      promise.resolve(products.toReadableArray())
     } catch (error: Exception) {
       throwError(error, promise)
     }

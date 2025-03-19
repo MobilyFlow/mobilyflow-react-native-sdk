@@ -41,9 +41,7 @@ export default function App() {
   useEffect(() => {
     if (firstTime.current) {
       firstTime.current = false;
-      setTimeout(() => {
-        init().then();
-      }, 5000);
+      init().then();
     }
   }, [init]);
 
@@ -99,7 +97,7 @@ export default function App() {
           ))}
         </View>
       </ScrollView>
-      <View style={{ marginTop: 20 }}>
+      <View style={{ marginTop: 20, alignSelf: 'stretch', gap: 5 }}>
         <Button title="Refresh" onPress={handleRefresh} />
         <Button title="Manage subscriptions" onPress={handleManageSubscriptions} />
         <Button title="Transfer Ownership" onPress={handleTransferOwnership} />

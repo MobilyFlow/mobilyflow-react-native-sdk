@@ -38,4 +38,9 @@ export interface Spec extends TurboModule {
   getStoreCountry(uuid: string): Promise<string>;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');
+// export default TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');
+console.log('Before module');
+const module = TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');
+console.log('after module ', module);
+
+export default module;

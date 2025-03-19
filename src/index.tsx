@@ -14,7 +14,9 @@ export class MobilyPurchaseSDK {
   private _uuid: string;
 
   constructor(appId: string, apiKey: string, environment: number, options?: MobilyPurchaseSDKOptions) {
+    console.log('Init');
     this._uuid = MobilyflowReactNativeSdk.instantiate(appId, apiKey, environment, options ?? {});
+    console.log('After init: ', this._uuid);
   }
 
   close() {

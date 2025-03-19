@@ -6,30 +6,31 @@ import { ProductButton } from './ProductButton';
 import type { MobilySubscriptionOffer } from '../../src/entities/mobily-subscription-offer';
 import { MobilyEnvironment } from '../../src/enums/mobily-environment';
 
-const sdk = new MobilyPurchaseSDK(
-  'caecc000-45ce-49b3-b218-46c1d985ae85',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBwLXRva2VuIiwic3ViIjoiY2FlY2MwMDAtNDVjZS00OWIzLWIyMTgtNDZjMWQ5ODVhZTg1Iiwic2NvcGUiOjEwLCJpYXQiOjE3MzczNTYyNzIsImV4cCI6MzMyOTQ5NTYyNzJ9.2GDcRmX2dJEfN3S4HANygmOwXqSyGOIsTXVHu5LrLtc',
-  MobilyEnvironment.DEVELOPMENT,
-  {
-    // languages: ['en', 'fr'],
-    apiURL: 'https://api-staging.mobilyflow.com/v1/',
-  }
-);
-
 export default function App() {
   const [products, setProducts] = useState<MobilyProduct[]>();
   const [storeCountry, setStoreCountry] = useState<string>();
   const [error, setError] = useState('');
 
+  const sdk = useRef<MobilyPurchaseSDK>();
   const firstTime = useRef(true);
 
   const init = useCallback(async () => {
+    sdk.current = new MobilyPurchaseSDK(
+      'caecc000-45ce-49b3-b218-46c1d985ae85',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBwLXRva2VuIiwic3ViIjoiY2FlY2MwMDAtNDVjZS00OWIzLWIyMTgtNDZjMWQ5ODVhZTg1Iiwic2NvcGUiOjEwLCJpYXQiOjE3MzczNTYyNzIsImV4cCI6MzMyOTQ5NTYyNzJ9.2GDcRmX2dJEfN3S4HANygmOwXqSyGOIsTXVHu5LrLtc',
+      MobilyEnvironment.DEVELOPMENT,
+      {
+        // languages: ['en', 'fr'],
+        apiURL: 'https://api-staging.mobilyflow.com/v1/',
+      }
+    );
+
     try {
-      await sdk.login('914b9a20-950b-44f7-bd7b-d81d57992294'); // gregoire
-      const p = await sdk.getProducts();
+      await sdk.current.login('914b9a20-950b-44f7-bd7b-d81d57992294'); // gregoire
+      const p = await sdk.current.getProducts();
       console.log('Products: ', p);
       setProducts(p);
-      setStoreCountry(await sdk.getStoreCountry());
+      setStoreCountry(await sdk.current.getStoreCountry());
       console.log('Done');
     } catch (e: any) {
       setError(`Error: ${e.code} ${e.domain}`);
@@ -40,14 +41,16 @@ export default function App() {
   useEffect(() => {
     if (firstTime.current) {
       firstTime.current = false;
-      init().then();
+      setTimeout(() => {
+        init().then();
+      }, 5000);
     }
   }, [init]);
 
   const handlePurchase = async (product: MobilyProduct, offer?: MobilySubscriptionOffer) => {
     try {
       console.log(`Click ${product.identifier} ${offer?.ios_offerId}`);
-      const result = await sdk.purchaseProduct(product, { offer });
+      const result = await sdk.current.purchaseProduct(product, { offer });
       console.log('Purchase result = ', result);
     } catch (e) {
       console.error('Purchase error = ', e);
@@ -59,15 +62,15 @@ export default function App() {
   };
 
   const handleManageSubscriptions = async () => {
-    await sdk.openManageSubscription();
+    await sdk.current.openManageSubscription();
   };
 
   const handleTransferOwnership = async () => {
-    await sdk.requestTransferOwnership();
+    await sdk.current.requestTransferOwnership();
   };
 
   const handleSendDiagnostic = () => {
-    sdk.sendDiagnotic();
+    sdk.current.sendDiagnotic();
   };
 
   const handleRefundRequest = () => {

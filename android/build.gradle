@@ -9,7 +9,7 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:8.7.2"
+    classpath "com.android.tools.build:gradle:8.7.3"
     // noinspection DifferentKotlinGradleVersion
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${getExtOrDefault('kotlinVersion')}"
   }
@@ -100,7 +100,8 @@ def kotlin_version = getExtOrDefault("kotlinVersion")
 dependencies {
   implementation "com.facebook.react:react-android"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation "com.mobilyflow:mobilyflow-android-sdk:0.0.1"
+  implementation "com.mobilyflow:mobilyflow-android-sdk:0.0.2"
+  implementation "org.jetbrains.kotlin:kotlin-reflect"
 }
 
 if (isNewArchitectureEnabled()) {

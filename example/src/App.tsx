@@ -50,8 +50,8 @@ export default function App() {
       console.log(`Click ${product.identifier} ${offer?.ios_offerId}`);
       const result = await sdk.current.purchaseProduct(product, { offer });
       console.log('Purchase result = ', result);
-    } catch (e) {
-      console.error('Purchase error = ', e);
+    } catch (e: any) {
+      console.error('Purchase error: ', e.code, e.domain, e);
     }
   };
 

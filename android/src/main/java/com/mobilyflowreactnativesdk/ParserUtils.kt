@@ -71,14 +71,18 @@ private fun WritableArray.push(value: Any?) {
   }
 }
 
-fun Any.toReadableMap(): ReadableMap {
-  val map = Arguments.createMap()
-  this::class.memberProperties.forEach { property ->
-    val key = property.name
-    val value = property.getter.call(this)
-    map.put(key, value)
+fun Any?.toReadableMap(): ReadableMap? {
+  if (this == null) {
+    return null
+  } else {
+    val map = Arguments.createMap()
+    this::class.memberProperties.forEach { property ->
+      val key = property.name
+      val value = property.getter.call(this)
+      map.put(key, value)
+    }
+    return map
   }
-  return map
 }
 
 fun Map<*, *>.toReadableMap(): ReadableMap {
@@ -129,8 +133,16 @@ fun ReadableArray?.toStringArray(): Array<String>? {
 }
 
 fun ReadableMap.optBoolean(key: String, defaultValue: Boolean? = false): Boolean? {
-  return if (this.hasKey(key)) {
+  return if (this.hasKey(key) && !this.isNull(key)) {
     this.getBoolean(key)
+  } else {
+    defaultValue
+  }
+}
+
+fun ReadableMap.optInt(key: String, defaultValue: Int? = null): Int? {
+  return if (this.hasKey(key) && !this.isNull(key)) {
+    this.getInt(key)
   } else {
     defaultValue
   }

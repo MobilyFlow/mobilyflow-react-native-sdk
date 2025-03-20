@@ -16,14 +16,13 @@ Pod::Spec.new do |s|
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
   s.private_header_files = "ios/generated/**/*.h"
-  
+
   s.ios.deployment_target = '15.0'
   s.swift_versions = '5.0'
 
   # Install MobilyFlow SDK
-  # s.dependency 'MobilyflowSDK', '~> 0.0.4-alpha1'
-  s.dependency 'MobilyflowSDK'
-  
+  s.dependency 'MobilyflowSDK', '~> 0.0.7'
+
   #s.subspec 'MobilyflowSDK' do |ss|
   #  ss.source_files = '../mobilyflow-ios-sdk/Sources/MobilyflowSDK/**/*'
   #end

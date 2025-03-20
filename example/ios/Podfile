@@ -10,8 +10,6 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-#source "git@github.com:MobilyFlow/mobilyflow-cocoapods-specs.git"
-
 #linkage = ENV['USE_FRAMEWORKS']
 #if linkage != nil
 #Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
@@ -21,8 +19,7 @@ use_frameworks! # :linkage => linkage.to_sym
 target 'MobilyflowReactNativeSdkExample' do
   config = use_native_modules!
 
-  pod 'MobilyflowSDK', :path => '/Users/gtaja/Projects/MobilyFlow/mobilyflow-ios-sdk', :modular_headers => true
-  # pod 'MobilyflowSDK'
+  # pod 'MobilyflowSDK', :path => '/Users/gtaja/Projects/MobilyFlow/mobilyflow-ios-sdk', :modular_headers => true
 
   use_react_native!(
     :path => config[:reactNativePath],

@@ -23,8 +23,6 @@ export class MobilyPurchaseSDK {
 
   private throwError(error: any) {
     if (RNPlatform.OS === 'android') {
-      console.log('nativeStackAndroid: ', error.nativeStackAndroid);
-      console.log('stack: ', error.stack);
       switch (error.name) {
         case 'com.mobilyflow.mobilypurchasesdk.Exceptions.MobilyException':
           return new MobilyError(parseInt(error.code, 10), error.message, error.nativeStackAndroid);
@@ -34,14 +32,25 @@ export class MobilyPurchaseSDK {
           return new MobilyTransferOwnershipError(parseInt(error.code, 10), error.message, error.nativeStackAndroid);
       }
     } else {
+      switch (error.domain) {
+        case 'MobilyflowSDK.MobilyError':
+          return new MobilyError(parseInt(error.code, 10), error.message, error.nativeStackIOS);
+        case 'MobilyflowSDK.MobilyPurchaseError':
+          return new MobilyPurchaseError(parseInt(error.code, 10), error.message, error.nativeStackIOS);
+        case 'MobilyflowSDK.MobilyTransferOwnershipError':
+          return new MobilyTransferOwnershipError(parseInt(error.code, 10), error.message, error.nativeStackIOS);
+      }
     }
 
-    console.log(`[throw] raw`);
     return error;
   }
 
   close() {
-    MobilyflowReactNativeSdk.close(this._uuid);
+    try {
+      MobilyflowReactNativeSdk.close(this._uuid);
+    } catch (error: any) {
+      throw this.throwError(error);
+    }
   }
 
   async login(externalId: string) {

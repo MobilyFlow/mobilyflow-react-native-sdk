@@ -1,4 +1,4 @@
-package com.mobilyflow.test_ios_sdk
+package com.mobilyflow.test_android_sdk
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

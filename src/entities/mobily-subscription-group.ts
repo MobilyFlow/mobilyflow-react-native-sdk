@@ -5,7 +5,7 @@ export class MobilySubscriptionGroup {
   id: string;
   identifier: string;
   name: string;
-  details: string;
+  description: string;
   ios_groupId: string;
   extras: any;
   products: MobilyProduct[];

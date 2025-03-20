@@ -25,7 +25,7 @@ export const ProductButton = (props: ProductButtonProps) => {
       }}
     >
       <Text>{product.name}</Text>
-      <Text>{product.details}</Text>
+      <Text>{product.description}</Text>
       <Text>
         {offer?.priceFormatted ??
           product.oneTimeProduct?.priceFormatted ??

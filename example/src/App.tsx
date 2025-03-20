@@ -5,6 +5,7 @@ import type { MobilyProduct } from '../../src/entities/mobily-product';
 import { ProductButton } from './ProductButton';
 import type { MobilySubscriptionOffer } from '../../src/entities/mobily-subscription-offer';
 import { MobilyEnvironment } from '../../src/enums/mobily-environment';
+import { MobilyPurchaseError } from '../../src/errors/mobily-purchase-error';
 
 export default function App() {
   const [products, setProducts] = useState<MobilyProduct[]>();
@@ -51,7 +52,11 @@ export default function App() {
       const result = await sdk.current.purchaseProduct(product, { offer });
       console.log('Purchase result = ', result);
     } catch (e: any) {
-      console.error('Purchase error: ', e.code, e.domain, e);
+      if (e instanceof MobilyPurchaseError) {
+        console.error('Purchase error: ', e.type);
+      } else {
+        console.error('Purchase error: ', e);
+      }
     }
   };
 

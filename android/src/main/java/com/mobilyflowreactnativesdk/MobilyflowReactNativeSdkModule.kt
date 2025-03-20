@@ -1,5 +1,6 @@
 package com.mobilyflowreactnativesdk
 
+import android.util.Log
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableArray
@@ -20,10 +21,10 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
 
   private fun throwError(error: Exception, promise: Promise) {
     when (error) {
-      is MobilyException -> promise.reject(error.type.toString(), error.message, error) // TODO: Error code
-      is MobilyPurchaseException -> promise.reject(error.type.toString(), error.message, error) // TODO: Error code
-      is MobilyTransferOwnershipException -> promise.reject(error.type.toString(), error.message, error) // TODO: Error code
-      else -> promise.reject("0", error.message, error)
+      is MobilyException -> promise.reject(error.type.ordinal.toString(), error.message, error)
+      is MobilyPurchaseException -> promise.reject(error.type.ordinal.toString(), error.message, error)
+      is MobilyTransferOwnershipException -> promise.reject(error.type.ordinal.toString(), error.message, error)
+      else -> promise.reject("-1", error.message, error)
     }
   }
 

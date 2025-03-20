@@ -14,7 +14,7 @@ export class MobilyProduct {
   appId: string;
 
   name: string;
-  details: string;
+  description: string;
   ios_sku: string;
   android_sku: string;
 

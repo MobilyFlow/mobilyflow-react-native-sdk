@@ -161,7 +161,7 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
       }
 
       var status = sdk.purchaseProduct(reactApplicationContext.currentActivity!!, product, purchaseOptions)
-      promise.resolve(status)
+      promise.resolve(status.value)
     } catch (error: Exception) {
       throwError(error, promise)
     }

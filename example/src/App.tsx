@@ -1,4 +1,4 @@
-import { Button, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Button, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { MobilyProduct } from '../../src/entities/mobily-product';
@@ -31,11 +31,11 @@ export default function App() {
       const p = await sdk.current.getProducts();
       console.log('Products: ', p);
       setProducts(p);
-      setStoreCountry(await sdk.current.getStoreCountry());
+      setStoreCountry(Platform.OS === 'ios' ? await sdk.current.getStoreCountry() : '-');
       console.log('Done');
     } catch (e: any) {
       setError(`Error: ${e.code} ${e.domain}`);
-      console.error('Login error: ', e.code, e.domain);
+      console.error('Error: ', e.code, e.domain);
     }
   }, []);
 

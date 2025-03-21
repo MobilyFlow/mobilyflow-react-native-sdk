@@ -133,6 +133,13 @@ RCT_EXPORT_MODULE()
   }];
 }
 
+- (void)openRefundDialog:(NSString *)uuid transactionId:(NSString *)transactionId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  
+  [[self getInstance:uuid] openRefundDialogWithTransactionId:[transactionId longLongValue] completionHandler:^(BOOL result) {
+    resolve([NSNumber numberWithBool:result]);
+  }];
+}
+
 - (void)purchaseProduct:(NSString *)uuid productId:(NSString *)productId options:(JS::NativeMobilyflowReactNativeSdk::PurchaseOptions &)options resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   
   MobilyPurchaseSDK* sdk = [self getInstance:uuid];

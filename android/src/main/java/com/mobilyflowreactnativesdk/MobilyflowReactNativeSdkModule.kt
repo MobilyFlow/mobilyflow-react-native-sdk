@@ -127,6 +127,10 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     }
   }
 
+  override fun openRefundDialog(uuid: String, transactionId: String, promise: Promise) {
+    promise.reject("-1", "Not implemented")
+  }
+
   override fun purchaseProduct(uuid: String, productId: String, options: ReadableMap?, promise: Promise) {
     try {
       if (reactApplicationContext.currentActivity == null) {
@@ -156,7 +160,8 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
         }
       }
 
-      sdk.purchaseProduct(reactApplicationContext.currentActivity!!, product, purchaseOptions)
+      var status = sdk.purchaseProduct(reactApplicationContext.currentActivity!!, product, purchaseOptions)
+      promise.resolve(status)
     } catch (error: Exception) {
       throwError(error, promise)
     }
@@ -167,14 +172,7 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
   }
 
   override fun getStoreCountry(uuid: String, promise: Promise) {
-    /*try {
-      val status = _sdkInstances[uuid]!!.getS()
-      promise.resolve(status.value)
-    } catch (error: Exception) {
-      throwError(error, promise)
-    }*/
-    // TODO
-    return promise.resolve("FRA")
+    promise.reject("-1", "Not implemented")
   }
 
   companion object {

@@ -30,7 +30,7 @@ export interface Spec extends TurboModule {
 
   requestTransferOwnership(uuid: string): Promise<void>;
   openManageSubscription(uuid: string): Promise<void>;
-  // openRefundDialog(uuid: string, transactionId: string): Promise<void>;
+  openRefundDialog(uuid: string, transactionId: string): Promise<boolean>;
 
   purchaseProduct(uuid: string, productId: string, options?: PurchaseOptions): Promise<WebhookStatus>;
 
@@ -38,9 +38,4 @@ export interface Spec extends TurboModule {
   getStoreCountry(uuid: string): Promise<string>;
 }
 
-// export default TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');
-console.log('Before module');
-const module = TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');
-console.log('after module ', module);
-
-export default module;
+export default TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');

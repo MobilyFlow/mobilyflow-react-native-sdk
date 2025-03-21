@@ -122,7 +122,17 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  // openRefundDialog(transactionId: string): Promise<void>;
+  async openRefundDialog(transactionId: string): Promise<boolean> {
+    if (RNPlatform.OS === 'android') {
+      throw new Error('openRefundDialog not implemented on Android');
+    } else {
+      try {
+        return await MobilyflowReactNativeSdk.openRefundDialog(this._uuid, transactionId);
+      } catch (error: any) {
+        throw this.throwError(error);
+      }
+    }
+  }
 
   async purchaseProduct(product: MobilyProduct, options?: PurchaseOptions): Promise<WebhookStatus> {
     try {
@@ -144,10 +154,14 @@ export class MobilyPurchaseSDK {
   }
 
   async getStoreCountry() {
-    try {
-      return await MobilyflowReactNativeSdk.getStoreCountry(this._uuid);
-    } catch (error: any) {
-      throw this.throwError(error);
+    if (RNPlatform.OS === 'android') {
+      throw new Error('getStoreCountry not implemented on Android');
+    } else {
+      try {
+        return await MobilyflowReactNativeSdk.getStoreCountry(this._uuid);
+      } catch (error: any) {
+        throw this.throwError(error);
+      }
     }
   }
 }

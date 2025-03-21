@@ -1,6 +1,7 @@
 import type { MobilyProduct } from '../../src/entities/mobily-product';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import type { MobilySubscriptionOffer } from '../../src/entities/mobily-subscription-offer';
+import { ProductStatus } from '../../src/enums/product-status';
 
 export type ProductButtonProps = {
   product: MobilyProduct;
@@ -24,6 +25,17 @@ export const ProductButton = (props: ProductButtonProps) => {
         alignItems: 'center',
       }}
     >
+      <View
+        style={{
+          position: 'absolute',
+          top: 5,
+          right: 5,
+          borderRadius: 20,
+          height: 20,
+          width: 20,
+          backgroundColor: product.status === ProductStatus.AVAILABLE ? 'green' : 'red',
+        }}
+      />
       <Text>{product.name}</Text>
       <Text>{product.description}</Text>
       <Text>

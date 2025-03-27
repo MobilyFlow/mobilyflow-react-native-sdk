@@ -8,7 +8,8 @@ PODS:
   - hermes-engine (0.78.0):
     - hermes-engine/Pre-built (= 0.78.0)
   - hermes-engine/Pre-built (0.78.0)
-  - MobilyflowReactNativeSdk (0.0.1):
+  - Iaphub (4.6.5)
+  - MobilyflowReactNativeSdk (0.0.3):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1261,6 +1262,9 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
+  - react-native-iaphub (8.10.3):
+    - Iaphub (= 4.6.5)
+    - React-Core
   - React-NativeModulesApple (0.78.1):
     - glog
     - hermes-engine
@@ -1592,6 +1596,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
+  - react-native-iaphub (from `../node_modules/react-native-iaphub`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-performancetimeline (from `../node_modules/react-native/ReactCommon/react/performance/timeline`)
@@ -1624,6 +1629,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Iaphub
     - MobilyflowSDK
     - SocketRocket
 
@@ -1705,6 +1711,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   React-microtasksnativemodule:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
+  react-native-iaphub:
+    :path: "../node_modules/react-native-iaphub"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-perflogger:
@@ -1772,7 +1780,8 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
   hermes-engine: b417d2b2aee3b89b58e63e23a51e02be91dc876d
-  MobilyflowReactNativeSdk: b4ecd93390d362c0dbdbf0fc6b9b1d26c96ebc1f
+  Iaphub: 6b4f156fe42961e5e914aeaa5e3e147ed5063b1e
+  MobilyflowReactNativeSdk: bf43d8c94972583e39a789fd792ce147661cd43d
   MobilyflowSDK: 65529977b57f52be0027be8f82935f2f1bdbb8c2
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: 082fbc90409015eac1366795a0b90f8b5cb28efe
@@ -1804,6 +1813,7 @@ SPEC CHECKSUMS:
   React-logger: 74ddb793d36b48bba176328c7af75e5e656fd405
   React-Mapbuffer: 9089a8ef738526aa31bb993debfaff214c2bef5d
   React-microtasksnativemodule: d4fd1d752f04965cd989beb8d28e896fa7f58605
+  react-native-iaphub: 93deeb2afaec9503e1db8aa7a677e9443bce2640
   React-NativeModulesApple: ce75ed8f1188483be3620bf9dbb3b1286dd39bab
   React-perflogger: 26d07766b033f84559bd520e949453dba8bf1cd8
   React-performancetimeline: 24eb0a6a341a1b0d48bc75a961ee480db0bad47e

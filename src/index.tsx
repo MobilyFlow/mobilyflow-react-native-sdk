@@ -61,18 +61,18 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async getProducts(identifiers?: string[]) {
+  async getProducts(identifiers?: string[], onlyAvailable = false): Promise<MobilyProduct[]> {
     try {
-      const products = await MobilyflowReactNativeSdk.getProducts(this._uuid, identifiers);
+      const products = await MobilyflowReactNativeSdk.getProducts(this._uuid, identifiers, onlyAvailable);
       return products.map(MobilyProduct.parseFromAPI);
     } catch (error: any) {
       throw this.throwError(error);
     }
   }
 
-  async getSubscriptionGroups(identifiers?: string[]) {
+  async getSubscriptionGroups(identifiers?: string[], onlyAvailable = false) {
     try {
-      const groups = await MobilyflowReactNativeSdk.getSubscriptionGroups(this._uuid, identifiers);
+      const groups = await MobilyflowReactNativeSdk.getSubscriptionGroups(this._uuid, identifiers, onlyAvailable);
       return groups.map(MobilySubscriptionGroup.parseFromAPI);
     } catch (error: any) {
       throw this.throwError(error);
@@ -162,6 +162,14 @@ export class MobilyPurchaseSDK {
       } catch (error: any) {
         throw this.throwError(error);
       }
+    }
+  }
+
+  async isForwardingEnable() {
+    try {
+      return await MobilyflowReactNativeSdk.isForwardingEnable(this._uuid);
+    } catch (error: any) {
+      throw this.throwError(error);
     }
   }
 }

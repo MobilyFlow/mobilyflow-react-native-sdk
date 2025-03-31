@@ -4,31 +4,24 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { MobilyProduct } from '../../src/entities/mobily-product';
 import { ProductButton } from './ProductButton';
 import type { MobilySubscriptionOffer } from '../../src/entities/mobily-subscription-offer';
-import { MobilyEnvironment } from '../../src/enums/mobily-environment';
 import { MobilyPurchaseError } from '../../src/errors/mobily-purchase-error';
 
-export default function AppMobilyFlow() {
+export type AppMobilyFlowProps = {
+  sdk: React.RefObject<MobilyPurchaseSDK>;
+  reload: () => Promise<void>;
+};
+
+export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
+  const { sdk, reload } = props;
+
   const [products, setProducts] = useState<MobilyProduct[]>();
   const [storeCountry, setStoreCountry] = useState<string>();
   const [error, setError] = useState('');
 
-  const sdk = useRef<MobilyPurchaseSDK>();
   const firstTime = useRef(true);
 
   const init = useCallback(async () => {
-    sdk.current = new MobilyPurchaseSDK(
-      'caecc000-45ce-49b3-b218-46c1d985ae85',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBwLXRva2VuIiwic3ViIjoiY2FlY2MwMDAtNDVjZS00OWIzLWIyMTgtNDZjMWQ5ODVhZTg1Iiwic2NvcGUiOjEwLCJpYXQiOjE3MzczNTYyNzIsImV4cCI6MzMyOTQ5NTYyNzJ9.2GDcRmX2dJEfN3S4HANygmOwXqSyGOIsTXVHu5LrLtc',
-      MobilyEnvironment.DEVELOPMENT,
-      {
-        // languages: ['en', 'fr'],
-        apiURL: 'https://api-staging.mobilyflow.com/v1/',
-        debug: true,
-      }
-    );
-
     try {
-      await sdk.current.login('914b9a20-950b-44f7-bd7b-d81d57992294'); // gregoire
       const p = await sdk.current.getProducts();
       console.log('Products: ', p);
       setProducts(p);
@@ -38,7 +31,7 @@ export default function AppMobilyFlow() {
       setError(`Error: ${e.code} ${e.domain}`);
       console.error('Error: ', e.code, e.domain);
     }
-  }, []);
+  }, [sdk]);
 
   useEffect(() => {
     if (firstTime.current) {
@@ -62,6 +55,7 @@ export default function AppMobilyFlow() {
   };
 
   const handleRefresh = async () => {
+    await reload();
     await init();
   };
 

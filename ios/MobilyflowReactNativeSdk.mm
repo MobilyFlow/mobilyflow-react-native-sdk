@@ -32,12 +32,12 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSString *)instantiate:(NSString *)appId apiKey:(NSString *)apiKey environment:(double)environment options:(JS::NativeMobilyflowReactNativeSdk::MobilyPurchaseSDKOptions &)options {
-  
+
   NSString* uuid = [[NSUUID UUID] UUIDString];
-  
+
   MobilyPurchaseSDK *sdk = [[MobilyPurchaseSDK alloc] initWithAppId:appId apiKey:apiKey environment:(MobilyEnvironment) environment options:[ParserMobilyPurchaseSDKOptions parseFromJSI:options]];
   [_sdkInstances setObject:sdk forKey:uuid];
-  
+
   return uuid;
 }
 
@@ -55,8 +55,8 @@ RCT_EXPORT_MODULE()
   }];
 }
 
-- (void)getProducts:(NSString *)uuid identifiers:(NSArray *)identifiers resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  [[self getInstance:uuid] getProductsWithIdentifiers:identifiers completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
+- (void)getProducts:(NSString *)uuid identifiers:(NSArray *)identifiers onlyAvailable:(BOOL)onlyAvailable resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  [[self getInstance:uuid] getProductsWithIdentifiers:identifiers onlyAvailable:onlyAvailable completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
@@ -67,9 +67,9 @@ RCT_EXPORT_MODULE()
   }];
 }
 
-- (void)getSubscriptionGroups:(NSString *)uuid identifiers:(NSArray *)identifiers resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  
-  [[self getInstance:uuid] getSubscriptionGroupsWithIdentifiers:identifiers completionHandler:^(NSArray<MobilySubscriptionGroup *> * _Nullable groups, NSError * _Nullable error) {
+- (void)getSubscriptionGroups:(NSString *)uuid identifiers:(NSArray *)identifiers onlyAvailable:(BOOL)onlyAvailable resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+
+  [[self getInstance:uuid] getSubscriptionGroupsWithIdentifiers:identifiers onlyAvailable:onlyAvailable completionHandler:^(NSArray<MobilySubscriptionGroup *> * _Nullable groups, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
@@ -81,7 +81,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)getEntitlementForSubscription:(NSString *)uuid subscriptionGroupId:(NSString *)subscriptionGroupId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  
+
   [[self getInstance:uuid] getEntitlementForSubscriptionWithSubscriptionGroupId:subscriptionGroupId completionHandler:^(MobilyCustomerEntitlement * _Nullable entitlement, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
@@ -92,7 +92,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)getEntitlement:(NSString *)uuid productId:(NSString *)productId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  
+
   [[self getInstance:uuid] getEntitlementWithProductId:productId completionHandler:^(MobilyCustomerEntitlement * _Nullable entitlement, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
@@ -103,7 +103,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)getEntitlements:(NSString *)uuid productIds:(NSArray *)productIds resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  
+
   [[self getInstance:uuid] getEntitlementsWithProductIds:productIds completionHandler:^(NSArray<MobilyCustomerEntitlement *> * _Nullable entitlements, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
@@ -116,7 +116,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)requestTransferOwnership:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  
+
   [[self getInstance:uuid] requestTransferOwnershipWithCompletionHandler:^(enum TransferOwnershipStatus status, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
@@ -127,28 +127,28 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)openManageSubscription:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  
+
   [[self getInstance:uuid] openManageSubscriptionWithCompletionHandler:^{
     resolve([NSNumber numberWithInt:1]);
   }];
 }
 
 - (void)openRefundDialog:(NSString *)uuid transactionId:(NSString *)transactionId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  
+
   [[self getInstance:uuid] openRefundDialogWithTransactionId:[transactionId longLongValue] completionHandler:^(BOOL result) {
     resolve([NSNumber numberWithBool:result]);
   }];
 }
 
 - (void)purchaseProduct:(NSString *)uuid productId:(NSString *)productId options:(JS::NativeMobilyflowReactNativeSdk::PurchaseOptions &)options resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  
+
   MobilyPurchaseSDK* sdk = [self getInstance:uuid];
-  
+
   NSString *offerId = options.offerId();
   int quantity = (int)options.quantity();
-  
+
   [sdk getProductsWithIdentifiers:nil completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
-    
+
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
@@ -156,13 +156,13 @@ RCT_EXPORT_MODULE()
       if (quantity > 1) {
         purchaseOptions = [purchaseOptions setQuantity:quantity];
       }
-      
+
       MobilyProduct *product = nil;
-      
+
       for (MobilyProduct *it in products) {
         if ([it.id isEqualToString:productId]) {
           product = it;
-          
+
           if (offerId != nil) {
             if ([it.subscriptionProduct.baseOffer.id isEqualToString:offerId]) {
               purchaseOptions = [purchaseOptions setOffer:it.subscriptionProduct.baseOffer];
@@ -177,16 +177,16 @@ RCT_EXPORT_MODULE()
               }
             }
           }
-          
+
           break;
         }
       }
-      
+
       if (product == nil) {
         reject(@"-1", [NSString stringWithFormat:@"Unknown productId (%@)", productId], nil);
         return;
       }
-      
+
       [sdk purchaseProduct:product options:purchaseOptions completionHandler:^(enum WebhookStatus status, NSError * _Nullable error) {
         if (error) {
           reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
@@ -205,6 +205,12 @@ RCT_EXPORT_MODULE()
 - (void)getStoreCountry:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   [[self getInstance:uuid] getStoreCountryWithCompletionHandler:^(NSString * _Nullable countryCode) {
     resolve(countryCode);
+  }];
+}
+
+- (void)isForwardingEnable:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  [[self getInstance:uuid] isForwardingEnableWithCompletionHandler:^(BOOL result, NSError * _Nullable error) {
+    resolve([NSNumber numberWithBool:result]);
   }];
 }
 

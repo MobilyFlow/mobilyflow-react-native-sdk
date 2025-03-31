@@ -5,15 +5,15 @@ PODS:
   - FBLazyVector (0.78.1)
   - fmt (11.0.2)
   - glog (0.3.5)
-  - hermes-engine (0.78.0):
-    - hermes-engine/Pre-built (= 0.78.0)
-  - hermes-engine/Pre-built (0.78.0)
+  - hermes-engine (0.78.1):
+    - hermes-engine/Pre-built (= 0.78.1)
+  - hermes-engine/Pre-built (0.78.1)
   - Iaphub (4.6.5)
   - MobilyflowReactNativeSdk (0.0.3):
     - DoubleConversion
     - glog
     - hermes-engine
-    - MobilyflowSDK (~> 0.0.7)
+    - MobilyflowSDK (= 0.0.9-alpha.1)
     - RCT-Folly (= 2024.11.18.00)
     - RCTRequired
     - RCTTypeSafety
@@ -31,7 +31,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - MobilyflowSDK (0.0.7)
+  - MobilyflowSDK (0.0.9-alpha.1)
   - RCT-Folly (2024.11.18.00):
     - boost
     - DoubleConversion
@@ -1779,10 +1779,10 @@ SPEC CHECKSUMS:
   FBLazyVector: bba368dacede4c9dec7a58c9be5a2d3e9ea30cc7
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
-  hermes-engine: b417d2b2aee3b89b58e63e23a51e02be91dc876d
+  hermes-engine: f493b0a600aed5dc06532141603688a30a5b2f61
   Iaphub: 6b4f156fe42961e5e914aeaa5e3e147ed5063b1e
-  MobilyflowReactNativeSdk: bf43d8c94972583e39a789fd792ce147661cd43d
-  MobilyflowSDK: 65529977b57f52be0027be8f82935f2f1bdbb8c2
+  MobilyflowReactNativeSdk: 51958c831b659f47bb450efc8fe0bea35b4cbb3e
+  MobilyflowSDK: 47c27842530ad7671938b07fb25bbef6610af9af
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: 082fbc90409015eac1366795a0b90f8b5cb28efe
   RCTRequired: ca966f4da75b62ce3ea8c538d82cb5ecbb06f12a

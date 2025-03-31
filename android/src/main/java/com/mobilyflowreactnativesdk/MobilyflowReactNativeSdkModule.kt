@@ -1,6 +1,5 @@
 package com.mobilyflowreactnativesdk
 
-import android.util.Log
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableArray
@@ -64,18 +63,18 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     }
   }
 
-  override fun getProducts(uuid: String, identifiers: ReadableArray?, promise: Promise) {
+  override fun getProducts(uuid: String, identifiers: ReadableArray?, onlyAvailable: Boolean, promise: Promise) {
     try {
-      val products = _sdkInstances[uuid]!!.getProducts(identifiers.toStringArray(), false)
+      val products = _sdkInstances[uuid]!!.getProducts(identifiers.toStringArray(), onlyAvailable)
       promise.resolve(products.toReadableArray())
     } catch (error: Exception) {
       throwError(error, promise)
     }
   }
 
-  override fun getSubscriptionGroups(uuid: String, identifiers: ReadableArray?, promise: Promise) {
+  override fun getSubscriptionGroups(uuid: String, identifiers: ReadableArray?, onlyAvailable: Boolean, promise: Promise) {
     try {
-      val groups = _sdkInstances[uuid]!!.getSubscriptionGroups(identifiers.toStringArray(), false)
+      val groups = _sdkInstances[uuid]!!.getSubscriptionGroups(identifiers.toStringArray(), onlyAvailable)
       promise.resolve(groups.toReadableArray())
     } catch (error: Exception) {
       throwError(error, promise)
@@ -160,7 +159,7 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
         }
       }
 
-      var status = sdk.purchaseProduct(reactApplicationContext.currentActivity!!, product, purchaseOptions)
+      val status = sdk.purchaseProduct(reactApplicationContext.currentActivity!!, product, purchaseOptions)
       promise.resolve(status.value)
     } catch (error: Exception) {
       throwError(error, promise)
@@ -173,6 +172,10 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
 
   override fun getStoreCountry(uuid: String, promise: Promise) {
     promise.reject("-1", "Not implemented")
+  }
+
+  override fun isForwardingEnable(uuid: String, promise: Promise) {
+    promise.resolve(_sdkInstances[uuid]!!.isForwardingEnable())
   }
 
   companion object {

@@ -14,18 +14,19 @@ export default function AppIapHub() {
   const init = useCallback(async () => {
     try {
       await Iaphub.start({
-        appId: '645cda0beb93424510aa4bb2',
-        apiKey: 'aZo1MaZ19J93WMvFU2DlAfypTxwtabPh',
+        appId: '67e64649773f1d55cd6c8097',
+        apiKey: '0fDY1VSkUk9eFOPuXUEbTdcIrs7mq',
         enableStorekitV2: true,
-        environment: 'staging',
-        lang: 'en',
+        // environment: 'production',
+        // lang: 'en',
         userId: '914b9a20-950b-44f7-bd7b-d81d57992294', // gregoire
       });
 
       const p = await Iaphub.getProductsForSale();
       setProducts(p);
     } catch (err) {
-      setError(`${err}`);
+      console.error(err);
+      setError(`${JSON.stringify(err)}`);
     }
   }, []);
 

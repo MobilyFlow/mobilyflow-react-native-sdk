@@ -1,10 +1,11 @@
 {
   "name": "mobilyflow-react-native-sdk",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.4",
   "description": "MobilyFlow React Native SDK",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
+  "types": "./lib/typescript/commonjs/src/index.d.ts",
   "exports": {
     ".": {
       "import": {
@@ -43,7 +44,7 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
-    "pub": "yarn npm publish --access public"
+    "pub": "yarn prepare && yarn npm publish --access public"
   },
   "keywords": [
     "react-native",

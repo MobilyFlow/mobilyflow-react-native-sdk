@@ -1,6 +1,6 @@
 {
   "name": "mobilyflow-react-native-sdk",
-  "version": "0.0.3",
+  "version": "0.1.0-alpha.1",
   "description": "MobilyFlow React Native SDK",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",

@@ -1,5 +1,5 @@
-import AppMobilyFlow from './AppMobilyFlow';
 import AppIapHub from './iaphub/AppIapHub';
+import AppMobilyFlow from './AppMobilyFlow';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
@@ -29,7 +29,7 @@ export default function App() {
       setForwardingEnable(await sdk.current.isForwardingEnable());
     } catch (e: any) {
       console.error('setForwardingEnable error: ', e);
-      setForwardingEnable(false);
+      setForwardingEnable(true);
     }
   }, []);
 
@@ -49,4 +49,5 @@ export default function App() {
   }
 
   return isForwardingEnable ? <AppIapHub /> : <AppMobilyFlow sdk={sdk} reload={init} />;
+  // return <AppIapHub />;
 }

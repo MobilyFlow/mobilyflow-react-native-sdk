@@ -40,10 +40,10 @@ export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
     }
   }, [init]);
 
-  const handlePurchase = async (product: MobilyProduct, offer?: MobilySubscriptionOffer) => {
+  const handlePurchase = async (product: MobilyProduct, offer?: MobilySubscriptionOffer, quantity?: number) => {
     try {
       console.log(`Click ${product.identifier} ${offer?.ios_offerId}`);
-      const result = await sdk.current.purchaseProduct(product, { offer });
+      const result = await sdk.current.purchaseProduct(product, { offer, quantity });
       console.log('Purchase result = ', result);
     } catch (e: any) {
       if (e instanceof MobilyPurchaseError) {
@@ -91,6 +91,11 @@ export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
                   {product?.subscriptionProduct?.promotionalOffers?.map((offer) => (
                     <ProductButton key={offer.id} product={product} offer={offer} handlePress={handlePurchase} />
                   ))}
+                </View>
+              )}
+              {product?.oneTimeProduct?.isMultiQuantity && Platform.OS === 'ios' && (
+                <View style={{ gap: 10, paddingHorizontal: 10 }}>
+                  <ProductButton product={product} quantity={2} handlePress={handlePurchase} />
                 </View>
               )}
             </View>

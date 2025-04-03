@@ -146,9 +146,8 @@ RCT_EXPORT_MODULE()
 
   NSString *offerId = options.offerId();
   int quantity = (int)options.quantity();
-
-  [sdk getProductsWithIdentifiers:nil completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
-
+  
+  [sdk getProductsWithIdentifiers:nil onlyAvailable:NO completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {

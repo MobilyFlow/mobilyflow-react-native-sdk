@@ -6,16 +6,17 @@ import { ProductStatus } from '../../src/enums/product-status';
 export type ProductButtonProps = {
   product: MobilyProduct;
   offer?: MobilySubscriptionOffer;
-  handlePress: (product: MobilyProduct, offer?: MobilySubscriptionOffer) => any;
+  quantity?: number;
+  handlePress: (product: MobilyProduct, offer?: MobilySubscriptionOffer, quantity?: number) => any;
 };
 
 export const ProductButton = (props: ProductButtonProps) => {
-  const { product, handlePress } = props;
+  const { product, handlePress, quantity } = props;
   const offer = props.offer ?? product?.subscriptionProduct?.baseOffer;
 
   return (
     <TouchableOpacity
-      onPress={() => handlePress(product, offer)}
+      onPress={() => handlePress(product, offer, quantity)}
       style={{
         borderWidth: 1,
         borderColor: 'black',
@@ -36,7 +37,10 @@ export const ProductButton = (props: ProductButtonProps) => {
           backgroundColor: product.status === ProductStatus.AVAILABLE ? 'green' : 'red',
         }}
       />
-      <Text>{product.name}</Text>
+      <Text>
+        {product.name}
+        {quantity ? ` (${quantity})` : ''}
+      </Text>
       <Text>{product.description}</Text>
       <Text>
         {offer?.priceFormatted ??

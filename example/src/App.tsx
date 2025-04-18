@@ -14,7 +14,7 @@ export default function App() {
   const init = useCallback(async () => {
     sdk.current = new MobilyPurchaseSDK(
       'caecc000-45ce-49b3-b218-46c1d985ae85',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBwLXRva2VuIiwic3ViIjoiY2FlY2MwMDAtNDVjZS00OWIzLWIyMTgtNDZjMWQ5ODVhZTg1Iiwic2NvcGUiOjEwLCJpYXQiOjE3NDM2NzA5MTEsImV4cCI6MzMzMDEyNzA5MTF9.gRw0f-5rfUSjzgJ_LL_G0QzqGRUiDkZBV_Tb7md74DY',
+      '7aa18f9720a5c9731d17f5c54e89bdd218647f71269eed2f6c27c8fa5924da84',
       MobilyEnvironment.DEVELOPMENT,
       {
         // languages: ['en', 'fr'],

@@ -11,6 +11,7 @@ export class MobilyProduct {
   deletedAt?: Date;
 
   identifier: string;
+  externalRef: string;
   appId: string;
 
   name: string;

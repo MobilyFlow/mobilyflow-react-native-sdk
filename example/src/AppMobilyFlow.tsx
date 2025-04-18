@@ -24,6 +24,8 @@ export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
     try {
       const p = await sdk.current.getProducts();
       console.log('Products: ', p);
+      console.log(`Product: ${p[0].identifier} / ${p[0].externalRef}`);
+      console.log(`Product: ${p[1].identifier} / ${p[1].externalRef}`);
       setProducts(p);
       setStoreCountry(Platform.OS === 'ios' ? await sdk.current.getStoreCountry() : '-');
       console.log('Done');

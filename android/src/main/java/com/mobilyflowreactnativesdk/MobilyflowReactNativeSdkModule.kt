@@ -54,9 +54,9 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     _sdkInstances[uuid]!!.close()
   }
 
-  override fun login(uuid: String, externalId: String, promise: Promise) {
+  override fun login(uuid: String, externalRef: String, promise: Promise) {
     try {
-      _sdkInstances[uuid]!!.login(externalId)
+      _sdkInstances[uuid]!!.login(externalRef)
       promise.resolve(1)
     } catch (error: Exception) {
       throwError(error, promise)

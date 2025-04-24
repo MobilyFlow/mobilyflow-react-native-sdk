@@ -53,9 +53,9 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async login(externalId: string) {
+  async login(externalRef: string) {
     try {
-      await MobilyflowReactNativeSdk.login(this._uuid, externalId);
+      await MobilyflowReactNativeSdk.login(this._uuid, externalRef);
     } catch (error: any) {
       throw this.throwError(error);
     }

@@ -45,8 +45,8 @@ RCT_EXPORT_MODULE()
   return [[self getInstance:uuid] close];
 }
 
-- (void)login:(NSString *)uuid externalId:(NSString *)externalId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  [[self getInstance:uuid] loginWithExternalId:externalId completionHandler:^(NSError * _Nullable error) {
+- (void)login:(NSString *)uuid externalRef:(NSString *)externalRef resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  [[self getInstance:uuid] loginWithExternalRef:externalRef completionHandler:^(NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
@@ -146,7 +146,7 @@ RCT_EXPORT_MODULE()
 
   NSString *offerId = options.offerId();
   int quantity = (int)options.quantity();
-  
+
   [sdk getProductsWithIdentifiers:nil onlyAvailable:NO completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);

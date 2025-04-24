@@ -20,7 +20,7 @@ export interface Spec extends TurboModule {
   instantiate(appId: string, apiKey: string, environment: number, options?: MobilyPurchaseSDKOptions): string;
   close(uuid: string): void;
 
-  login(uuid: string, externalId: string): Promise<void>;
+  login(uuid: string, externalRef: string): Promise<void>;
   getProducts(uuid: string, identifiers: string[], onlyAvailable: boolean): Promise<MobilyProduct[]>;
   getSubscriptionGroups(
     uuid: string,

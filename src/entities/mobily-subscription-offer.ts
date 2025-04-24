@@ -3,6 +3,8 @@ import type { PeriodUnit } from '../enums/period-unit';
 
 export class MobilySubscriptionOffer {
   id: string;
+  identifier: string;
+  externalRef: string;
   name: string;
   price: number;
   currencyCode: string;

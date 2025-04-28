@@ -56,8 +56,8 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
 
   override fun login(uuid: String, externalRef: String, promise: Promise) {
     try {
-      _sdkInstances[uuid]!!.login(externalRef)
-      promise.resolve(1)
+      val customer = _sdkInstances[uuid]!!.login(externalRef)
+      promise.resolve(customer.toReadableMap())
     } catch (error: Exception) {
       throwError(error, promise)
     }
@@ -174,8 +174,8 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     promise.reject("-1", "Not implemented")
   }
 
-  override fun isForwardingEnable(uuid: String, promise: Promise) {
-    promise.resolve(_sdkInstances[uuid]!!.isForwardingEnable())
+  override fun isForwardingEnable(uuid: String, externalRef: String, promise: Promise) {
+    promise.resolve(_sdkInstances[uuid]!!.isForwardingEnable(externalRef))
   }
 
   companion object {

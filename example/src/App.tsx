@@ -25,8 +25,9 @@ export default function App() {
     );
 
     try {
-      await sdk.current.login('914b9a20-950b-44f7-bd7b-d81d57992294'); // gregoire
-      setForwardingEnable(await sdk.current.isForwardingEnable());
+      const customer = await sdk.current.login('914b9a20-950b-44f7-bd7b-d81d57992294'); // gregoire
+      console.log('Customer = ', customer);
+      setForwardingEnable(await sdk.current.isForwardingEnable('914b9a20-950b-44f7-bd7b-d81d57992294'));
     } catch (e: any) {
       console.error('setForwardingEnable error: ', e);
       setForwardingEnable(true);

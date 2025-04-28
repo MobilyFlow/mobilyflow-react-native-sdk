@@ -4,6 +4,7 @@ import { MobilyProduct } from './entities/mobily-product';
 import { MobilySubscriptionGroup } from './entities/mobily-subscription-group';
 import { MobilyCustomerEntitlement } from './entities/mobily-customer-entitlement';
 import { WebhookStatus } from './enums/webhook-status';
+import type { MobilyCustomer } from './entities/mobily-customer';
 
 export type MobilyPurchaseSDKOptions = {
   languages?: string[];
@@ -20,7 +21,7 @@ export interface Spec extends TurboModule {
   instantiate(appId: string, apiKey: string, environment: number, options?: MobilyPurchaseSDKOptions): string;
   close(uuid: string): void;
 
-  login(uuid: string, externalRef: string): Promise<void>;
+  login(uuid: string, externalRef: string): Promise<MobilyCustomer>;
   getProducts(uuid: string, identifiers: string[], onlyAvailable: boolean): Promise<MobilyProduct[]>;
   getSubscriptionGroups(
     uuid: string,
@@ -40,7 +41,7 @@ export interface Spec extends TurboModule {
 
   sendDiagnotic(uuid: string): void;
   getStoreCountry(uuid: string): Promise<string>;
-  isForwardingEnable(uuid: string): Promise<boolean>;
+  isForwardingEnable(uuid: string, externalRef: string): Promise<boolean>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');

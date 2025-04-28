@@ -46,11 +46,11 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)login:(NSString *)uuid externalRef:(NSString *)externalRef resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  [[self getInstance:uuid] loginWithExternalRef:externalRef completionHandler:^(NSError * _Nullable error) {
+  [[self getInstance:uuid] loginWithExternalRef:externalRef completionHandler:^(MobilyCustomer * _Nullable customer, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
-      resolve(0);
+      resolve([customer toDictionary]);
     }
   }];
 }
@@ -207,9 +207,14 @@ RCT_EXPORT_MODULE()
   }];
 }
 
-- (void)isForwardingEnable:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  [[self getInstance:uuid] isForwardingEnableWithCompletionHandler:^(BOOL result, NSError * _Nullable error) {
-    resolve([NSNumber numberWithBool:result]);
+- (void)isForwardingEnable:(NSString *)uuid externalRef:(NSString *)externalRef resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  
+  [[self getInstance:uuid] isForwardingEnableWithExternalRef:externalRef completionHandler:^(BOOL result, NSError * _Nullable error) {
+    if (error) {
+      reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
+    } else {
+      resolve([NSNumber numberWithBool:result]);
+    }
   }];
 }
 

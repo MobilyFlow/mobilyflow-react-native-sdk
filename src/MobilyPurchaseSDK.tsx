@@ -8,6 +8,7 @@ import { Platform as RNPlatform } from 'react-native';
 import { MobilyError } from './errors/mobily-error';
 import { MobilyPurchaseError } from './errors/mobily-purchase-error';
 import { MobilyTransferOwnershipError } from './errors/mobily-transfer-ownership-error';
+import { MobilyCustomer } from './entities/mobily-customer';
 
 export type PurchaseOptions = {
   offer?: MobilySubscriptionOffer;
@@ -55,7 +56,8 @@ export class MobilyPurchaseSDK {
 
   async login(externalRef: string) {
     try {
-      await MobilyflowReactNativeSdk.login(this._uuid, externalRef);
+      const customer = await MobilyflowReactNativeSdk.login(this._uuid, externalRef);
+      return MobilyCustomer.parseFromAPI(customer);
     } catch (error: any) {
       throw this.throwError(error);
     }
@@ -165,9 +167,9 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async isForwardingEnable() {
+  async isForwardingEnable(externalRef: string) {
     try {
-      return await MobilyflowReactNativeSdk.isForwardingEnable(this._uuid);
+      return await MobilyflowReactNativeSdk.isForwardingEnable(this._uuid, externalRef);
     } catch (error: any) {
       throw this.throwError(error);
     }

@@ -1,5 +1,5 @@
 import { Button, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
+import { MobilyError, MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { MobilyProduct } from '../../src/entities/mobily-product';
 import { ProductButton } from './ProductButton';
@@ -49,7 +49,9 @@ export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
       console.log('Purchase result = ', result);
     } catch (e: any) {
       if (e instanceof MobilyPurchaseError) {
-        console.error('Purchase error: ', e.type);
+        console.error('[MobilyPurchaseError] Purchase error: ', MobilyPurchaseError.Type[e.type]);
+      } else if (e instanceof MobilyError) {
+        console.error('[MobilyError] Purchase error: ', MobilyError.Type[e.type]);
       } else {
         console.error('Purchase error: ', e);
       }

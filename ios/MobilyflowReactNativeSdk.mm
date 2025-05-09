@@ -147,6 +147,7 @@ RCT_EXPORT_MODULE()
   NSString *offerId = options.offerId();
   int quantity = (int)options.quantity();
 
+  // TODO: This trigger a new useless API call, we should have a product registry
   [sdk getProductsWithIdentifiers:nil onlyAvailable:NO completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
@@ -208,7 +209,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)isForwardingEnable:(NSString *)uuid externalRef:(NSString *)externalRef resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  
+
   [[self getInstance:uuid] isForwardingEnableWithExternalRef:externalRef completionHandler:^(BOOL result, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);

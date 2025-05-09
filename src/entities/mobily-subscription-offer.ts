@@ -9,9 +9,10 @@ export class MobilySubscriptionOffer {
   price: number;
   currencyCode: string;
   priceFormatted: string;
-  isFreeTrial: boolean;
+  type: string;
   periodCount: number;
   periodUnit: PeriodUnit;
+  countBillingCycle: number;
   ios_offerId: string;
   extras: any;
   status: ProductStatus;

@@ -1,7 +1,7 @@
 import AppIapHub from './iaphub/AppIapHub';
 import AppMobilyFlow from './AppMobilyFlow';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, Platform, View } from 'react-native';
 import { MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
 import { MobilyEnvironment } from '../../src/enums/mobily-environment';
 
@@ -25,9 +25,15 @@ export default function App() {
     );
 
     try {
-      const customer = await sdk.current.login('914b9a20-950b-44f7-bd7b-d81d57992294'); // gregoire
+      const externalRef =
+        Platform.OS === 'ios'
+          ? '914b9a20-950b-44f7-bd7b-d81d57992294' // gregoire
+          : '044209a1-8331-4bdc-9a73-8eebbe0acdaa'; // gregoire-android;
+
+      const customer = await sdk.current.login(externalRef);
       console.log('Customer = ', customer);
-      setForwardingEnable(await sdk.current.isForwardingEnable('914b9a20-950b-44f7-bd7b-d81d57992294'));
+      setForwardingEnable(customer.isForwardingEnable);
+      // setForwardingEnable(await sdk.current.isForwardingEnable(externalRef));
     } catch (e: any) {
       console.error('setForwardingEnable error: ', e);
       setForwardingEnable(true);

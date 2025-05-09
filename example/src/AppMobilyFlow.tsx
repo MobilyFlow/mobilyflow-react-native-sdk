@@ -1,5 +1,5 @@
 import { Button, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { MobilyError, MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
+import { MobilyError, MobilyPurchaseSDK, WebhookStatus } from 'mobilyflow-react-native-sdk';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { MobilyProduct } from '../../src/entities/mobily-product';
 import { ProductButton } from './ProductButton';
@@ -22,16 +22,21 @@ export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
 
   const init = useCallback(async () => {
     try {
+      // const g = await sdk.current.getSubscriptionGroups();
+      // console.log('Groups: ', g);
+      // const p = g[0].products;
       const p = await sdk.current.getProducts();
       console.log('Products: ', p);
       console.log(`Product: ${p[0].identifier} / ${p[0].externalRef}`);
       console.log(`Product: ${p[1].identifier} / ${p[1].externalRef}`);
       setProducts(p);
+      setError('');
       setStoreCountry(Platform.OS === 'ios' ? await sdk.current.getStoreCountry() : '-');
       console.log('Done');
     } catch (e: any) {
       setError(`Error: ${e.code} ${e.domain}`);
       console.error('Error: ', e.code, e.domain);
+      console.error('Error: ', e);
     }
   }, [sdk]);
 
@@ -46,7 +51,7 @@ export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
     try {
       console.log(`Click ${product.identifier} ${offer?.ios_offerId}`);
       const result = await sdk.current.purchaseProduct(product, { offer, quantity });
-      console.log('Purchase result = ', result);
+      console.log('Purchase result = ', WebhookStatus[result]);
     } catch (e: any) {
       if (e instanceof MobilyPurchaseError) {
         console.error('[MobilyPurchaseError] Purchase error: ', MobilyPurchaseError.Type[e.type]);

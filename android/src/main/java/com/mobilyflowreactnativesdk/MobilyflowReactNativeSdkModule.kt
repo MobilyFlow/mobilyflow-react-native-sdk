@@ -126,7 +126,7 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     }
   }
 
-  override fun openRefundDialog(uuid: String, transactionId: String, promise: Promise) {
+  override fun openRefundDialog(uuid: String, productId: String, promise: Promise) {
     promise.reject("-1", "Not implemented")
   }
 
@@ -141,7 +141,7 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
       val purchaseOptions = PurchaseOptions()
       val offerId = options?.getString("offerId")
 
-      val product = sdk.getProducts(null, false).find { x -> x.id == productId }
+      val product = sdk.getProductFromCacheWithId(productId)
       if (product == null) {
         throw MobilyPurchaseException(MobilyPurchaseException.Type.PRODUCT_UNAVAILABLE)
       }

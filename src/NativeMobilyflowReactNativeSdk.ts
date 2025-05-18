@@ -35,7 +35,7 @@ export interface Spec extends TurboModule {
 
   requestTransferOwnership(uuid: string): Promise<void>;
   openManageSubscription(uuid: string): Promise<void>;
-  openRefundDialog(uuid: string, transactionId: string): Promise<boolean>;
+  openRefundDialog(uuid: string, productId: string): Promise<boolean>;
 
   purchaseProduct(uuid: string, productId: string, options?: PurchaseOptions): Promise<WebhookStatus>;
 

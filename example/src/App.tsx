@@ -12,22 +12,24 @@ export default function App() {
   const firstTime = useRef(true);
 
   const init = useCallback(async () => {
-    sdk.current = new MobilyPurchaseSDK(
-      'caecc000-45ce-49b3-b218-46c1d985ae85',
-      '7aa18f9720a5c9731d17f5c54e89bdd218647f71269eed2f6c27c8fa5924da84',
-      MobilyEnvironment.DEVELOPMENT,
-      {
-        // languages: ['en', 'fr'],
-        apiURL: 'https://mobilyflow.eu-1.sharedwithexpose.com/v1/',
-        // apiURL: 'https://api-staging.mobilyflow.com/v1/',
-        debug: true,
-      }
-    );
+    if (!sdk.current) {
+      sdk.current = new MobilyPurchaseSDK(
+        'caecc000-45ce-49b3-b218-46c1d985ae85',
+        '7aa18f9720a5c9731d17f5c54e89bdd218647f71269eed2f6c27c8fa5924da84',
+        MobilyEnvironment.DEVELOPMENT,
+        {
+          // languages: ['en', 'fr'],
+          // apiURL: 'https://mobilyflow.eu-1.sharedwithexpose.com/v1/',
+          // apiURL: 'https://api-staging.mobilyflow.com/v1/',
+          debug: true,
+        }
+      );
+    }
 
     try {
       const externalRef =
         Platform.OS === 'ios'
-          ? '914b9a20-950b-44f7-bd7b-d81d57992294' // gregoire
+          ? '304f6c8c-18b2-462f-9df0-28b1e3754715' // gregoire-ios
           : '044209a1-8331-4bdc-9a73-8eebbe0acdaa'; // gregoire-android;
 
       const customer = await sdk.current.login(externalRef);

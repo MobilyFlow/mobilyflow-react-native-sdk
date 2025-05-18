@@ -19,7 +19,7 @@
   
   NSString* apiURL = jsi.apiURL().length > 0 ? jsi.apiURL() : nil;
   
-  return [[MobilyPurchaseSDKOptions alloc] initWithLanguages:languages debug:debug apiURL:apiURL];
+  return [[MobilyPurchaseSDKOptions alloc] initWithLocales:languages debug:debug apiURL:apiURL];
 }
 
 @end

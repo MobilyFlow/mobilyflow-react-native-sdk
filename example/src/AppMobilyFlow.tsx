@@ -80,9 +80,15 @@ export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
     sdk.current.sendDiagnotic();
   };
 
-  const handleRefundRequest = () => {
-    // sdk.re
+  const handleRefundRequest = async () => {
+    const product = products.find((x) => x.identifier === 'premium-1month');
+    await sdk.current.openRefundDialog(product.id);
   };
+
+  useEffect(() => {
+    const product = products?.find((x) => x.identifier === 'premium-1month');
+    console.log('Product: ', product);
+  }, [products]);
 
   return (
     <SafeAreaView style={styles.container}>

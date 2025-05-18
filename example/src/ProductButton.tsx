@@ -42,6 +42,7 @@ export const ProductButton = (props: ProductButtonProps) => {
         {quantity ? ` (${quantity})` : ''}
       </Text>
       <Text>{product.description}</Text>
+      <Text>{product.identifier}</Text>
       <Text>
         {offer?.priceFormatted ??
           product.oneTimeProduct?.priceFormatted ??

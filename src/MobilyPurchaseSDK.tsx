@@ -124,12 +124,12 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async openRefundDialog(transactionId: string): Promise<boolean> {
+  async openRefundDialog(productId: string): Promise<boolean> {
     if (RNPlatform.OS === 'android') {
       throw new Error('openRefundDialog not implemented on Android');
     } else {
       try {
-        return await MobilyflowReactNativeSdk.openRefundDialog(this._uuid, transactionId);
+        return await MobilyflowReactNativeSdk.openRefundDialog(this._uuid, productId);
       } catch (error: any) {
         throw this.throwError(error);
       }

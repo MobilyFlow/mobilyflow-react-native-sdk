@@ -1,4 +1,4 @@
-import { Button, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Button, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Iaphub from 'react-native-iaphub';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MobilyPurchaseError } from '../../../src/errors/mobily-purchase-error';
@@ -13,16 +13,22 @@ export default function AppIapHub() {
 
   const init = useCallback(async () => {
     try {
+      const externalRef =
+        Platform.OS === 'ios'
+          ? '304f6c8c-18b2-462f-9df0-28b1e3754715' // gregoire-ios
+          : '044209a1-8331-4bdc-9a73-8eebbe0acdaa'; // gregoire-android;
+
       await Iaphub.start({
         appId: '67e64649773f1d55cd6c8097',
         apiKey: '0fDY1VSkUk9eFOPuXUEbTdcIrs7mq',
         enableStorekitV2: true,
         // environment: 'production',
         // lang: 'en',
-        userId: '914b9a20-950b-44f7-bd7b-d81d57992294', // gregoire
+        userId: externalRef, // gregoire
       });
 
       const p = await Iaphub.getProductsForSale();
+      console.log('Products: ', p);
       setProducts(p);
     } catch (err) {
       console.error(err);

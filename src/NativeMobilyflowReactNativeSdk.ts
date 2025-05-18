@@ -42,6 +42,8 @@ export interface Spec extends TurboModule {
   sendDiagnotic(uuid: string): void;
   getStoreCountry(uuid: string): Promise<string>;
   isForwardingEnable(uuid: string, externalRef: string): Promise<boolean>;
+
+  getCustomer(uuid: string): Promise<MobilyCustomer>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');

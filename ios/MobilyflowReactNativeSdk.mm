@@ -208,4 +208,15 @@ RCT_EXPORT_MODULE()
   }];
 }
 
+- (void)getCustomer:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+
+  [[self getInstance:uuid] getCustomerWithCompletionHandler:^(MobilyCustomer * _Nullable customer, NSError * _Nullable error) {
+    if (error) {
+      reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
+    } else {
+      resolve([customer toDictionary]);
+    }
+  }];
+}
+
 @end

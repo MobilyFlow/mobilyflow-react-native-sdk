@@ -178,6 +178,10 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     promise.resolve(_sdkInstances[uuid]!!.isForwardingEnable(externalRef))
   }
 
+  override fun getCustomer(uuid: String, promise: Promise) {
+    promise.resolve(_sdkInstances[uuid]!!.getCustomer())
+  }
+
   companion object {
     const val NAME = "MobilyflowReactNativeSdk"
   }

@@ -35,6 +35,9 @@ export default function App() {
       const customer = await sdk.current.login(externalRef);
       console.log('Customer = ', customer);
       setForwardingEnable(customer.isForwardingEnable);
+
+      console.log('Customer = ', await sdk.current.getCustomer());
+      console.log('Entitlements = ', await sdk.current.getEntitlements());
       // setForwardingEnable(await sdk.current.isForwardingEnable(externalRef));
     } catch (e: any) {
       console.error('setForwardingEnable error: ', e);

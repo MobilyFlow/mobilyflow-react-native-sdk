@@ -99,7 +99,7 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async getEntitlements(productIds: string[]) {
+  async getEntitlements(productIds?: string[]) {
     try {
       const entitlements = await MobilyflowReactNativeSdk.getEntitlements(this._uuid, productIds);
       return entitlements.map(MobilyCustomerEntitlement.parseFromAPI);
@@ -170,6 +170,14 @@ export class MobilyPurchaseSDK {
   async isForwardingEnable(externalRef: string) {
     try {
       return await MobilyflowReactNativeSdk.isForwardingEnable(this._uuid, externalRef);
+    } catch (error: any) {
+      throw this.throwError(error);
+    }
+  }
+
+  async getCustomer() {
+    try {
+      return await MobilyflowReactNativeSdk.getCustomer(this._uuid);
     } catch (error: any) {
       throw this.throwError(error);
     }

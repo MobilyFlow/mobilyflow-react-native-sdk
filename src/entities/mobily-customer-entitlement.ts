@@ -9,13 +9,13 @@ export class ItemEntitlement {
 
 export class SubscriptionEntitlement {
   startDate: Date;
-  expirationDate: Date;
+  endDate: Date;
   autoRenewEnable: boolean;
   platform: Platform;
   isManagedByThisStoreAccount: boolean;
 
   static parseFromAPI(obj: SubscriptionEntitlement) {
-    return objectTransformer(obj, { dates: ['startDate', 'expirationDate'] });
+    return objectTransformer(obj, { dates: ['startDate', 'endDate'] });
   }
 }
 

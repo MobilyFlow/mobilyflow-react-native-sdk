@@ -35,6 +35,10 @@ export type ObjectTransformer = {
  * @param tranformer
  */
 export const objectTransformer = <T extends any>(obj: T, tranformer: ObjectTransformer) => {
+  if (!obj) {
+    return obj;
+  }
+
   const anyObj = obj as any;
 
   if (tranformer.dates) {

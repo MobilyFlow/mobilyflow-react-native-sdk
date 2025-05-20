@@ -31,7 +31,7 @@ export interface Spec extends TurboModule {
 
   getEntitlementForSubscription(uuid: string, subscriptionGroupId: string): Promise<MobilyCustomerEntitlement | null>;
   getEntitlement(uuid: string, productId: string): Promise<MobilyCustomerEntitlement | null>;
-  getEntitlements(uuid: string, productIds: string[]): Promise<MobilyCustomerEntitlement[]>;
+  getEntitlements(uuid: string, productIds?: string[]): Promise<MobilyCustomerEntitlement[]>;
 
   requestTransferOwnership(uuid: string): Promise<void>;
   openManageSubscription(uuid: string): Promise<void>;
@@ -43,7 +43,7 @@ export interface Spec extends TurboModule {
   getStoreCountry(uuid: string): Promise<string>;
   isForwardingEnable(uuid: string, externalRef: string): Promise<boolean>;
 
-  getCustomer(uuid: string): Promise<MobilyCustomer>;
+  getCustomer(uuid: string): Promise<MobilyCustomer | null>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');

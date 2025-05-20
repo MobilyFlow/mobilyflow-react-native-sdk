@@ -177,7 +177,8 @@ export class MobilyPurchaseSDK {
 
   async getCustomer() {
     try {
-      return await MobilyflowReactNativeSdk.getCustomer(this._uuid);
+      const customer = await MobilyflowReactNativeSdk.getCustomer(this._uuid);
+      return MobilyCustomer.parseFromAPI(customer);
     } catch (error: any) {
       throw this.throwError(error);
     }

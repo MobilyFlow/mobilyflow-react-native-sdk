@@ -99,9 +99,9 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     }
   }
 
-  override fun getEntitlements(uuid: String, productIds: ReadableArray, promise: Promise) {
+  override fun getEntitlements(uuid: String, productIds: ReadableArray?, promise: Promise) {
     try {
-      val entitlements = _sdkInstances[uuid]!!.getEntitlements(productIds.toStringArray()!!)
+      val entitlements = _sdkInstances[uuid]!!.getEntitlements(productIds.toStringArray())
       promise.resolve(entitlements.toReadableArray())
     } catch (error: Exception) {
       throwError(error, promise)
@@ -179,7 +179,7 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
   }
 
   override fun getCustomer(uuid: String, promise: Promise) {
-    promise.resolve(_sdkInstances[uuid]!!.getCustomer())
+    promise.resolve(_sdkInstances[uuid]!!.getCustomer().toReadableMap())
   }
 
   companion object {

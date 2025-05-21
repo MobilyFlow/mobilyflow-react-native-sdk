@@ -1,5 +1,10 @@
 import { Button, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { MobilyError, MobilyPurchaseSDK, WebhookStatus } from 'mobilyflow-react-native-sdk';
+import {
+  MobilyError,
+  MobilyPurchaseSDK,
+  MobilyTransferOwnershipError,
+  WebhookStatus,
+} from 'mobilyflow-react-native-sdk';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { MobilyProduct } from '../../src/entities/mobily-product';
 import { ProductButton } from './ProductButton';
@@ -73,7 +78,19 @@ export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
   };
 
   const handleTransferOwnership = async () => {
-    await sdk.current.requestTransferOwnership();
+    try {
+      console.log('Transfer start');
+      const result = await sdk.current.requestTransferOwnership();
+      console.log('Transfer result = ', result);
+    } catch (e: any) {
+      if (e instanceof MobilyError) {
+        console.log('MobilyError = ', MobilyError.Type[e?.type]);
+      } else if (e instanceof MobilyTransferOwnershipError) {
+        console.log('MobilyTransferOwnershipError = ', MobilyTransferOwnershipError.Type[e?.type]);
+      } else {
+        console.log('Other error: ', e);
+      }
+    }
   };
 
   const handleSendDiagnostic = () => {

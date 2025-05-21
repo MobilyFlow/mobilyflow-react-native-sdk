@@ -18,6 +18,7 @@ export { Platform } from './enums/platform';
 export { ProductStatus } from './enums/product-status';
 export { ProductType } from './enums/product-type';
 export { WebhookStatus } from './enums/webhook-status';
+export { TransferOwnershipStatus } from './enums/transfer-ownership-status';
 
 export { MobilyError } from './errors/mobily-error';
 export { MobilyPurchaseError } from './errors/mobily-purchase-error';

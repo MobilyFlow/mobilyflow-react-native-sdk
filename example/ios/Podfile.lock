@@ -9,7 +9,7 @@ PODS:
     - hermes-engine/Pre-built (= 0.78.1)
   - hermes-engine/Pre-built (0.78.1)
   - Iaphub (4.6.5)
-  - MobilyflowReactNativeSdk (0.1.1-alpha.17):
+  - MobilyflowReactNativeSdk (0.1.1-alpha.18):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1781,7 +1781,7 @@ SPEC CHECKSUMS:
   glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
   hermes-engine: f493b0a600aed5dc06532141603688a30a5b2f61
   Iaphub: 6b4f156fe42961e5e914aeaa5e3e147ed5063b1e
-  MobilyflowReactNativeSdk: 238083e3eb60902f0f427c28660b0b37ebe666bd
+  MobilyflowReactNativeSdk: e4c4ba13a60d927c58db7774a6201f98ea817d00
   MobilyflowSDK: d58d346e8971a42d5e5921fc67cd65ee298965f9
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: 082fbc90409015eac1366795a0b90f8b5cb28efe

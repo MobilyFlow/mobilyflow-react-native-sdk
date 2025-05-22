@@ -33,6 +33,7 @@ export interface Spec extends TurboModule {
   getEntitlementForSubscription(uuid: string, subscriptionGroupId: string): Promise<MobilyCustomerEntitlement | null>;
   getEntitlement(uuid: string, productId: string): Promise<MobilyCustomerEntitlement | null>;
   getEntitlements(uuid: string, productIds?: string[]): Promise<MobilyCustomerEntitlement[]>;
+  getExternalEntitlements(uuid: string): Promise<MobilyCustomerEntitlement[]>;
 
   requestTransferOwnership(uuid: string): Promise<TransferOwnershipStatus>;
   openManageSubscription(uuid: string): Promise<void>;

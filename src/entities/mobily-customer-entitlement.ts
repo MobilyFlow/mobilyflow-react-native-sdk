@@ -25,6 +25,7 @@ export class MobilyCustomerEntitlement {
   platformOriginalTransactionId: string;
   item?: ItemEntitlement;
   subscription?: SubscriptionEntitlement;
+  customerId?: string;
 
   static parseFromAPI(obj: MobilyCustomerEntitlement) {
     return objectTransformer(obj, {

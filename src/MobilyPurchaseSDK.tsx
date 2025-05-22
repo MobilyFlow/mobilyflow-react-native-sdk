@@ -108,6 +108,15 @@ export class MobilyPurchaseSDK {
     }
   }
 
+  async getExternalEntitlements() {
+    try {
+      const entitlements = await MobilyflowReactNativeSdk.getExternalEntitlements(this._uuid);
+      return entitlements.map(MobilyCustomerEntitlement.parseFromAPI);
+    } catch (error: any) {
+      throw this.throwError(error);
+    }
+  }
+
   async requestTransferOwnership() {
     try {
       return await MobilyflowReactNativeSdk.requestTransferOwnership(this._uuid);

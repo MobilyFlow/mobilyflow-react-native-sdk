@@ -37,6 +37,10 @@ export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
       setProducts(p);
       setError('');
       setStoreCountry(Platform.OS === 'ios' ? await sdk.current.getStoreCountry() : '-');
+
+      const externalEntitlements = await sdk.current.getExternalEntitlements();
+      console.log('External entitlements: ', externalEntitlements);
+
       console.log('Done');
     } catch (e: any) {
       setError(`Error: ${e.code} ${e.domain}`);

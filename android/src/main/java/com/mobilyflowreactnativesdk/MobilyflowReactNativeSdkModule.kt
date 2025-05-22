@@ -108,6 +108,15 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     }
   }
 
+  override fun getExternalEntitlements(uuid: String, promise: Promise) {
+    try {
+      val entitlements = _sdkInstances[uuid]!!.getExternalEntitlements()
+      promise.resolve(entitlements.toReadableArray())
+    } catch (error: Exception) {
+      throwError(error, promise)
+    }
+  }
+
   override fun requestTransferOwnership(uuid: String, promise: Promise) {
     try {
       val status = _sdkInstances[uuid]!!.requestTransferOwnership()

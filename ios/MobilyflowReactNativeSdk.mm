@@ -115,6 +115,19 @@ RCT_EXPORT_MODULE()
   }];
 }
 
+- (void)getExternalEntitlements:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+
+  [[self getInstance:uuid] getExternalEntitlementsWithCompletionHandler:^(NSArray<MobilyCustomerEntitlement *> * _Nullable entitlements, NSError * _Nullable error) {
+    if (error) {
+      reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
+    } else {
+      resolve([Utils arrayMap:entitlements withBlock:^id _Nonnull(Serializable*  _Nonnull obj, NSUInteger idx) {
+        return [obj toDictionary];
+      }]);
+    }
+  }];
+}
+
 - (void)requestTransferOwnership:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
 
   [[self getInstance:uuid] requestTransferOwnershipWithCompletionHandler:^(enum TransferOwnershipStatus status, NSError * _Nullable error) {
@@ -139,7 +152,7 @@ RCT_EXPORT_MODULE()
     reject(@"3", @"MobilyflowSDK.MobilyError.unknown_error", [NSError errorWithDomain:@"MobilyflowSDK.MobilyError" code:3 userInfo:nil]);
     return;
   }
-  
+
   [[self getInstance:uuid] openRefundDialogWithProduct:product completionHandler:^(enum RefundDialogResult result) {
     resolve([NSNumber numberWithBool:result]);
   }];
@@ -148,7 +161,7 @@ RCT_EXPORT_MODULE()
 - (void)purchaseProduct:(NSString *)uuid productId:(NSString *)productId options:(JS::NativeMobilyflowReactNativeSdk::PurchaseOptions &)options resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
 
   MobilyPurchaseSDK* sdk = [self getInstance:uuid];
-  
+
   MobilyProduct* product = [[self getInstance:uuid] getProductFromCacheWithIdWithId:productId];
   if (product == nil) {
     reject(@"1", @"MobilyflowSDK.MobilyPurchaseError.product_unavailable", [NSError errorWithDomain:@"MobilyflowSDK.MobilyPurchaseError" code:1 userInfo:nil]);

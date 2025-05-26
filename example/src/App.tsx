@@ -31,6 +31,7 @@ export default function App() {
         Platform.OS === 'ios'
           ? '304f6c8c-18b2-462f-9df0-28b1e3754715' // gregoire-ios
           : '044209a1-8331-4bdc-9a73-8eebbe0acdaa'; // gregoire-android;
+      // const externalRef = `random-user-${Platform.OS}`;
 
       const customer = await sdk.current.login(externalRef);
       console.log('Customer = ', customer);

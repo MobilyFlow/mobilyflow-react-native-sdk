@@ -1,4 +1,4 @@
 export enum ProductType {
-  ONE_TIME = 'one_time',
-  SUBSCRIPTION = 'subscription',
+  ONE_TIME = 0,
+  SUBSCRIPTION = 1,
 }

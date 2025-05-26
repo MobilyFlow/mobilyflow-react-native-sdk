@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.swift_versions = '5.0'
 
   # Install MobilyFlow SDK
-  s.dependency 'MobilyflowSDK', '0.1.1-alpha.22'
+  s.dependency 'MobilyflowSDK', '0.1.1-alpha.24'
 
   #s.subspec 'MobilyflowSDK' do |ss|
   #  ss.source_files = '../mobilyflow-ios-sdk/Sources/MobilyflowSDK/**/*'

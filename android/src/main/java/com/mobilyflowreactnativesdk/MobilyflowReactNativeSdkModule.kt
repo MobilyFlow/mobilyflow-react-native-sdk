@@ -13,6 +13,7 @@ import com.mobilyflow.mobilypurchasesdk.MobilyPurchaseSDK
 import com.mobilyflow.mobilypurchasesdk.MobilyPurchaseSDKOptions
 import com.mobilyflow.mobilypurchasesdk.Models.PurchaseOptions
 import java.util.UUID
+import java.util.concurrent.Executors
 
 @ReactModule(name = MobilyflowReactNativeSdkModule.NAME)
 class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : NativeMobilyflowReactNativeSdkSpec(reactContext) {
@@ -55,83 +56,110 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
   }
 
   override fun login(uuid: String, externalRef: String, promise: Promise) {
-    try {
-      val customer = _sdkInstances[uuid]!!.login(externalRef)
-      promise.resolve(customer.toReadableMap())
-    } catch (error: Exception) {
-      throwError(error, promise)
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        val customer = _sdkInstances[uuid]!!.login(externalRef)
+        promise.resolve(customer.toReadableMap())
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
     }
   }
 
   override fun getProducts(uuid: String, identifiers: ReadableArray?, onlyAvailable: Boolean, promise: Promise) {
-    try {
-      val products = _sdkInstances[uuid]!!.getProducts(identifiers.toStringArray(), onlyAvailable)
-      promise.resolve(products.toReadableArray())
-    } catch (error: Exception) {
-      throwError(error, promise)
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        val products = _sdkInstances[uuid]!!.getProducts(identifiers.toStringArray(), onlyAvailable)
+        promise.resolve(products.toReadableArray())
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
     }
   }
 
   override fun getSubscriptionGroups(uuid: String, identifiers: ReadableArray?, onlyAvailable: Boolean, promise: Promise) {
-    try {
-      val groups = _sdkInstances[uuid]!!.getSubscriptionGroups(identifiers.toStringArray(), onlyAvailable)
-      promise.resolve(groups.toReadableArray())
-    } catch (error: Exception) {
-      throwError(error, promise)
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        val groups = _sdkInstances[uuid]!!.getSubscriptionGroups(identifiers.toStringArray(), onlyAvailable)
+        promise.resolve(groups.toReadableArray())
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
     }
   }
 
   override fun getEntitlementForSubscription(uuid: String, subscriptionGroupId: String, promise: Promise) {
-    try {
-      val entitlement = _sdkInstances[uuid]!!.getEntitlementForSubscription(subscriptionGroupId)
-      promise.resolve(entitlement.toReadableMap())
-    } catch (error: Exception) {
-      throwError(error, promise)
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        val entitlement = _sdkInstances[uuid]!!.getEntitlementForSubscription(subscriptionGroupId)
+        promise.resolve(entitlement.toReadableMap())
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
     }
   }
 
   override fun getEntitlement(uuid: String, productId: String, promise: Promise) {
-    try {
-      val entitlement = _sdkInstances[uuid]!!.getEntitlement(productId)
-      promise.resolve(entitlement.toReadableMap())
-    } catch (error: Exception) {
-      throwError(error, promise)
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        val entitlement = _sdkInstances[uuid]!!.getEntitlement(productId)
+        promise.resolve(entitlement.toReadableMap())
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
     }
   }
 
   override fun getEntitlements(uuid: String, productIds: ReadableArray?, promise: Promise) {
-    try {
-      val entitlements = _sdkInstances[uuid]!!.getEntitlements(productIds.toStringArray())
-      promise.resolve(entitlements.toReadableArray())
-    } catch (error: Exception) {
-      throwError(error, promise)
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        val entitlements = _sdkInstances[uuid]!!.getEntitlements(productIds.toStringArray())
+        promise.resolve(entitlements.toReadableArray())
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
     }
   }
 
   override fun getExternalEntitlements(uuid: String, promise: Promise) {
-    try {
-      val entitlements = _sdkInstances[uuid]!!.getExternalEntitlements()
-      promise.resolve(entitlements.toReadableArray())
-    } catch (error: Exception) {
-      throwError(error, promise)
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        val entitlements = _sdkInstances[uuid]!!.getExternalEntitlements()
+        promise.resolve(entitlements.toReadableArray())
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
     }
   }
 
   override fun requestTransferOwnership(uuid: String, promise: Promise) {
-    try {
-      val status = _sdkInstances[uuid]!!.requestTransferOwnership()
-      promise.resolve(status.value)
-    } catch (error: Exception) {
-      throwError(error, promise)
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        val status = _sdkInstances[uuid]!!.requestTransferOwnership()
+        promise.resolve(status.value)
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
     }
   }
 
   override fun openManageSubscription(uuid: String, promise: Promise) {
-    try {
-      _sdkInstances[uuid]!!.openManageSubscription()
-      promise.resolve(0)
-    } catch (error: Exception) {
-      throwError(error, promise)
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        _sdkInstances[uuid]!!.openManageSubscription()
+        promise.resolve(0)
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
     }
   }
 
@@ -140,42 +168,45 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
   }
 
   override fun purchaseProduct(uuid: String, productId: String, options: ReadableMap?, promise: Promise) {
-    try {
-      if (reactApplicationContext.currentActivity == null) {
-        throw MobilyException(MobilyException.Type.UNKNOWN_ERROR)
-      }
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        if (reactApplicationContext.currentActivity == null) {
+          throw MobilyException(MobilyException.Type.UNKNOWN_ERROR)
+        }
 
-      val sdk = _sdkInstances[uuid]!!
+        val sdk = _sdkInstances[uuid]!!
 
-      val purchaseOptions = PurchaseOptions()
-      val offerId = options?.getString("offerId")
+        val purchaseOptions = PurchaseOptions()
+        val offerId = options?.getString("offerId")
 
-      val product = sdk.getProductFromCacheWithId(productId)
-      if (product == null) {
-        throw MobilyPurchaseException(MobilyPurchaseException.Type.PRODUCT_UNAVAILABLE)
-      }
+        val product = sdk.getProductFromCacheWithId(productId)
+        if (product == null) {
+          throw MobilyPurchaseException(MobilyPurchaseException.Type.PRODUCT_UNAVAILABLE)
+        }
 
-      if (offerId != null) {
-        if (product.subscriptionProduct!!.baseOffer.id == offerId) {
-          purchaseOptions.setOffer(product.subscriptionProduct!!.baseOffer)
-        } else if (product.subscriptionProduct!!.freeTrial?.id == offerId) {
-          purchaseOptions.setOffer(product.subscriptionProduct!!.freeTrial)
-        } else {
-          val offer = product.subscriptionProduct!!.promotionalOffers.find { x -> x.id == offerId }
-          if (offer != null) {
-            purchaseOptions.setOffer(offer)
+        if (offerId != null) {
+          if (product.subscriptionProduct!!.baseOffer.id == offerId) {
+            purchaseOptions.setOffer(product.subscriptionProduct!!.baseOffer)
+          } else if (product.subscriptionProduct!!.freeTrial?.id == offerId) {
+            purchaseOptions.setOffer(product.subscriptionProduct!!.freeTrial)
+          } else {
+            val offer = product.subscriptionProduct!!.promotionalOffers.find { x -> x.id == offerId }
+            if (offer != null) {
+              purchaseOptions.setOffer(offer)
+            }
           }
         }
-      }
 
-      val status = sdk.purchaseProduct(reactApplicationContext.currentActivity!!, product, purchaseOptions)
-      promise.resolve(status.value)
-    } catch (error: Exception) {
-      throwError(error, promise)
+        val status = sdk.purchaseProduct(reactApplicationContext.currentActivity!!, product, purchaseOptions)
+        promise.resolve(status.value)
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
     }
   }
 
-  override fun sendDiagnotic(uuid: String) {
+  override fun sendDiagnostic(uuid: String) {
       _sdkInstances[uuid]!!.sendDiagnostic()
   }
 
@@ -184,11 +215,17 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
   }
 
   override fun isForwardingEnable(uuid: String, externalRef: String, promise: Promise) {
-    promise.resolve(_sdkInstances[uuid]!!.isForwardingEnable(externalRef))
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      promise.resolve(_sdkInstances[uuid]!!.isForwardingEnable(externalRef))
+    }
   }
 
   override fun getCustomer(uuid: String, promise: Promise) {
-    promise.resolve(_sdkInstances[uuid]!!.getCustomer().toReadableMap())
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      promise.resolve(_sdkInstances[uuid]!!.getCustomer().toReadableMap())
+    }
   }
 
   companion object {

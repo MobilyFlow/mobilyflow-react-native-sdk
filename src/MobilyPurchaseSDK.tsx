@@ -133,12 +133,12 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async openRefundDialog(productId: string): Promise<boolean> {
+  async openRefundDialog(product: MobilyProduct): Promise<boolean> {
     if (RNPlatform.OS === 'android') {
       throw new Error('openRefundDialog not implemented on Android');
     } else {
       try {
-        return await MobilyflowReactNativeSdk.openRefundDialog(this._uuid, productId);
+        return await MobilyflowReactNativeSdk.openRefundDialog(this._uuid, product.id);
       } catch (error: any) {
         throw this.throwError(error);
       }
@@ -156,9 +156,9 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  sendDiagnotic() {
+  sendDiagnostic() {
     try {
-      return MobilyflowReactNativeSdk.sendDiagnotic(this._uuid);
+      return MobilyflowReactNativeSdk.sendDiagnostic(this._uuid);
     } catch (error: any) {
       throw this.throwError(error);
     }

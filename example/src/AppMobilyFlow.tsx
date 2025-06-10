@@ -98,12 +98,12 @@ export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
   };
 
   const handleSendDiagnostic = () => {
-    sdk.current.sendDiagnotic();
+    sdk.current.sendDiagnostic();
   };
 
   const handleRefundRequest = async () => {
     const product = products.find((x) => x.identifier === 'premium-1month');
-    await sdk.current.openRefundDialog(product.id);
+    await sdk.current.openRefundDialog(product);
   };
 
   useEffect(() => {

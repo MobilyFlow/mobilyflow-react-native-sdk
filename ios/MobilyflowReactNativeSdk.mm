@@ -200,8 +200,8 @@ RCT_EXPORT_MODULE()
   }];
 }
 
-- (void)sendDiagnotic:(NSString *)uuid {
-  [[self getInstance:uuid] sendDiagnotic];
+- (void)sendDiagnostic:(NSString *)uuid {
+  [[self getInstance:uuid] sendDiagnostic];
 }
 
 - (void)getStoreCountry:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {

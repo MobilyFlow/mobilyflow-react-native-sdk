@@ -41,7 +41,7 @@ export interface Spec extends TurboModule {
 
   purchaseProduct(uuid: string, productId: string, options?: PurchaseOptions): Promise<WebhookStatus>;
 
-  sendDiagnotic(uuid: string): void;
+  sendDiagnostic(uuid: string): void;
   getStoreCountry(uuid: string): Promise<string>;
   isForwardingEnable(uuid: string, externalRef: string): Promise<boolean>;
 

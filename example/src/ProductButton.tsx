@@ -49,7 +49,7 @@ export const ProductButton = (props: ProductButtonProps) => {
           product.subscriptionProduct?.baseOffer.priceFormatted ??
           '-'}
       </Text>
-      {offer?.id && <Text>Offer: {offer.ios_offerId}</Text>}
+      {offer?.id && <Text>Offer: {offer.identifier}</Text>}
     </TouchableOpacity>
   );
 };

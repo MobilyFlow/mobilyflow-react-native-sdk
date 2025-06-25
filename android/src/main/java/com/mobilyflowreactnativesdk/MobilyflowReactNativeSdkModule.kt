@@ -217,14 +217,24 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
   override fun isForwardingEnable(uuid: String, externalRef: String, promise: Promise) {
     val executor = Executors.newSingleThreadExecutor()
     executor.execute {
-      promise.resolve(_sdkInstances[uuid]!!.isForwardingEnable(externalRef))
+      try {
+        val result = _sdkInstances[uuid]!!.isForwardingEnable(externalRef)
+        promise.resolve(result)
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
     }
   }
 
   override fun getCustomer(uuid: String, promise: Promise) {
     val executor = Executors.newSingleThreadExecutor()
     executor.execute {
-      promise.resolve(_sdkInstances[uuid]!!.getCustomer().toReadableMap())
+      try {
+        val result = _sdkInstances[uuid]!!.getCustomer().toReadableMap()
+        promise.resolve(result)
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
     }
   }
 

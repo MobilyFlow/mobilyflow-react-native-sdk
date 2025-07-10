@@ -19,7 +19,7 @@ export default function App() {
         MobilyEnvironment.DEVELOPMENT,
         {
           // languages: ['en', 'fr'],
-          // apiURL: 'https://mobilyflow.eu-1.sharedwithexpose.com/v1/',
+          apiURL: 'https://mobilyflow.eu-1.sharedwithexpose.com/v1/',
           // apiURL: 'https://api-staging.mobilyflow.com/v1/',
           debug: true,
         }
@@ -29,12 +29,13 @@ export default function App() {
     try {
       const externalRef =
         Platform.OS === 'ios'
-          ? '304f6c8c-18b2-462f-9df0-28b1e3754715' // gregoire-ios
-          : '044209a1-8331-4bdc-9a73-8eebbe0acdaa'; // gregoire-android;
+          ? 'gregoire-ios-rn' // gregoire-ios
+          : 'gregoire-android'; // gregoire-android;
       // const externalRef = `random-user-${Platform.OS}`;
 
       const customer = await sdk.current.login(externalRef);
       console.log('Customer = ', customer);
+      console.log('SDK Version = ', await sdk.current.getSDKVersion());
       setForwardingEnable(customer.isForwardingEnable);
 
       console.log('Customer = ', await sdk.current.getCustomer());

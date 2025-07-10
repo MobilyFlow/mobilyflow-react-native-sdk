@@ -232,4 +232,8 @@ RCT_EXPORT_MODULE()
   }];
 }
 
+- (void)getSDKVersion:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  resolve([[self getInstance:uuid] getSDKVersion]);
+}
+
 @end

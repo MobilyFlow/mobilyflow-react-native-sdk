@@ -192,4 +192,12 @@ export class MobilyPurchaseSDK {
       throw this.throwError(error);
     }
   }
+
+  async getSDKVersion() {
+    try {
+      return await MobilyflowReactNativeSdk.getSDKVersion(this._uuid);
+    } catch (error: any) {
+      throw this.throwError(error);
+    }
+  }
 }

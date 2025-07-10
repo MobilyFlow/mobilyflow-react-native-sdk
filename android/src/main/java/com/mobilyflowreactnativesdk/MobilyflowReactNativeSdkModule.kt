@@ -238,6 +238,17 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     }
   }
 
+  override fun getSDKVersion(uuid: String, promise: Promise) {
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        promise.resolve(_sdkInstances[uuid]!!.getSDKVersion())
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
+    }
+  }
+
   companion object {
     const val NAME = "MobilyflowReactNativeSdk"
   }

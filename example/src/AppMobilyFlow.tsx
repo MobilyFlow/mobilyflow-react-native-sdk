@@ -43,8 +43,8 @@ export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
 
       console.log('Done');
     } catch (e: any) {
-      setError(`Error: ${e.code} ${e.domain}`);
-      console.error('Error: ', e.code, e.domain);
+      setError(`Error: ${e.type} ${e.domain}`);
+      console.error('Error: ', e.type, e.domain);
       console.error('Error: ', e);
     }
   }, [sdk]);

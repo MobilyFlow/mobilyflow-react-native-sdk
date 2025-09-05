@@ -5,6 +5,7 @@ export class MobilySubscriptionOffer {
   id: string;
   identifier: string;
   externalRef: string;
+  referenceName: string;
   name: string;
   price: number;
   currencyCode: string;

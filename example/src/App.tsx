@@ -2,8 +2,7 @@ import AppIapHub from './iaphub/AppIapHub';
 import AppMobilyFlow from './AppMobilyFlow';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Platform, View } from 'react-native';
-import { MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
-import { MobilyEnvironment } from '../../src/enums/mobily-environment';
+import { MobilyPurchaseSDK, MobilyEnvironment } from 'mobilyflow-react-native-sdk';
 
 export default function App() {
   const [isForwardingEnable, setForwardingEnable] = useState<boolean>(undefined);
@@ -19,7 +18,7 @@ export default function App() {
         MobilyEnvironment.DEVELOPMENT,
         {
           // languages: ['en', 'fr'],
-          // apiURL: 'https://mobilyflow.eu-1.sharedwithexpose.com/v1/',
+          apiURL: 'https://mobilyflow.eu-1.sharedwithexpose.com/v1/',
           // apiURL: 'https://api-staging.mobilyflow.com/v1/',
           debug: true,
         }

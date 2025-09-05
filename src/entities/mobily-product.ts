@@ -14,6 +14,7 @@ export class MobilyProduct {
   externalRef: string;
   appId: string;
 
+  referenceName: string;
   name: string;
   description: string;
   ios_sku: string;

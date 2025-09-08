@@ -18,8 +18,8 @@ export default function App() {
         MobilyEnvironment.DEVELOPMENT,
         {
           // languages: ['en', 'fr'],
-          apiURL: 'https://mobilyflow.eu-1.sharedwithexpose.com/v1/',
-          // apiURL: 'https://api-staging.mobilyflow.com/v1/',
+          // apiURL: 'https://mobilyflow.eu-1.sharedwithexpose.com/v1/',
+          apiURL: 'https://api-staging.mobilyflow.com/v1/',
           debug: true,
         }
       );

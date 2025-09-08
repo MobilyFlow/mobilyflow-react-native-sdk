@@ -106,11 +106,6 @@ export default function AppMobilyFlow(props: AppMobilyFlowProps): JSX.Element {
     await sdk.current.openRefundDialog(product);
   };
 
-  useEffect(() => {
-    const product = products?.find((x) => x.identifier === 'premium-1month');
-    console.log('Product: ', product);
-  }, [products]);
-
   return (
     <SafeAreaView style={styles.container}>
       <Text>MobilyFlow React Native</Text>

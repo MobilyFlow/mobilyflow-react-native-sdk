@@ -63,7 +63,7 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async logout() {
+  logout() {
     try {
       return MobilyflowReactNativeSdk.logout(this._uuid);
     } catch (error: any) {

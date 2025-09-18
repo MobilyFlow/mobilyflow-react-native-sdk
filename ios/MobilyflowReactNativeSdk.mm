@@ -55,6 +55,10 @@ RCT_EXPORT_MODULE()
   }];
 }
 
+- (void)logout:(NSString *)uuid {
+  [[self getInstance:uuid] logout];
+}
+
 - (void)getProducts:(NSString *)uuid identifiers:(NSArray *)identifiers onlyAvailable:(BOOL)onlyAvailable resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   [[self getInstance:uuid] getProductsWithIdentifiers:identifiers onlyAvailable:onlyAvailable completionHandler:^(NSArray<MobilyProduct *> * _Nullable products, NSError * _Nullable error) {
     if (error) {

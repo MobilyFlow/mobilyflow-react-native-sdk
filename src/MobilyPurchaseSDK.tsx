@@ -63,6 +63,14 @@ export class MobilyPurchaseSDK {
     }
   }
 
+  async logout() {
+    try {
+      return MobilyflowReactNativeSdk.logout(this._uuid);
+    } catch (error: any) {
+      throw this.throwError(error);
+    }
+  }
+
   async getProducts(identifiers?: string[], onlyAvailable = false): Promise<MobilyProduct[]> {
     try {
       const products = await MobilyflowReactNativeSdk.getProducts(this._uuid, identifiers, onlyAvailable);

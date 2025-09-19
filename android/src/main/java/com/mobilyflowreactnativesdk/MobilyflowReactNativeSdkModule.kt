@@ -67,6 +67,10 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     }
   }
 
+  override fun logout(uuid: String) {
+    _sdkInstances[uuid]!!.logout()
+  }
+
   override fun getProducts(uuid: String, identifiers: ReadableArray?, onlyAvailable: Boolean, promise: Promise) {
     val executor = Executors.newSingleThreadExecutor()
     executor.execute {

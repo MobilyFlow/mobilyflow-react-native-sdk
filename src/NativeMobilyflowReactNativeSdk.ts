@@ -23,6 +23,7 @@ export interface Spec extends TurboModule {
   close(uuid: string): void;
 
   login(uuid: string, externalRef: string): Promise<MobilyCustomer>;
+  logout(uuid: string): void;
   getProducts(uuid: string, identifiers: string[], onlyAvailable: boolean): Promise<MobilyProduct[]>;
   getSubscriptionGroups(
     uuid: string,

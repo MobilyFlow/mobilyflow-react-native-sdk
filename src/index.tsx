@@ -1,6 +1,7 @@
 export type { PurchaseOptions } from './MobilyPurchaseSDK';
 export { MobilyPurchaseSDK } from './MobilyPurchaseSDK';
 
+export { MobilyCustomer } from './entities/mobily-customer';
 export { MobilyProduct } from './entities/mobily-product';
 export {
   MobilyCustomerEntitlement,

@@ -1,15 +1,15 @@
 import { Box } from '../../components/uikit/Box';
 import { Text } from '../../components/uikit/text';
 import { Select } from '../../components/select/select';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { MobilyEnvironment } from 'mobilyflow-react-native-sdk';
 import { Button } from '../../components/button';
 import { ScrollView } from 'react-native';
+import { useMobilyflowParams } from '../../services/use-mobilyflow-params';
+import { MobilyFlowService } from '../../services/mobilyflow-service';
 
 export const HomeScreen = () => {
-  const [customerId, setCustomerId] = useState('');
-  const [environment, setEnvironment] = useState(MobilyEnvironment.DEVELOPMENT);
-  const [apiUrl, setApiUrl] = useState<string>(null);
+  const { customerId, environment, apiUrl } = useMobilyflowParams();
 
   const handleRefresh = useCallback(async () => {}, []);
   const handleManageSubscriptions = useCallback(async () => {}, []);
@@ -31,7 +31,7 @@ export const HomeScreen = () => {
                 { label: 'gregoire-android', value: 'gregoire-android' },
               ]}
               value={customerId}
-              onChange={setCustomerId}
+              onChange={MobilyFlowService.setCustomerId}
             />
           </Box>
           <Box>
@@ -44,7 +44,7 @@ export const HomeScreen = () => {
                 { label: 'production', value: MobilyEnvironment.PRODUCTION },
               ]}
               value={environment}
-              onChange={setEnvironment}
+              onChange={MobilyFlowService.setEnvironment}
             />
           </Box>
           <Box>
@@ -60,11 +60,11 @@ export const HomeScreen = () => {
                 },
               ]}
               value={apiUrl}
-              onChange={setApiUrl}
+              onChange={MobilyFlowService.setApiURL}
             />
           </Box>
         </Box>
-        <Box gap={10} mx={50} mt={50}>
+        <Box gap={10} mt={50} style={{ maxWidth: 500 }}>
           <Button title="Refresh" onPress={handleRefresh} />
           <Button title="Manage subscriptions" onPress={handleManageSubscriptions} />
           <Button title="Transfer Ownership" onPress={handleTransferOwnership} />

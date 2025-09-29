@@ -13,7 +13,7 @@ export const SelectDialog: DialogComponent<SelectDialogArgs, any> = (props) => {
   const { data } = args;
 
   return (
-    <Box bgColor="white" borderColor="black" borderWidth={1} mx={100}>
+    <Box bgColor="white" borderColor="black" borderWidth={1} mx={20} style={{ maxWidth: 500 }}>
       <Box
         bgColor="#E6CC00"
         py={10}

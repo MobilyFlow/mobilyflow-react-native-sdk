@@ -17,7 +17,7 @@ export const Select = <T extends any>(props: SelectProps<T>) => {
   const { placeholder, data, value, onChange } = props;
 
   const { label, color } = useMemo(() => {
-    if (value) {
+    if (value !== undefined && value !== null) {
       const selectedItem = data.find((x) => x.value === value);
       if (selectedItem) {
         return { label: selectedItem.label ?? '', color: 'black' };

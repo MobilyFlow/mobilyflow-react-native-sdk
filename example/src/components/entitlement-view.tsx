@@ -45,14 +45,10 @@ export const EntitlementView = (props: EntitlementViewProps) => {
             <Text>End Date: {formatDate(entitlement.subscription.endDate)}</Text>
             <Text>Auto Renew: {entitlement.subscription.autoRenewEnable ? '✅' : '❌'}</Text>
             <Text>Managed Here: {entitlement.subscription.isManagedByThisStoreAccount ? '✅' : '❌'}</Text>
-            <Text>
-              Last Paid Price:{' '}
-              {formatPriceMillis(entitlement.subscription.lastPriceMillis, entitlement.subscription.currency)}
-            </Text>
-            <Text>
-              Renew Price:{' '}
-              {formatPriceMillis(entitlement.subscription.renewPriceMillis, entitlement.subscription.currency)}
-            </Text>
+            {entitlement.subscription.offer && <Text>Offer: {entitlement.subscription.offer.identifier}</Text>}
+            {!!entitlement.subscription.offerRemainingCycle && (
+              <Text>Offer Remaining Cycle: {entitlement.subscription.offerRemainingCycle}</Text>
+            )}
             {entitlement.subscription.renewProduct?.identifier && (
               <Text>
                 Renew To: {entitlement.subscription.renewProduct?.identifier}
@@ -61,12 +57,17 @@ export const EntitlementView = (props: EntitlementViewProps) => {
               </Text>
             )}
             <Text>
+              Last Paid Price:{' '}
+              {formatPriceMillis(entitlement.subscription.lastPriceMillis, entitlement.subscription.currency)}
+            </Text>
+            <Text>
+              Renew Price:{' '}
+              {formatPriceMillis(entitlement.subscription.renewPriceMillis, entitlement.subscription.currency)}
+            </Text>
+            <Text>
               Regular Price:{' '}
               {formatPriceMillis(entitlement.subscription.regularPriceMillis, entitlement.subscription.currency)}
             </Text>
-            {!!entitlement.subscription.offerRemainingCycle && (
-              <Text>Offer Remaining Cycle: {entitlement.subscription.offerRemainingCycle}</Text>
-            )}
           </>
         )}
         <HStack gap={5} mt={10}>

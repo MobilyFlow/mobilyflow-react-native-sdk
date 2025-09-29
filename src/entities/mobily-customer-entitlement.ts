@@ -26,6 +26,7 @@ export class SubscriptionEntitlement {
   renewPriceMillis: number;
   platform: Platform;
   isManagedByThisStoreAccount: boolean;
+  offer: MobilySubscriptionOffer;
   renewProduct: MobilyProduct;
   renewProductOffer: MobilySubscriptionOffer;
 
@@ -33,6 +34,7 @@ export class SubscriptionEntitlement {
     return objectTransformer(obj, {
       dates: ['startDate', 'endDate', 'resumeDate', 'offerExpiryDate'],
       mapping: {
+        offer: MobilySubscriptionOffer.parseFromAPI,
         renewProduct: MobilyProduct.parseFromAPI,
         renewProductOffer: MobilySubscriptionOffer.parseFromAPI,
       },

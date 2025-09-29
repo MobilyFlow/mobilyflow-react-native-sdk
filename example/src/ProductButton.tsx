@@ -1,22 +1,32 @@
-import type { MobilyProduct } from '../../src/entities/mobily-product';
 import { Text, TouchableOpacity, View } from 'react-native';
-import type { MobilySubscriptionOffer } from '../../src/entities/mobily-subscription-offer';
-import { ProductStatus } from '../../src/enums/product-status';
+import { ProductStatus, MobilyProduct, MobilySubscriptionOffer } from 'mobilyflow-react-native-sdk';
+import { usePurchaseProduct } from './services/use-purchase-product';
+import { useCallback } from 'react';
 
 export type ProductButtonProps = {
   product: MobilyProduct;
   offer?: MobilySubscriptionOffer;
   quantity?: number;
-  handlePress: (product: MobilyProduct, offer?: MobilySubscriptionOffer, quantity?: number) => any;
+  onPress?: () => any;
 };
 
 export const ProductButton = (props: ProductButtonProps) => {
-  const { product, handlePress, quantity } = props;
+  const { product, quantity, onPress } = props;
   const offer = props.offer ?? product?.subscriptionProduct?.baseOffer;
+
+  const purchaseProduct = usePurchaseProduct();
+
+  const handlePress = useCallback(async () => {
+    if (onPress) {
+      onPress();
+    } else {
+      await purchaseProduct(product, { offer, quantity });
+    }
+  }, [onPress, product, offer, quantity, purchaseProduct]);
 
   return (
     <TouchableOpacity
-      onPress={() => handlePress(product, offer, quantity)}
+      onPress={handlePress}
       style={{
         borderWidth: 1,
         borderColor: 'black',
@@ -24,8 +34,7 @@ export const ProductButton = (props: ProductButtonProps) => {
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
-      }}
-    >
+      }}>
       <View
         style={{
           position: 'absolute',

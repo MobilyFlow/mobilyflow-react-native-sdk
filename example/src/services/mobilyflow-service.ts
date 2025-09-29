@@ -1,4 +1,4 @@
-import { MobilyEnvironment, MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
+import { MobilyCustomer, MobilyEnvironment, MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
 import { MMKV } from 'react-native-mmkv';
 import { Listener as MMKVListener } from 'react-native-mmkv/lib/typescript/src/Types';
 
@@ -10,6 +10,8 @@ export class MobilyFlowService {
   private static customerId: string;
   private static apiURL: string;
   private static environment: MobilyEnvironment;
+
+  private static customerListeners: ((customer: MobilyCustomer) => void)[] = [];
 
   public static init() {
     this.destroy();
@@ -50,10 +52,17 @@ export class MobilyFlowService {
     return this.sdk;
   }
 
+  public static addCustomerChangeListener(listener: (customer: MobilyCustomer) => void) {
+    this.customerListeners.push(listener);
+  }
+
   public static async login() {
     try {
       if (this.customerId) {
-        await this.getSDK().login(this.customerId);
+        const customer = await this.getSDK().login(this.customerId);
+        for (const listener of this.customerListeners) {
+          listener(customer);
+        }
       }
     } catch (e: any) {
       console.error('Error logging in', e);

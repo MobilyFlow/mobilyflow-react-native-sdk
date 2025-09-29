@@ -3288,6 +3288,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.90.2":
+  version: 5.90.2
+  resolution: "@tanstack/query-core@npm:5.90.2"
+  checksum: ccee5dacfa717ff7cf54d3b1017f9923e160efa8acc52a9af8d1f15e428cb7da95dce2c2cca135fd029ab5837e0b821c599610a32e1671d9da3f76f5c10721e8
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.90.2":
+  version: 5.90.2
+  resolution: "@tanstack/react-query@npm:5.90.2"
+  dependencies:
+    "@tanstack/query-core": 5.90.2
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: da201f43bad8a8b309dea04437d565339c40fb7a384613ccc7392b6869463c35fb1ab1bed130dd15b2c270a629ff4ed97f305f9d3e47b68c7e00d9f336b9e641
+  languageName: node
+  linkType: hard
+
 "@types/babel__core@npm:^7.1.14":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
@@ -8670,6 +8688,7 @@ __metadata:
     "@react-navigation/native-stack": ^7.3.26
     "@react-stateless-dialog/core": ^0.4.0-beta5
     "@react-stateless-dialog/native": ^0.4.0-beta5
+    "@tanstack/react-query": ^5.90.2
     react: 19.0.0
     react-native: 0.78.1
     react-native-builder-bob: ^0.36.0

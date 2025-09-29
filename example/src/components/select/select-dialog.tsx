@@ -2,7 +2,7 @@ import { DialogComponent } from '@react-stateless-dialog/core';
 import { Box } from '../uikit/Box';
 import { Text } from '../uikit/text';
 import { FlatList, TouchableOpacity } from 'react-native';
-import { MaterialDesignIcons as Icon } from '@react-native-vector-icons/material-design-icons';
+import { BaseDialog } from '../dialog/base-dialog';
 
 export type SelectDialogArgs = {
   data: { label: string; value: any }[];
@@ -13,19 +13,7 @@ export const SelectDialog: DialogComponent<SelectDialogArgs, any> = (props) => {
   const { data } = args;
 
   return (
-    <Box bgColor="white" borderColor="black" borderWidth={1} mx={20} style={{ maxWidth: 500 }}>
-      <Box
-        bgColor="#E6CC00"
-        py={10}
-        px={50}
-        justifyContent="center"
-        alignItems="center"
-        style={{ position: 'relative' }}>
-        <Text>Selection</Text>
-        <TouchableOpacity onPress={onCancel} style={{ position: 'absolute', right: 10 }}>
-          <Icon name="close" size={24} color="black" />
-        </TouchableOpacity>
-      </Box>
+    <BaseDialog title="Selection" onCancel={onCancel}>
       <Box style={{ height: 300 }}>
         <FlatList
           keyExtractor={(item) => item.value}
@@ -39,7 +27,7 @@ export const SelectDialog: DialogComponent<SelectDialogArgs, any> = (props) => {
           )}
         />
       </Box>
-    </Box>
+    </BaseDialog>
   );
 };
 

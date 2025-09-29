@@ -1,15 +1,29 @@
 import { Box } from '../../components/uikit/Box';
 import { Text } from '../../components/uikit/text';
 import { Select } from '../../components/select/select';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { MobilyEnvironment } from 'mobilyflow-react-native-sdk';
 import { Button } from '../../components/button';
-import { ScrollView } from 'react-native';
+import { Platform, ScrollView } from 'react-native';
 import { useMobilyflowParams } from '../../services/use-mobilyflow-params';
 import { MobilyFlowService } from '../../services/mobilyflow-service';
 
 export const HomeScreen = () => {
   const { customerId, environment, apiUrl } = useMobilyflowParams();
+
+  const [storeCountry, setStoreCountry] = useState<string>();
+  const [mobilyflowCustomerId, setMobilyFlowCustomerId] = useState<string>();
+
+  useEffect(() => {
+    (async () => {
+      setStoreCountry(Platform.OS === 'ios' ? await MobilyFlowService.getSDK().getStoreCountry() : '-');
+      setMobilyFlowCustomerId((await MobilyFlowService.getSDK().getCustomer())?.id);
+    })();
+
+    MobilyFlowService.addCustomerChangeListener((customer) => {
+      setMobilyFlowCustomerId(customer?.id);
+    });
+  });
 
   const handleRefresh = useCallback(async () => {}, []);
   const handleManageSubscriptions = useCallback(async () => {}, []);
@@ -62,6 +76,10 @@ export const HomeScreen = () => {
               value={apiUrl}
               onChange={MobilyFlowService.setApiURL}
             />
+          </Box>
+          <Box alignItems="center" mt={10} gap={5}>
+            <Text textAlign="center">MobilyFlow Customer: {mobilyflowCustomerId}</Text>
+            <Text>Country: {storeCountry}</Text>
           </Box>
         </Box>
         <Box gap={10} mt={50} style={{ maxWidth: 500 }}>

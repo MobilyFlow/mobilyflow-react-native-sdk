@@ -1,6 +1,7 @@
 import { MobilyCustomer, MobilyEnvironment, MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
 import { MMKV } from 'react-native-mmkv';
 import { Listener as MMKVListener } from 'react-native-mmkv/lib/typescript/src/Types';
+import { useMobilyflowStore } from '../stores/mobilyflow-store';
 
 export class MobilyFlowService {
   private static sdk: MobilyPurchaseSDK;
@@ -64,8 +65,8 @@ export class MobilyFlowService {
           listener(customer);
         }
       }
-    } catch (e: any) {
-      console.error('Error logging in', e);
+    } catch (error: any) {
+      useMobilyflowStore.setState({ isLoading: false, error });
     }
   }
 

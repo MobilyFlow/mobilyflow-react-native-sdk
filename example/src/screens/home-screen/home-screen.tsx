@@ -1,12 +1,14 @@
 import { Box } from '../../components/uikit/Box';
 import { Text } from '../../components/uikit/text';
 import { Select } from '../../components/select/select';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MobilyEnvironment } from 'mobilyflow-react-native-sdk';
 import { Button } from '../../components/button';
-import { Platform, ScrollView } from 'react-native';
+import { ActivityIndicator, Platform, ScrollView } from 'react-native';
 import { useMobilyflowParams } from '../../services/use-mobilyflow-params';
 import { MobilyFlowService } from '../../services/mobilyflow-service';
+import { useMobilyflowStore } from '../../stores/mobilyflow-store';
+import { getMobilyflowErrorLabel } from '../../utils/utils';
 
 export const HomeScreen = () => {
   const { customerId, environment, apiUrl } = useMobilyflowParams();
@@ -14,16 +16,22 @@ export const HomeScreen = () => {
   const [storeCountry, setStoreCountry] = useState<string>();
   const [mobilyflowCustomerId, setMobilyFlowCustomerId] = useState<string>();
 
-  useEffect(() => {
-    (async () => {
-      setStoreCountry(Platform.OS === 'ios' ? await MobilyFlowService.getSDK().getStoreCountry() : '-');
-      setMobilyFlowCustomerId((await MobilyFlowService.getSDK().getCustomer())?.id);
-    })();
+  const isMobilyflowLoading = useMobilyflowStore((state) => state.isLoading);
+  const mobilyflowError = useMobilyflowStore((state) => state.error);
+  const errorLabel = useMemo(() => getMobilyflowErrorLabel(mobilyflowError), [mobilyflowError]);
 
-    MobilyFlowService.addCustomerChangeListener((customer) => {
-      setMobilyFlowCustomerId(customer?.id);
-    });
-  });
+  useEffect(() => {
+    if (!isMobilyflowLoading) {
+      (async () => {
+        setStoreCountry(Platform.OS === 'ios' ? await MobilyFlowService.getSDK().getStoreCountry() : '-');
+        setMobilyFlowCustomerId((await MobilyFlowService.getSDK().getCustomer())?.id);
+      })();
+
+      MobilyFlowService.addCustomerChangeListener((customer) => {
+        setMobilyFlowCustomerId(customer?.id);
+      });
+    }
+  }, [isMobilyflowLoading, errorLabel]);
 
   const handleRefresh = useCallback(async () => {}, []);
   const handleManageSubscriptions = useCallback(async () => {}, []);
@@ -78,8 +86,15 @@ export const HomeScreen = () => {
             />
           </Box>
           <Box alignItems="center" mt={10} gap={5}>
-            <Text textAlign="center">MobilyFlow Customer: {mobilyflowCustomerId}</Text>
-            <Text>Country: {storeCountry}</Text>
+            {isMobilyflowLoading ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <>
+                <Text textAlign="center">MobilyFlow Customer: {mobilyflowCustomerId}</Text>
+                <Text>Country: {storeCountry}</Text>
+                {errorLabel && <Text color="red">{errorLabel}</Text>}
+              </>
+            )}
           </Box>
         </Box>
         <Box gap={10} mt={50} style={{ maxWidth: 500 }}>

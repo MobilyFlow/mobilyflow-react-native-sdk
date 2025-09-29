@@ -1,10 +1,11 @@
 import { DialogComponent } from '@react-stateless-dialog/core';
 import { Box } from '../uikit/Box';
-import { MobilyError, MobilyPurchaseError, WebhookStatus } from 'mobilyflow-react-native-sdk';
+import { WebhookStatus } from 'mobilyflow-react-native-sdk';
 import { BaseDialog } from './base-dialog';
 import { useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { Text } from '../uikit/text';
+import { getMobilyflowErrorLabel } from '../../utils/utils';
 
 export type PurchaseResultDialogArgs = {
   status: WebhookStatus;
@@ -15,18 +16,7 @@ export const PurchaseResultDialog: DialogComponent<PurchaseResultDialogArgs, nul
   const { args, onCancel } = props;
   const { status, error } = args;
 
-  const errorLabel = useMemo(() => {
-    if (error) {
-      if (error instanceof MobilyPurchaseError) {
-        return `[MobilyPurchaseError] ${MobilyPurchaseError.Type[error.type]}`;
-      } else if (error instanceof MobilyError) {
-        return `[MobilyError] ${MobilyPurchaseError.Type[error.type]}`;
-      } else {
-        return `[Error] ${error}`;
-      }
-    }
-    return null;
-  }, [error]);
+  const errorLabel = useMemo(() => getMobilyflowErrorLabel(error), [error]);
 
   return (
     <BaseDialog title={'Purchase Result'} onCancel={onCancel}>

@@ -6,9 +6,10 @@ import { StatelessDialogProvider } from '@react-stateless-dialog/core';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ViewStyle } from 'react-native';
 import { statelessDialogConfig } from './config/react-stateless-dialog';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { MobilyFlowService } from './services/mobilyflow-service';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useMobilyflowStore } from './stores/mobilyflow-store';
 
 const SAFE_AREA: ViewStyle = { flex: 1, backgroundColor: 'black' };
 const FLEX: ViewStyle = { flex: 1 };
@@ -17,8 +18,15 @@ const queryClient = new QueryClient();
 
 export default function App() {
   useEffect(() => {
-    MobilyFlowService.init();
-    MobilyFlowService.login().then();
+    (async () => {
+      try {
+        MobilyFlowService.init();
+        await MobilyFlowService.login();
+        useMobilyflowStore.setState({ isLoading: false });
+      } catch (error) {
+        useMobilyflowStore.setState({ isLoading: false, error });
+      }
+    })();
 
     return () => {
       MobilyFlowService.destroy();

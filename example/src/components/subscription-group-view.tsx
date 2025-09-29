@@ -3,7 +3,7 @@ import { Box } from './uikit/Box';
 import { Text } from './uikit/text';
 import { TouchableOpacity } from 'react-native';
 import { useCallback, useState } from 'react';
-import { ProductButton } from '../ProductButton';
+import { ProductButton } from './product-button';
 import { DialogManager } from '@react-stateless-dialog/core';
 import { PurchaseSubscriptionDialog } from './dialog/purchase-subscription-dialog';
 import { usePurchaseProduct } from '../services/use-purchase-product';

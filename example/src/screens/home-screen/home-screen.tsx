@@ -9,6 +9,7 @@ import { useMobilyflowParams } from '../../services/use-mobilyflow-params';
 import { MobilyFlowService } from '../../services/mobilyflow-service';
 import { useMobilyflowStore } from '../../stores/mobilyflow-store';
 import { getMobilyflowErrorLabel } from '../../utils/utils';
+import { useMobilyflowRefresh } from '../../services/use-mobilyflow-refresh';
 
 export const HomeScreen = () => {
   const { customerId, environment, apiUrl } = useMobilyflowParams();
@@ -33,11 +34,19 @@ export const HomeScreen = () => {
     }
   }, [isMobilyflowLoading, errorLabel]);
 
-  const handleRefresh = useCallback(async () => {}, []);
-  const handleManageSubscriptions = useCallback(async () => {}, []);
-  const handleTransferOwnership = useCallback(async () => {}, []);
-  const handleSendDiagnostic = useCallback(async () => {}, []);
-  const handleRefundRequest = useCallback(async () => {}, []);
+  const handleRefresh = useMobilyflowRefresh();
+
+  const handleManageSubscriptions = useCallback(async () => {
+    await MobilyFlowService.getSDK().openManageSubscription();
+  }, []);
+
+  const handleTransferOwnership = useCallback(async () => {
+    await MobilyFlowService.getSDK().requestTransferOwnership();
+  }, []);
+
+  const handleSendDiagnostic = useCallback(() => {
+    MobilyFlowService.getSDK().sendDiagnostic();
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -102,7 +111,6 @@ export const HomeScreen = () => {
           <Button title="Manage subscriptions" onPress={handleManageSubscriptions} />
           <Button title="Transfer Ownership" onPress={handleTransferOwnership} />
           <Button title="Send diagnostic" onPress={handleSendDiagnostic} />
-          <Button title="Refund Request" onPress={handleRefundRequest} />
         </Box>
       </Box>
     </ScrollView>

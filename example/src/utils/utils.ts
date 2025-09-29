@@ -1,4 +1,5 @@
 import { MobilyError, MobilyPurchaseError } from 'mobilyflow-react-native-sdk';
+import { DateTime } from 'luxon';
 
 export const removeUndefined = <T extends object>(obj: T) => {
   for (const key of Object.keys(obj)) {
@@ -20,4 +21,9 @@ export const getMobilyflowErrorLabel = (error: any) => {
     }
   }
   return null;
+};
+
+export const formatDate = (date: Date, format: 'datetime' | 'date' = 'datetime') => {
+  const luxonFormat = format === 'datetime' ? "yyyy-LL-dd 'at' HH:mm:ss" : 'yyyy-LL-dd';
+  return DateTime.fromJSDate(date).toFormat(luxonFormat);
 };

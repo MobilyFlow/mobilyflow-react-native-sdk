@@ -4,10 +4,14 @@ import { ProductType } from 'mobilyflow-react-native-sdk';
 import { useQuery } from '@tanstack/react-query';
 import { MobilyFlowService } from '../../services/mobilyflow-service';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
-import { ProductButton } from '../../ProductButton';
+import { ProductButton } from '../../components/product-button';
 
 export const OneTimeScreen = () => {
-  const { data, error, isLoading } = useQuery({
+  const {
+    data,
+    error,
+    isFetching: isLoading,
+  } = useQuery({
     queryKey: ['mobilyflow', 'products'],
     retry: false,
     queryFn: async () => {

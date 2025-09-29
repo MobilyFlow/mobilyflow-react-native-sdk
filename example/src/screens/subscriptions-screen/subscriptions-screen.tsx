@@ -10,7 +10,7 @@ export const SubscriptionsScreen = () => {
   const {
     data: groups,
     error,
-    isLoading,
+    isFetching: isLoading,
   } = useQuery({
     queryKey: ['mobilyflow', 'subscription-groups'],
     retry: false,

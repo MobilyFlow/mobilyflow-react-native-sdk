@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import { ProductStatus, MobilyProduct, MobilySubscriptionOffer } from 'mobilyflow-react-native-sdk';
-import { usePurchaseProduct } from './services/use-purchase-product';
+import { usePurchaseProduct } from '../services/use-purchase-product';
 import { useCallback } from 'react';
 
 export type ProductButtonProps = {

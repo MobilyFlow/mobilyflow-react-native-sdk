@@ -3405,6 +3405,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/luxon@npm:^3.7.1":
+  version: 3.7.1
+  resolution: "@types/luxon@npm:3.7.1"
+  checksum: ec5181716f9a744d2be1a4a72c3509670e1030a9271736d95e9e04af075ac6f24f6b35f2934f6d7eab496c1eefd9f81b572ad63fd33fd17a100eb2b315702a77
+  languageName: node
+  linkType: hard
+
 "@types/minimist@npm:^1.2.2":
   version: 1.2.5
   resolution: "@types/minimist@npm:1.2.5"
@@ -7882,6 +7889,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"luxon@npm:^3.7.2":
+  version: 3.7.2
+  resolution: "luxon@npm:3.7.2"
+  checksum: fc115fd6a7acc2adb7df3476d20c672beb2985d2a034294282f2c31de8c07f29a15460f5a2b7dd0107797be0dab545ddbc64862662b059fb18c1931a726064f4
+  languageName: node
+  linkType: hard
+
 "make-dir@npm:^2.0.0, make-dir@npm:^2.1.0":
   version: 2.1.0
   resolution: "make-dir@npm:2.1.0"
@@ -8689,6 +8703,8 @@ __metadata:
     "@react-stateless-dialog/core": ^0.4.0-beta5
     "@react-stateless-dialog/native": ^0.4.0-beta5
     "@tanstack/react-query": ^5.90.2
+    "@types/luxon": ^3.7.1
+    luxon: ^3.7.2
     react: 19.0.0
     react-native: 0.78.1
     react-native-builder-bob: ^0.36.0

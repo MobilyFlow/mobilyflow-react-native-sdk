@@ -2,7 +2,7 @@ import { DialogComponent } from '@react-stateless-dialog/core';
 import { Box } from '../uikit/Box';
 import { MobilyProduct, MobilySubscriptionOffer } from 'mobilyflow-react-native-sdk';
 import { BaseDialog } from './base-dialog';
-import { ProductButton } from '../../ProductButton';
+import { ProductButton } from '../product-button';
 import { ScrollView } from 'react-native';
 import { usePurchaseProduct } from '../../services/use-purchase-product';
 import { useCallback } from 'react';

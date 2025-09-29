@@ -27,3 +27,7 @@ export const formatDate = (date: Date, format: 'datetime' | 'date' = 'datetime')
   const luxonFormat = format === 'datetime' ? "yyyy-LL-dd 'at' HH:mm:ss" : 'yyyy-LL-dd';
   return DateTime.fromJSDate(date).toFormat(luxonFormat);
 };
+
+export const formatPriceMillis = (priceMillis: number, currency: string) => {
+  return `${(priceMillis / 1000).toFixed(2)} ${currency}`;
+};

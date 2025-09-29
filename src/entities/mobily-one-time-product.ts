@@ -1,4 +1,5 @@
 import type { ProductStatus } from '../enums/product-status';
+import { objectTransformer } from '../utils/object-transformer';
 
 export class MobilyOneTimeProduct {
   price: number;
@@ -8,4 +9,8 @@ export class MobilyOneTimeProduct {
   isNonRenewableSub: boolean;
   isMultiQuantity: boolean;
   status: ProductStatus;
+
+  static parseFromAPI(obj: MobilyOneTimeProduct) {
+    return objectTransformer(obj, {});
+  }
 }

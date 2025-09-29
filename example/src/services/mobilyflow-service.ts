@@ -61,6 +61,7 @@ export class MobilyFlowService {
     try {
       if (this.customerId) {
         const customer = await this.getSDK().login(this.customerId);
+        console.log(`Login with customerId = ${customer.id} (externalRef = ${customer.externalRef})`);
         for (const listener of this.customerListeners) {
           listener(customer);
         }

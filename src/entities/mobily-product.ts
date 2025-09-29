@@ -1,7 +1,7 @@
 import { ProductType } from '../enums/product-type';
-import type { ProductStatus } from '../enums/product-status';
-import type { MobilyOneTimeProduct } from './mobily-one-time-product';
-import type { MobilySubscriptionProduct } from './mobily-subscription-product';
+import { ProductStatus } from '../enums/product-status';
+import { MobilyOneTimeProduct } from './mobily-one-time-product';
+import { MobilySubscriptionProduct } from './mobily-subscription-product';
 import { objectTransformer } from '../utils/object-transformer';
 
 export class MobilyProduct {
@@ -31,6 +31,10 @@ export class MobilyProduct {
   static parseFromAPI(obj: MobilyProduct) {
     return objectTransformer(obj, {
       dates: ['createdAt', 'updatedAt', 'deletedAt'],
+      mapping: {
+        oneTimeProduct: MobilyOneTimeProduct.parseFromAPI,
+        subscriptionProduct: MobilySubscriptionProduct.parseFromAPI,
+      },
     });
   }
 }

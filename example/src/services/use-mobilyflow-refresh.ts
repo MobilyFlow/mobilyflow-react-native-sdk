@@ -11,7 +11,7 @@ export const useMobilyflowRefresh = () => {
       MobilyFlowService.init();
       await MobilyFlowService.login();
       await queryClient.invalidateQueries({ queryKey: ['mobilyflow'] });
-      useMobilyflowStore.setState({ isLoading: false });
+      useMobilyflowStore.setState({ isLoading: false, error: null });
     } catch (error) {
       useMobilyflowStore.setState({ isLoading: false, error });
     }

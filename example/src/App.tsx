@@ -22,7 +22,7 @@ export default function App() {
       try {
         MobilyFlowService.init();
         await MobilyFlowService.login();
-        useMobilyflowStore.setState({ isLoading: false });
+        useMobilyflowStore.setState({ isLoading: false, error: null });
       } catch (error) {
         useMobilyflowStore.setState({ isLoading: false, error });
       }

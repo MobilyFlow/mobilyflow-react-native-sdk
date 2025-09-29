@@ -59,6 +59,7 @@ export const ProductButton = (props: ProductButtonProps) => {
           '-'}
       </Text>
       {offer?.id && <Text>Offer: {offer.identifier}</Text>}
+      {offer?.id && <Text>{offer.countBillingCycle} cycles</Text>}
     </TouchableOpacity>
   );
 };

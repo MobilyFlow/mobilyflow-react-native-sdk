@@ -13,8 +13,8 @@ export const SubscriptionsScreen = () => {
     isFetching: isLoading,
   } = useQuery({
     queryKey: ['mobilyflow', 'subscription-groups'],
-    retry: false,
     queryFn: async () => {
+      console.log('[Mobilyflow] getSubscriptionGroups');
       return MobilyFlowService.getSDK().getSubscriptionGroups();
     },
   });

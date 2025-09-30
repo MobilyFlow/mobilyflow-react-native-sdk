@@ -13,8 +13,8 @@ export const OneTimeScreen = () => {
     isFetching: isLoading,
   } = useQuery({
     queryKey: ['mobilyflow', 'products'],
-    retry: false,
     queryFn: async () => {
+      console.log('[Mobilyflow] getProducts');
       return MobilyFlowService.getSDK().getProducts();
     },
   });

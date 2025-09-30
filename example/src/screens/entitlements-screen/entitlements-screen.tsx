@@ -15,8 +15,10 @@ export const EntitlementsScreen = () => {
   } = useQuery({
     queryKey: ['mobilyflow', 'entitlements'],
     queryFn: async () => {
+      console.log('[Mobilyflow] getEntitlements');
       return await MobilyFlowService.getSDK().getEntitlements();
     },
+    staleTime: 0,
   });
 
   const handleRefresh = useMobilyflowRefresh();
@@ -32,8 +34,12 @@ export const EntitlementsScreen = () => {
   return (
     <Box flex={1} mt={20}>
       <Box alignItems="center" gap={5}>
-        <Text>Entitlements</Text>
-        {error && <Text style={{ color: 'red' }}>{error.message}</Text>}
+        <Text textAlign="center">Entitlements</Text>
+        {error && (
+          <Text textAlign="center" style={{ color: 'red' }}>
+            {error.message}
+          </Text>
+        )}
       </Box>
 
       <ScrollView style={{ alignSelf: 'stretch', marginTop: 20, flex: 1 }}>

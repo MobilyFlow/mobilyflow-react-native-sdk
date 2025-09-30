@@ -2,6 +2,7 @@ import { MobilyCustomer, MobilyEnvironment, MobilyPurchaseSDK } from 'mobilyflow
 import { MMKV } from 'react-native-mmkv';
 import { Listener as MMKVListener } from 'react-native-mmkv/lib/typescript/src/Types';
 import { useMobilyflowStore } from '../stores/mobilyflow-store';
+import { queryClient } from '../config/query-client';
 
 export class MobilyFlowService {
   private static sdk: MobilyPurchaseSDK;
@@ -62,6 +63,7 @@ export class MobilyFlowService {
       if (this.customerId) {
         const customer = await this.getSDK().login(this.customerId);
         console.log(`Login with customerId = ${customer.id} (externalRef = ${customer.externalRef})`);
+        await queryClient.invalidateQueries({ queryKey: ['mobilyflow'] });
         for (const listener of this.customerListeners) {
           listener(customer);
         }

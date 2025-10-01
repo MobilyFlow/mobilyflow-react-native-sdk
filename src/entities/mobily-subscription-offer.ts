@@ -8,7 +8,7 @@ export class MobilySubscriptionOffer {
   externalRef: string;
   referenceName: string;
   name: string;
-  price: number;
+  priceMillis: number;
   currencyCode: string;
   priceFormatted: string;
   type: string;

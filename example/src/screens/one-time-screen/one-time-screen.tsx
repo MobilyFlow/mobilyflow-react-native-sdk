@@ -15,7 +15,9 @@ export const OneTimeScreen = () => {
     queryKey: ['mobilyflow', 'products'],
     queryFn: async () => {
       console.log('[Mobilyflow] getProducts');
-      return MobilyFlowService.getSDK().getProducts();
+      const result = await MobilyFlowService.getSDK().getProducts();
+      console.log('[Mobilyflow] getProducts done');
+      return result;
     },
   });
 

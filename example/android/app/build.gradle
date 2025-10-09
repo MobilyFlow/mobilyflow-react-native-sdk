@@ -82,7 +82,7 @@ android {
         applicationId "com.mobilyflow.test_android_sdk"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
+        versionCode 5
         versionName "1.0.1"
     }
     signingConfigs {
@@ -106,12 +106,23 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    flavorDimensions += "target"
+    productFlavors {
+        mobilyflow {
+            dimension "target"
+            applicationId "com.mobilyflow.test_android_sdk"
+        }
+        nouslib {
+            dimension "target"
+            applicationId "com.mobilyflow.NousLibTest"
+        }
+    }
 }
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation "com.facebook.react:react-android"
-    implementation "com.android.billingclient:billing:7.1.1"
+    implementation "com.android.billingclient:billing:8.0.0"
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

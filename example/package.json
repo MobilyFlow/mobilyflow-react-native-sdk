@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android": "react-native run-android --mode=mobilyflowDebug --appId=com.mobilyflow.test_android_sdk",
+    "android:nouslib": "react-native run-android --mode=nouslibDebug --appId=com.mobilyflow.NousLibTest",
     "ios": "react-native run-ios --simulator \"iPhone 16\"",
     "start": "react-native start",
     "build:android": "react-native build-android --extra-params \"--no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a\"",

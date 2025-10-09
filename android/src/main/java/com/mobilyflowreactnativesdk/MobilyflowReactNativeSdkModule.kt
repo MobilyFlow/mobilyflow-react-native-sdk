@@ -1,5 +1,6 @@
 package com.mobilyflowreactnativesdk
 
+import android.util.Log
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableArray
@@ -72,13 +73,19 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
   }
 
   override fun getProducts(uuid: String, identifiers: ReadableArray?, onlyAvailable: Boolean, promise: Promise) {
+    Log.d("MobilyFlow", "[getProduct] aaa")
     val executor = Executors.newSingleThreadExecutor()
     executor.execute {
+    Log.d("MobilyFlow", "[getProduct] bbb")
       try {
         val products = _sdkInstances[uuid]!!.getProducts(identifiers.toStringArray(), onlyAvailable)
+        Log.d("MobilyFlow", "[getProduct] ccc")
         promise.resolve(products.toReadableArray())
+        Log.d("MobilyFlow", "[getProduct] ddd")
       } catch (error: Exception) {
+        Log.d("MobilyFlow", "[getProduct] catch")
         throwError(error, promise)
+        Log.d("MobilyFlow", "[getProduct] catch end")
       }
     }
   }

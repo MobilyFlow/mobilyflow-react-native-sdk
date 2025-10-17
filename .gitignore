@@ -83,6 +83,9 @@ ios/generated
 android/generated
 
 /example/android/app/release
+/example/android/app/nouslib
+/example/android/.kotlin/errors
 
 # React Native Nitro Modules
 nitrogen/
+

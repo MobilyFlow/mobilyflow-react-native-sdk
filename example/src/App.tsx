@@ -1,66 +1,51 @@
-import AppIapHub from './iaphub/AppIapHub';
-import AppMobilyFlow from './AppMobilyFlow';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Platform, View } from 'react-native';
-import { MobilyPurchaseSDK, MobilyEnvironment } from 'mobilyflow-react-native-sdk';
+import './config/unistyles';
+import { NavigationContainer } from '@react-navigation/native';
+import { RootNavigator } from './navigation/root.navigator';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { StatelessDialogProvider } from '@react-stateless-dialog/core';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ViewStyle } from 'react-native';
+import { statelessDialogConfig } from './config/react-stateless-dialog';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { MobilyFlowService } from './services/mobilyflow-service';
+import { useMobilyflowStore } from './stores/mobilyflow-store';
+import { queryClient } from './config/query-client';
+
+const SAFE_AREA: ViewStyle = { flex: 1, backgroundColor: 'black' };
+const FLEX: ViewStyle = { flex: 1 };
 
 export default function App() {
-  const [isForwardingEnable, setForwardingEnable] = useState<boolean>(undefined);
+  useEffect(() => {
+    (async () => {
+      try {
+        MobilyFlowService.init();
+        await MobilyFlowService.login();
+        useMobilyflowStore.setState({ isLoading: false, error: null });
+      } catch (error) {
+        console.error('AppInitError: ', error);
+        useMobilyflowStore.setState({ isLoading: false, error });
+      }
+    })();
 
-  const sdk = useRef<MobilyPurchaseSDK>();
-  const firstTime = useRef(true);
-
-  const init = useCallback(async () => {
-    if (!sdk.current) {
-      sdk.current = new MobilyPurchaseSDK(
-        'caecc000-45ce-49b3-b218-46c1d985ae85',
-        '7aa18f9720a5c9731d17f5c54e89bdd218647f71269eed2f6c27c8fa5924da84',
-        MobilyEnvironment.DEVELOPMENT,
-        {
-          // languages: ['en', 'fr'],
-          // apiURL: 'https://mobilyflow.eu-1.sharedwithexpose.com/v1/',
-          apiURL: 'https://api-staging.mobilyflow.com/v1/',
-          debug: true,
-        }
-      );
-    }
-
-    try {
-      const externalRef =
-        Platform.OS === 'ios'
-          ? 'gregoire-ios-rn' // gregoire-ios
-          : 'gregoire-android'; // gregoire-android;
-      // const externalRef = `random-user-${Platform.OS}`;
-
-      const customer = await sdk.current.login(externalRef);
-      console.log('Customer = ', customer);
-      console.log('SDK Version = ', await sdk.current.getSDKVersion());
-      setForwardingEnable(customer.isForwardingEnable);
-
-      console.log('Customer = ', await sdk.current.getCustomer());
-      console.log('Entitlements = ', await sdk.current.getEntitlements());
-      // setForwardingEnable(await sdk.current.isForwardingEnable(externalRef));
-    } catch (e: any) {
-      console.error('setForwardingEnable error: ', e);
-      setForwardingEnable(true);
-    }
+    return () => {
+      MobilyFlowService.destroy();
+    };
   }, []);
 
-  useEffect(() => {
-    if (firstTime.current) {
-      firstTime.current = false;
-      init().then();
-    }
-  }, [init]);
-
-  if (isForwardingEnable === undefined) {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
-  return isForwardingEnable ? <AppIapHub /> : <AppMobilyFlow sdk={sdk} reload={init} />;
-  // return <AppIapHub />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <SafeAreaView style={SAFE_AREA}>
+          <GestureHandlerRootView style={FLEX}>
+            <NavigationContainer>
+              <StatelessDialogProvider config={statelessDialogConfig}>
+                <RootNavigator />
+              </StatelessDialogProvider>
+            </NavigationContainer>
+          </GestureHandlerRootView>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </QueryClientProvider>
+  );
 }

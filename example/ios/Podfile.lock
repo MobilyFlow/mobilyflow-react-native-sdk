@@ -8,11 +8,11 @@ PODS:
   - hermes-engine (0.78.1):
     - hermes-engine/Pre-built (= 0.78.1)
   - hermes-engine/Pre-built (0.78.1)
-  - MobilyflowReactNativeSdk (0.3.0-alpha.2):
+  - MobilyflowReactNativeSdk (0.3.0):
     - DoubleConversion
     - glog
     - hermes-engine
-    - MobilyflowSDK (= 0.3.0-alpha.2)
+    - MobilyflowSDK (= 0.3.0)
     - RCT-Folly (= 2024.11.18.00)
     - RCTRequired
     - RCTTypeSafety
@@ -30,7 +30,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - MobilyflowSDK (0.3.0-alpha.2)
+  - MobilyflowSDK (0.3.0)
   - NitroModules (0.29.6):
     - DoubleConversion
     - glog
@@ -2150,8 +2150,8 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
   hermes-engine: f493b0a600aed5dc06532141603688a30a5b2f61
-  MobilyflowReactNativeSdk: 110de9f94c35212dd5890f32a17d2a28c7a8dfa3
-  MobilyflowSDK: c3df15ff8d76191e4344e33e1729f1dbf6877609
+  MobilyflowReactNativeSdk: 7b9067c25a44f7740963ebc5cbcd62023c0f183c
+  MobilyflowSDK: e377564a685c05c82f01680e4062b66f674a26b8
   NitroModules: 1040dcdf0710a830fc897d677870c8277efa0933
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: 082fbc90409015eac1366795a0b90f8b5cb28efe

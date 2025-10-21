@@ -20,10 +20,10 @@ export class MobilyFlowService {
 
     // TODO: Use real env
     const env = {
-      // MOBILYFLOW_APP_ID: 'caecc000-45ce-49b3-b218-46c1d985ae85',
-      // MOBILYFLOW_API_KEY: '7aa18f9720a5c9731d17f5c54e89bdd218647f71269eed2f6c27c8fa5924da84',
-      MOBILYFLOW_APP_ID: 'e84c9576-2642-4267-80d3-1928eda8e06d',
-      MOBILYFLOW_API_KEY: '29aa51e84cd97fd48f1e05262d11f0a8adead84222b11a7fae7cfd9584ba94d5',
+      MOBILYFLOW_APP_ID: 'caecc000-45ce-49b3-b218-46c1d985ae85',
+      MOBILYFLOW_API_KEY: '7aa18f9720a5c9731d17f5c54e89bdd218647f71269eed2f6c27c8fa5924da84',
+      // MOBILYFLOW_APP_ID: 'e84c9576-2642-4267-80d3-1928eda8e06d',
+      // MOBILYFLOW_API_KEY: '29aa51e84cd97fd48f1e05262d11f0a8adead84222b11a7fae7cfd9584ba94d5',
     };
 
     this.customerId = this.storage.getString('customerId');

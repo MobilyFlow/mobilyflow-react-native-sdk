@@ -30,6 +30,7 @@ export interface Spec extends TurboModule {
     identifiers: string[],
     onlyAvailable: boolean
   ): Promise<MobilySubscriptionGroup[]>;
+  getSubscriptionGroupById(uuid: string, id: string): Promise<MobilySubscriptionGroup>;
 
   getEntitlementForSubscription(uuid: string, subscriptionGroupId: string): Promise<MobilyCustomerEntitlement | null>;
   getEntitlement(uuid: string, productId: string): Promise<MobilyCustomerEntitlement | null>;

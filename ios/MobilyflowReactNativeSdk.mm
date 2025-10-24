@@ -84,6 +84,16 @@ RCT_EXPORT_MODULE()
   }];
 }
 
+- (void)getSubscriptionGroup:(NSString *)uuid id:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  [[self getInstance:uuid] getSubscriptionGroupByIdWithId:id completionHandler:^(MobilySubscriptionGroup * _Nullable group, NSError * _Nullable error) {
+    if (error) {
+      reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
+    } else {
+      resolve([group toDictionary]);
+    }
+  }];
+}
+
 - (void)getEntitlementForSubscription:(NSString *)uuid subscriptionGroupId:(NSString *)subscriptionGroupId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
 
   [[self getInstance:uuid] getEntitlementForSubscriptionWithSubscriptionGroupId:subscriptionGroupId completionHandler:^(MobilyCustomerEntitlement * _Nullable entitlement, NSError * _Nullable error) {

@@ -102,6 +102,18 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     }
   }
 
+  override fun getSubscriptionGroupById(uuid: String, id: String, promise: Promise) {
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        val groups = _sdkInstances[uuid]!!.getSubscriptionGroupById(id)
+        promise.resolve(groups.toReadableMap())
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
+    }
+  }
+
   override fun getEntitlementForSubscription(uuid: String, subscriptionGroupId: String, promise: Promise) {
     val executor = Executors.newSingleThreadExecutor()
     executor.execute {

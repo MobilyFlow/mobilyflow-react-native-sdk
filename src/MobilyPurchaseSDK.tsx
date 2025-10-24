@@ -89,6 +89,15 @@ export class MobilyPurchaseSDK {
     }
   }
 
+  async getSubscriptionGroupById(id: string): Promise<MobilySubscriptionGroup> {
+    try {
+      const group = await MobilyflowReactNativeSdk.getSubscriptionGroupById(this._uuid, id);
+      return MobilySubscriptionGroup.parseFromAPI(group);
+    } catch (error: any) {
+      throw this.throwError(error);
+    }
+  }
+
   async getEntitlementForSubscription(subscriptionGroupId: string) {
     try {
       const entitlement = await MobilyflowReactNativeSdk.getEntitlementForSubscription(this._uuid, subscriptionGroupId);

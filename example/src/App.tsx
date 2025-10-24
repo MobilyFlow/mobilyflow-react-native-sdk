@@ -22,6 +22,13 @@ export default function App() {
         MobilyFlowService.init();
         await MobilyFlowService.login();
         useMobilyflowStore.setState({ isLoading: false, error: null });
+
+        console.log('SubGroup (test_group_managed)');
+        let group = await MobilyFlowService.getSDK().getSubscriptionGroupById('7169b477-c649-4981-91ef-f3c0d7fa64ca');
+        for (const product of group.products) {
+          console.log(`Product: ${product.identifier} / ${product.status}`);
+        }
+        console.log('===============');
       } catch (error) {
         console.error('AppInitError: ', error);
         useMobilyflowStore.setState({ isLoading: false, error });

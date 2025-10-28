@@ -84,7 +84,7 @@ RCT_EXPORT_MODULE()
   }];
 }
 
-- (void)getSubscriptionGroup:(NSString *)uuid id:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+- (void)getSubscriptionGroupById:(NSString *)uuid id:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   [[self getInstance:uuid] getSubscriptionGroupByIdWithId:id completionHandler:^(MobilySubscriptionGroup * _Nullable group, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);

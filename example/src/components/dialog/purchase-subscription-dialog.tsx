@@ -31,9 +31,9 @@ export const PurchaseSubscriptionDialog: DialogComponent<PurchaseSubscriptionDia
       <ScrollView>
         <Box h={300} p={20} gap={10}>
           <ProductButton product={product} onPress={handlePurchase} />
-          {product?.subscriptionProduct?.promotionalOffers?.length > 0 && (
+          {product?.subscription?.promotionalOffers?.length > 0 && (
             <Box gap={10} px={20}>
-              {product?.subscriptionProduct?.promotionalOffers?.map((offer) => (
+              {product?.subscription?.promotionalOffers?.map((offer) => (
                 <ProductButton key={offer.id} product={product} offer={offer} onPress={() => handlePurchase(offer)} />
               ))}
             </Box>

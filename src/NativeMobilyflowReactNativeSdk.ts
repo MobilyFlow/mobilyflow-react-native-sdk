@@ -1,11 +1,11 @@
-import type { TurboModule } from 'react-native';
-import { TurboModuleRegistry } from 'react-native';
-import { MobilyProduct } from './entities/mobily-product';
-import { MobilySubscriptionGroup } from './entities/mobily-subscription-group';
-import { MobilyCustomerEntitlement } from './entities/mobily-customer-entitlement';
-import { WebhookStatus } from './enums/webhook-status';
-import type { MobilyCustomer } from './entities/mobily-customer';
-import { TransferOwnershipStatus } from './enums/transfer-ownership-status';
+import { TurboModule, TurboModuleRegistry } from 'react-native';
+import { MobilyProduct } from './models/product/mobily-product';
+import { MobilySubscriptionGroup } from './models/product/mobily-subscription-group';
+import { MobilyCustomerEntitlement } from './models/entitlement/mobily-customer-entitlement';
+import { MobilyCustomer } from './models/mobily-customer';
+import { MobilyTransferOwnershipStatus } from './enums/mobily-transfer-ownership-status';
+import { MobilyEvent } from './models/mobily-event';
+import { MobilyEnvironment } from './enums/mobily-environment';
 
 export type MobilyPurchaseSDKOptions = {
   languages?: string[];
@@ -19,7 +19,12 @@ type PurchaseOptions = {
 };
 
 export interface Spec extends TurboModule {
-  instantiate(appId: string, apiKey: string, environment: number, options?: MobilyPurchaseSDKOptions): string;
+  instantiate(
+    appId: string,
+    apiKey: string,
+    environment: MobilyEnvironment,
+    options?: MobilyPurchaseSDKOptions
+  ): string;
   close(uuid: string): void;
 
   login(uuid: string, externalRef: string): Promise<MobilyCustomer>;
@@ -37,14 +42,15 @@ export interface Spec extends TurboModule {
   getEntitlements(uuid: string, productIds?: string[]): Promise<MobilyCustomerEntitlement[]>;
   getExternalEntitlements(uuid: string): Promise<MobilyCustomerEntitlement[]>;
 
-  requestTransferOwnership(uuid: string): Promise<TransferOwnershipStatus>;
+  requestTransferOwnership(uuid: string): Promise<MobilyTransferOwnershipStatus>;
   openManageSubscription(uuid: string): Promise<void>;
   openRefundDialog(uuid: string, productId: string): Promise<boolean>;
 
-  purchaseProduct(uuid: string, productId: string, options?: PurchaseOptions): Promise<WebhookStatus>;
+  purchaseProduct(uuid: string, productId: string, options?: PurchaseOptions): Promise<MobilyEvent>;
 
   sendDiagnostic(uuid: string): void;
-  getStoreCountry(uuid: string): Promise<string>;
+  getStoreCountry(uuid: string): Promise<string | null>;
+  isBillingAvailable(uuid: string): Promise<boolean>;
   isForwardingEnable(uuid: string, externalRef: string): Promise<boolean>;
 
   getCustomer(uuid: string): Promise<MobilyCustomer | null>;

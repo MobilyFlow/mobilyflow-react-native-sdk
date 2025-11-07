@@ -1,24 +1,21 @@
 import MobilyflowReactNativeSdk, { type MobilyPurchaseSDKOptions } from './NativeMobilyflowReactNativeSdk';
-import { MobilyProduct } from './entities/mobily-product';
-import type { WebhookStatus } from './enums/webhook-status';
-import type { MobilySubscriptionOffer } from './entities/mobily-subscription-offer';
-import { MobilySubscriptionGroup } from './entities/mobily-subscription-group';
-import { MobilyCustomerEntitlement } from './entities/mobily-customer-entitlement';
+import { MobilyProduct } from './models/product/mobily-product';
+import { MobilySubscriptionGroup } from './models/product/mobily-subscription-group';
+import { MobilyCustomerEntitlement } from './models/entitlement/mobily-customer-entitlement';
 import { Platform as RNPlatform } from 'react-native';
 import { MobilyError } from './errors/mobily-error';
 import { MobilyPurchaseError } from './errors/mobily-purchase-error';
 import { MobilyTransferOwnershipError } from './errors/mobily-transfer-ownership-error';
-import { MobilyCustomer } from './entities/mobily-customer';
-
-export type PurchaseOptions = {
-  offer?: MobilySubscriptionOffer;
-  quantity?: number;
-};
+import { MobilyCustomer } from './models/mobily-customer';
+import { PurchaseOptions } from './models/internal/purchase-options';
+import { MobilyTransferOwnershipStatus } from './enums/mobily-transfer-ownership-status';
+import { MobilyEvent } from './models/mobily-event';
+import { MobilyEnvironment } from './enums/mobily-environment';
 
 export class MobilyPurchaseSDK {
   private _uuid: string;
 
-  constructor(appId: string, apiKey: string, environment: number, options?: MobilyPurchaseSDKOptions) {
+  constructor(appId: string, apiKey: string, environment: MobilyEnvironment, options?: MobilyPurchaseSDKOptions) {
     this._uuid = MobilyflowReactNativeSdk.instantiate(appId, apiKey, environment, options ?? {});
   }
 
@@ -54,7 +51,7 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async login(externalRef: string) {
+  async login(externalRef: string): Promise<MobilyCustomer> {
     try {
       const customer = await MobilyflowReactNativeSdk.login(this._uuid, externalRef);
       return MobilyCustomer.parseFromAPI(customer);
@@ -80,7 +77,7 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async getSubscriptionGroups(identifiers?: string[], onlyAvailable = false) {
+  async getSubscriptionGroups(identifiers?: string[], onlyAvailable = false): Promise<MobilySubscriptionGroup[]> {
     try {
       const groups = await MobilyflowReactNativeSdk.getSubscriptionGroups(this._uuid, identifiers, onlyAvailable);
       return groups.map(MobilySubscriptionGroup.parseFromAPI);
@@ -98,7 +95,7 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async getEntitlementForSubscription(subscriptionGroupId: string) {
+  async getEntitlementForSubscription(subscriptionGroupId: string): Promise<MobilyCustomerEntitlement | null> {
     try {
       const entitlement = await MobilyflowReactNativeSdk.getEntitlementForSubscription(this._uuid, subscriptionGroupId);
       return MobilyCustomerEntitlement.parseFromAPI(entitlement);
@@ -107,7 +104,7 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async getEntitlement(productId: string) {
+  async getEntitlement(productId: string): Promise<MobilyCustomerEntitlement | null> {
     try {
       const entitlement = await MobilyflowReactNativeSdk.getEntitlement(this._uuid, productId);
       return MobilyCustomerEntitlement.parseFromAPI(entitlement);
@@ -116,7 +113,7 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async getEntitlements(productIds?: string[]) {
+  async getEntitlements(productIds?: string[]): Promise<MobilyCustomerEntitlement[]> {
     try {
       const entitlements = await MobilyflowReactNativeSdk.getEntitlements(this._uuid, productIds);
       return entitlements.map(MobilyCustomerEntitlement.parseFromAPI);
@@ -125,7 +122,7 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async getExternalEntitlements() {
+  async getExternalEntitlements(): Promise<MobilyCustomerEntitlement[]> {
     try {
       const entitlements = await MobilyflowReactNativeSdk.getExternalEntitlements(this._uuid);
       return entitlements.map(MobilyCustomerEntitlement.parseFromAPI);
@@ -134,7 +131,7 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async requestTransferOwnership() {
+  async requestTransferOwnership(): Promise<MobilyTransferOwnershipStatus> {
     try {
       return await MobilyflowReactNativeSdk.requestTransferOwnership(this._uuid);
     } catch (error: any) {
@@ -162,7 +159,7 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async purchaseProduct(product: MobilyProduct, options?: PurchaseOptions): Promise<WebhookStatus> {
+  async purchaseProduct(product: MobilyProduct, options?: PurchaseOptions): Promise<MobilyEvent> {
     try {
       return await MobilyflowReactNativeSdk.purchaseProduct(this._uuid, product.id, {
         offerId: options?.offer?.id || null,
@@ -181,15 +178,19 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async getStoreCountry() {
-    if (RNPlatform.OS === 'android') {
-      throw new Error('getStoreCountry not implemented on Android');
-    } else {
-      try {
-        return await MobilyflowReactNativeSdk.getStoreCountry(this._uuid);
-      } catch (error: any) {
-        throw this.throwError(error);
-      }
+  async getStoreCountry(): Promise<string | null> {
+    try {
+      return await MobilyflowReactNativeSdk.getStoreCountry(this._uuid);
+    } catch (error: any) {
+      throw this.throwError(error);
+    }
+  }
+
+  async isBillingAvailable(): Promise<boolean> {
+    try {
+      return await MobilyflowReactNativeSdk.isBillingAvailable(this._uuid);
+    } catch (error: any) {
+      throw this.throwError(error);
     }
   }
 

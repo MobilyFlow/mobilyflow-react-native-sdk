@@ -73,19 +73,13 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
   }
 
   override fun getProducts(uuid: String, identifiers: ReadableArray?, onlyAvailable: Boolean, promise: Promise) {
-    Log.d("MobilyFlow", "[getProduct] aaa")
     val executor = Executors.newSingleThreadExecutor()
     executor.execute {
-    Log.d("MobilyFlow", "[getProduct] bbb")
       try {
         val products = _sdkInstances[uuid]!!.getProducts(identifiers.toStringArray(), onlyAvailable)
-        Log.d("MobilyFlow", "[getProduct] ccc")
         promise.resolve(products.toReadableArray())
-        Log.d("MobilyFlow", "[getProduct] ddd")
       } catch (error: Exception) {
-        Log.d("MobilyFlow", "[getProduct] catch")
         throwError(error, promise)
-        Log.d("MobilyFlow", "[getProduct] catch end")
       }
     }
   }
@@ -234,7 +228,15 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
   }
 
   override fun getStoreCountry(uuid: String, promise: Promise) {
-    promise.reject("-1", "Not implemented")
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        val result = _sdkInstances[uuid]!!.getStoreCountry()
+        promise.resolve(result)
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
+    }
   }
 
   override fun isForwardingEnable(uuid: String, externalRef: String, promise: Promise) {

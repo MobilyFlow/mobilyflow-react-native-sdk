@@ -5,6 +5,7 @@ import { MobilyFlowService } from '../../services/mobilyflow-service';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { SubscriptionGroupView } from '../../components/subscription-group-view';
 import { Button } from '../../components/button';
+import { useMobilyflowRefresh } from '../../services/use-mobilyflow-refresh';
 
 export const SubscriptionsScreen = () => {
   const {
@@ -18,6 +19,8 @@ export const SubscriptionsScreen = () => {
       return MobilyFlowService.getSDK().getSubscriptionGroups();
     },
   });
+
+  const handleRefresh = useMobilyflowRefresh();
 
   if (isLoading) {
     return (
@@ -39,6 +42,7 @@ export const SubscriptionsScreen = () => {
           {groups?.map((group) => <SubscriptionGroupView key={group.id} group={group} />)}
         </Box>
         <Box gap={10} mt={30} mx={20} mb={20} style={{ maxWidth: 500 }}>
+          <Button title="Refresh" onPress={handleRefresh} />
           <Button title="Manage subscriptions" onPress={() => MobilyFlowService.getSDK().openManageSubscription()} />
         </Box>
       </ScrollView>

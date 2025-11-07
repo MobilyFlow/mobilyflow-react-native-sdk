@@ -24,7 +24,7 @@ export const SubscriptionGroupView = (props: SubscriptionGroupViewProps) => {
   const purchaseProduct = usePurchaseProduct();
   const handlePurchase = useCallback(
     async (product: MobilyProduct) => {
-      if (product?.subscriptionProduct?.promotionalOffers?.length > 0) {
+      if (product?.subscription?.promotionalOffers?.length > 0) {
         await DialogManager().push(PurchaseSubscriptionDialog, { product }).waitIgnoreCancel();
       } else {
         console.log('Purchase product', product);
@@ -52,7 +52,7 @@ export const SubscriptionGroupView = (props: SubscriptionGroupViewProps) => {
       </TouchableOpacity>
       {isOpen && (
         <Box gap={10} p={10}>
-          {group.products?.map((product) => (
+          {group.Products?.map((product) => (
             <Box key={product.id} gap={1}>
               <ProductButton product={product} onPress={() => handlePurchase(product)} />
             </Box>

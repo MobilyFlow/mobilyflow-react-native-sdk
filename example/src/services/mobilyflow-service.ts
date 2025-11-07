@@ -28,7 +28,7 @@ export class MobilyFlowService {
 
     this.customerId = this.storage.getString('customerId');
     this.apiURL = this.storage.getString('apiURL');
-    this.environment = (this.storage.getNumber('environment') as MobilyEnvironment) ?? MobilyEnvironment.DEVELOPMENT;
+    this.environment = (this.storage.getString('environment') as MobilyEnvironment) ?? MobilyEnvironment.DEVELOPMENT;
 
     this.sdk = new MobilyPurchaseSDK(env.MOBILYFLOW_APP_ID, env.MOBILYFLOW_API_KEY, this.environment, {
       apiURL: this.apiURL,
@@ -82,7 +82,7 @@ export class MobilyFlowService {
     } else if (key === 'apiURL') {
       await this.setApiURL(this.storage.getString('apiURL'));
     } else if (key === 'environment') {
-      await this.setEnvironment(this.storage.getNumber('environment') as MobilyEnvironment);
+      await this.setEnvironment(this.storage.getString('environment') as MobilyEnvironment);
     }
   };
 

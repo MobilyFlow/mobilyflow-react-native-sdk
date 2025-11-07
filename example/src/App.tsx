@@ -25,7 +25,7 @@ export default function App() {
 
         console.log('SubGroup (test_group_managed)');
         let group = await MobilyFlowService.getSDK().getSubscriptionGroupById('7169b477-c649-4981-91ef-f3c0d7fa64ca');
-        for (const product of group.products) {
+        for (const product of group.Products) {
           console.log(`Product: ${product.identifier} / ${product.status}`);
         }
         console.log('===============');

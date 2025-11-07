@@ -1,6 +1,6 @@
 import { DialogComponent } from '@react-stateless-dialog/core';
 import { Box } from '../uikit/Box';
-import { WebhookStatus } from 'mobilyflow-react-native-sdk';
+import { MobilyWebhookStatus } from 'mobilyflow-react-native-sdk';
 import { BaseDialog } from './base-dialog';
 import { useMemo } from 'react';
 import { ScrollView } from 'react-native';
@@ -8,7 +8,7 @@ import { Text } from '../uikit/text';
 import { getMobilyflowErrorLabel } from '../../utils/utils';
 
 export type PurchaseResultDialogArgs = {
-  status: WebhookStatus;
+  status: MobilyWebhookStatus;
   error?: any;
 };
 
@@ -22,7 +22,7 @@ export const PurchaseResultDialog: DialogComponent<PurchaseResultDialogArgs, nul
     <BaseDialog title={'Purchase Result'} onCancel={onCancel}>
       <ScrollView>
         <Box p={20} gap={10}>
-          <Text>Webhook Status: {WebhookStatus[status]}</Text>
+          <Text>Webhook Status: {status}</Text>
           {errorLabel && <Text color="red">{errorLabel}</Text>}
         </Box>
       </ScrollView>

@@ -1,5 +1,5 @@
 export enum MobilyEnvironment {
-  DEVELOPMENT = 0,
-  STAGING = 1,
-  PRODUCTION = 2,
+  DEVELOPMENT = 'development',
+  STAGING = 'staging',
+  PRODUCTION = 'production',
 }

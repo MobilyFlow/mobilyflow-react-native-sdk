@@ -31,11 +31,11 @@ RCT_EXPORT_MODULE()
   return [_sdkInstances objectForKey:uuid];
 }
 
-- (NSString *)instantiate:(NSString *)appId apiKey:(NSString *)apiKey environment:(double)environment options:(JS::NativeMobilyflowReactNativeSdk::MobilyPurchaseSDKOptions &)options {
+- (NSString *)instantiate:(NSString *)appId apiKey:(NSString *)apiKey environment:(NSString *)environment options:(JS::NativeMobilyflowReactNativeSdk::MobilyPurchaseSDKOptions &)options {
 
   NSString* uuid = [[NSUUID UUID] UUIDString];
 
-  MobilyPurchaseSDK *sdk = [[MobilyPurchaseSDK alloc] initWithAppId:appId apiKey:apiKey environment:(MobilyEnvironment) environment options:[ParserMobilyPurchaseSDKOptions parseFromJSI:options]];
+  MobilyPurchaseSDK *sdk = [[MobilyPurchaseSDK alloc] initWithAppId:appId apiKey:apiKey environment:environment options:[ParserMobilyPurchaseSDKOptions parseFromJSI:options]];
   [_sdkInstances setObject:sdk forKey:uuid];
 
   return uuid;
@@ -107,7 +107,7 @@ RCT_EXPORT_MODULE()
 
 - (void)getEntitlement:(NSString *)uuid productId:(NSString *)productId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
 
-  [[self getInstance:uuid] getEntitlementWithProductId:productId completionHandler:^(MobilyCustomerEntitlement * _Nullable entitlement, NSError * _Nullable error) {
+  [[self getInstance:uuid] getEntitlementWithProductId:[[NSUUID alloc] initWithUUIDString:productId] completionHandler:^(MobilyCustomerEntitlement * _Nullable entitlement, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
@@ -144,11 +144,11 @@ RCT_EXPORT_MODULE()
 
 - (void)requestTransferOwnership:(NSString *)uuid resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
 
-  [[self getInstance:uuid] requestTransferOwnershipWithCompletionHandler:^(enum TransferOwnershipStatus status, NSError * _Nullable error) {
+  [[self getInstance:uuid] requestTransferOwnershipWithCompletionHandler:^(NSString * _Nullable status, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
-      resolve([NSNumber numberWithInt:status]);
+      resolve(status);
     }
   }];
 }
@@ -161,13 +161,13 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)openRefundDialog:(NSString *)uuid productId:(NSString *)productId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  MobilyProduct* product = [[self getInstance:uuid] getProductFromCacheWithIdWithId:productId];
+  MobilyProduct* product = [[self getInstance:uuid] getProductFromCacheWithIdWithId:[[NSUUID alloc] initWithUUIDString:productId]];
   if (product == nil) {
     reject(@"3", @"MobilyflowSDK.MobilyError.unknown_error", [NSError errorWithDomain:@"MobilyflowSDK.MobilyError" code:3 userInfo:nil]);
     return;
   }
 
-  [[self getInstance:uuid] openRefundDialogWithProduct:product completionHandler:^(enum RefundDialogResult result) {
+  [[self getInstance:uuid] openRefundDialogWithProduct:product completionHandler:^(NSString * _Nullable result) {
     resolve([NSNumber numberWithBool:result]);
   }];
 }
@@ -176,13 +176,13 @@ RCT_EXPORT_MODULE()
 
   MobilyPurchaseSDK* sdk = [self getInstance:uuid];
 
-  MobilyProduct* product = [[self getInstance:uuid] getProductFromCacheWithIdWithId:productId];
+  MobilyProduct* product = [[self getInstance:uuid] getProductFromCacheWithIdWithId:[[NSUUID alloc] initWithUUIDString:productId]];
   if (product == nil) {
     reject(@"1", @"MobilyflowSDK.MobilyPurchaseError.product_unavailable", [NSError errorWithDomain:@"MobilyflowSDK.MobilyPurchaseError" code:1 userInfo:nil]);
     return;
   }
 
-  NSString *offerId = options.offerId();
+  NSUUID *offerId = [[NSUUID alloc] initWithUUIDString:options.offerId()];
   int quantity = (int)options.quantity();
 
   PurchaseOptions *purchaseOptions = [[PurchaseOptions alloc] init];
@@ -191,25 +191,23 @@ RCT_EXPORT_MODULE()
   }
 
   if (offerId != nil) {
-    if ([product.subscriptionProduct.baseOffer.id isEqualToString:offerId]) {
-      purchaseOptions = [purchaseOptions setOffer:product.subscriptionProduct.baseOffer];
-    } else if (product.subscriptionProduct.freeTrial != nil && [product.subscriptionProduct.freeTrial.id isEqualToString:offerId]) {
-      purchaseOptions = [purchaseOptions setOffer:product.subscriptionProduct.freeTrial];
+    if (product.subscription.freeTrial != nil && [product.subscription.freeTrial.id isEqual:offerId]) {
+      purchaseOptions = [purchaseOptions setOffer:product.subscription.freeTrial];
     } else {
-      for (MobilySubscriptionOffer *off in product.subscriptionProduct.promotionalOffers) {
-        if ([off.id isEqualToString:offerId]) {
+      for (MobilySubscriptionOffer *off in product.subscription.promotionalOffers) {
+        if ([off.id isEqual:offerId]) {
           purchaseOptions = [purchaseOptions setOffer:off];
           break;
         }
       }
     }
   }
-
-  [sdk purchaseProduct:product options:purchaseOptions completionHandler:^(enum WebhookStatus status, NSError * _Nullable error) {
+  
+  [sdk purchaseProduct:product options:purchaseOptions completionHandler:^(MobilyEvent * _Nullable event, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);
     } else {
-      resolve([NSNumber numberWithInt:status]);
+      resolve([event toDictionary]);
     }
   }];
 }

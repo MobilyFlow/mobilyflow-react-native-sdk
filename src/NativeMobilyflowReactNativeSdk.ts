@@ -5,7 +5,6 @@ import { MobilyCustomerEntitlement } from './models/entitlement/mobily-customer-
 import { MobilyCustomer } from './models/mobily-customer';
 import { MobilyTransferOwnershipStatus } from './enums/mobily-transfer-ownership-status';
 import { MobilyEvent } from './models/mobily-event';
-import { MobilyEnvironment } from './enums/mobily-environment';
 
 export type MobilyPurchaseSDKOptions = {
   languages?: string[];
@@ -19,12 +18,7 @@ type PurchaseOptions = {
 };
 
 export interface Spec extends TurboModule {
-  instantiate(
-    appId: string,
-    apiKey: string,
-    environment: MobilyEnvironment,
-    options?: MobilyPurchaseSDKOptions
-  ): string;
+  instantiate(appId: string, apiKey: string, environment: string, options?: MobilyPurchaseSDKOptions): string;
   close(uuid: string): void;
 
   login(uuid: string, externalRef: string): Promise<MobilyCustomer>;
@@ -44,7 +38,7 @@ export interface Spec extends TurboModule {
 
   requestTransferOwnership(uuid: string): Promise<MobilyTransferOwnershipStatus>;
   openManageSubscription(uuid: string): Promise<void>;
-  openRefundDialog(uuid: string, productId: string): Promise<boolean>;
+  openRefundDialog(uuid: string, productId: string): Promise<string>;
 
   purchaseProduct(uuid: string, productId: string, options?: PurchaseOptions): Promise<MobilyEvent>;
 

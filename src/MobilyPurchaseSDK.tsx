@@ -11,6 +11,7 @@ import { PurchaseOptions } from './models/internal/purchase-options';
 import { MobilyTransferOwnershipStatus } from './enums/mobily-transfer-ownership-status';
 import { MobilyEvent } from './models/mobily-event';
 import { MobilyEnvironment } from './enums/mobily-environment';
+import { MobilyRefundDialogResult } from './enums/mobily-refund-dialog-result';
 
 export class MobilyPurchaseSDK {
   private _uuid: string;
@@ -147,12 +148,12 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async openRefundDialog(product: MobilyProduct): Promise<boolean> {
+  async openRefundDialog(product: MobilyProduct): Promise<MobilyRefundDialogResult> {
     if (RNPlatform.OS === 'android') {
       throw new Error('openRefundDialog not implemented on Android');
     } else {
       try {
-        return await MobilyflowReactNativeSdk.openRefundDialog(this._uuid, product.id);
+        return (await MobilyflowReactNativeSdk.openRefundDialog(this._uuid, product.id)) as MobilyRefundDialogResult;
       } catch (error: any) {
         throw this.throwError(error);
       }

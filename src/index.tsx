@@ -8,6 +8,7 @@ export { MobilyPlatform } from './enums/mobily-platform';
 export { MobilyProductOfferType } from './enums/mobily-product-offer-type';
 export { MobilyProductStatus } from './enums/mobily-product-status';
 export { MobilyProductType } from './enums/mobily-product-type';
+export { MobilyRefundDialogResult } from './enums/mobily-refund-dialog-result';
 export { MobilyTransactionStatus } from './enums/mobily-transaction-status';
 export { MobilyTransferOwnershipStatus } from './enums/mobily-transfer-ownership-status';
 export { MobilyWebhookStatus } from './enums/mobily-webhook-status';

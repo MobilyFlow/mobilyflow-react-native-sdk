@@ -180,7 +180,11 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     }
   }
 
-  override fun openRefundDialog(uuid: String, productId: String, promise: Promise) {
+  override fun openRefundDialogForProduct(uuid: String?, productId: String?, promise: Promise) {
+    promise.reject("-1", "Not implemented")
+  }
+
+  override fun openRefundDialogForTransactionId(uuid: String?, transactionId: String?, promise: Promise) {
     promise.reject("-1", "Not implemented")
   }
 

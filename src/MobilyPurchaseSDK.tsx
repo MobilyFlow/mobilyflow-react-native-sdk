@@ -148,12 +148,25 @@ export class MobilyPurchaseSDK {
     }
   }
 
-  async openRefundDialog(product: MobilyProduct): Promise<MobilyRefundDialogResult> {
+  async openRefundDialogForProduct(product: MobilyProduct): Promise<MobilyRefundDialogResult> {
     if (RNPlatform.OS === 'android') {
       throw new Error('openRefundDialog not implemented on Android');
     } else {
       try {
-        return (await MobilyflowReactNativeSdk.openRefundDialog(this._uuid, product.id)) as MobilyRefundDialogResult;
+        const result = await MobilyflowReactNativeSdk.openRefundDialogForProduct(this._uuid, product.id);
+        return result as MobilyRefundDialogResult;
+      } catch (error: any) {
+        throw this.throwError(error);
+      }
+    }
+  }
+  async openRefundDialogForTransactionId(transactionId: string): Promise<MobilyRefundDialogResult> {
+    if (RNPlatform.OS === 'android') {
+      throw new Error('openRefundDialog not implemented on Android');
+    } else {
+      try {
+        const result = await MobilyflowReactNativeSdk.openRefundDialogForTransactionId(this._uuid, transactionId);
+        return result as MobilyRefundDialogResult;
       } catch (error: any) {
         throw this.throwError(error);
       }

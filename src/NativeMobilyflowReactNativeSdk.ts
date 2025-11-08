@@ -38,7 +38,8 @@ export interface Spec extends TurboModule {
 
   requestTransferOwnership(uuid: string): Promise<MobilyTransferOwnershipStatus>;
   openManageSubscription(uuid: string): Promise<void>;
-  openRefundDialog(uuid: string, productId: string): Promise<string>;
+  openRefundDialogForProduct(uuid: string, productId: string): Promise<string>;
+  openRefundDialogForTransactionId(uuid: string, transactionId: string): Promise<string>;
 
   purchaseProduct(uuid: string, productId: string, options?: PurchaseOptions): Promise<MobilyEvent>;
 

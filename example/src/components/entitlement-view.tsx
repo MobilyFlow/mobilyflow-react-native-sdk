@@ -17,7 +17,7 @@ export const EntitlementView = (props: EntitlementViewProps) => {
   const product = entitlement.Product;
 
   const handleRefund = useCallback(async () => {
-    await MobilyFlowService.getSDK().openRefundDialog(product);
+    await MobilyFlowService.getSDK().openRefundDialogForProduct(product);
   }, [product]);
 
   const purchaseProduct = usePurchaseProduct();

@@ -160,14 +160,20 @@ RCT_EXPORT_MODULE()
   }];
 }
 
-- (void)openRefundDialog:(NSString *)uuid productId:(NSString *)productId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+- (void)openRefundDialogForProduct:(NSString *)uuid productId:(NSString *)productId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   MobilyProduct* product = [[self getInstance:uuid] getProductFromCacheWithIdWithId:[[NSUUID alloc] initWithUUIDString:productId]];
   if (product == nil) {
     reject(@"3", @"MobilyflowSDK.MobilyError.unknown_error", [NSError errorWithDomain:@"MobilyflowSDK.MobilyError" code:3 userInfo:nil]);
     return;
   }
 
-  [[self getInstance:uuid] openRefundDialogWithProduct:product completionHandler:^(NSString * _Nullable result) {
+  [[self getInstance:uuid] openRefundDialogForProduct:product completionHandler:^(NSString * _Nullable result) {
+    resolve([NSNumber numberWithBool:result]);
+  }];
+}
+
+- (void)openRefundDialogForTransactionId:(NSString *)uuid productId:(NSString *)transactionId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  [[self getInstance:uuid] openRefundDialogForTransactionId:transactionId completionHandler:^(NSString * _Nullable result) {
     resolve([NSNumber numberWithBool:result]);
   }];
 }

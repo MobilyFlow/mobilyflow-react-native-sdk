@@ -7,13 +7,14 @@ export class MobilySubscriptionProduct {
   periodUnit: PeriodUnit;
   groupLevel: number;
   groupId: string;
+  ios_groupId: string | null;
 
   freeTrial: MobilySubscriptionOffer | null;
   promotionalOffers: MobilySubscriptionOffer[];
 
   static parseFromAPI(obj: MobilySubscriptionProduct) {
     return objectTransformer(obj, {
-      nullIfUndefined: ['freeTrial'],
+      nullIfUndefined: ['freeTrial', 'ios_groupId'],
       mapping: {
         freeTrial: MobilySubscriptionOffer.parseFromAPI,
         promotionalOffers: MobilySubscriptionOffer.parseFromAPI,

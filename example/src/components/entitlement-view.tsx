@@ -87,6 +87,7 @@ export const EntitlementView = (props: EntitlementViewProps) => {
                 </TouchableOpacity>
               </Box>
             )}
+            {Platform.OS === 'ios' && <Text>iOS Group ID: {entitlement.Product.subscription.ios_groupId}</Text>}
           </>
         )}
         <HStack gap={5} mt={10}>

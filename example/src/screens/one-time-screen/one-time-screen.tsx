@@ -1,6 +1,6 @@
 import { Box } from '../../components/uikit/Box';
 import { Text } from '../../components/uikit/text';
-import { ProductType } from 'mobilyflow-react-native-sdk';
+import { MobilyProductType } from 'mobilyflow-react-native-sdk';
 import { useQuery } from '@tanstack/react-query';
 import { MobilyFlowService } from '../../services/mobilyflow-service';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
@@ -21,7 +21,7 @@ export const OneTimeScreen = () => {
     },
   });
 
-  const products = data?.filter((x) => x.type === ProductType.ONE_TIME);
+  const products = data?.filter((x) => x.type === MobilyProductType.ONE_TIME);
 
   if (isLoading) {
     return (

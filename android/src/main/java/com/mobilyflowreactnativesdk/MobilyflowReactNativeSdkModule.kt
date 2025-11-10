@@ -12,7 +12,7 @@ import com.mobilyflow.mobilypurchasesdk.Exceptions.MobilyPurchaseException
 import com.mobilyflow.mobilypurchasesdk.Exceptions.MobilyTransferOwnershipException
 import com.mobilyflow.mobilypurchasesdk.MobilyPurchaseSDK
 import com.mobilyflow.mobilypurchasesdk.MobilyPurchaseSDKOptions
-import com.mobilyflow.mobilypurchasesdk.Models.PurchaseOptions
+import com.mobilyflow.mobilypurchasesdk.Models.Internal.PurchaseOptions
 import java.util.UUID
 import java.util.concurrent.Executors
 
@@ -33,7 +33,7 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     return NAME
   }
 
-  override fun instantiate(appId: String, apiKey: String, environment: Double, options: ReadableMap?): String {
+  override fun instantiate(appId: String, apiKey: String, environment: String, options: ReadableMap?): String {
     val uuid = UUID.randomUUID().toString()
 
     var realOptions: MobilyPurchaseSDKOptions? = null
@@ -45,7 +45,7 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
       )
     }
 
-    val realEnvironment = MobilyEnvironment.entries.find { x -> x.value == environment.toInt() }
+    val realEnvironment = MobilyEnvironment.entries.find { x -> x.value == environment }
     val sdk = MobilyPurchaseSDK(reactApplicationContext, appId, apiKey, realEnvironment!!, realOptions)
     _sdkInstances[uuid] = sdk
 
@@ -73,19 +73,13 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
   }
 
   override fun getProducts(uuid: String, identifiers: ReadableArray?, onlyAvailable: Boolean, promise: Promise) {
-    Log.d("MobilyFlow", "[getProduct] aaa")
     val executor = Executors.newSingleThreadExecutor()
     executor.execute {
-    Log.d("MobilyFlow", "[getProduct] bbb")
       try {
         val products = _sdkInstances[uuid]!!.getProducts(identifiers.toStringArray(), onlyAvailable)
-        Log.d("MobilyFlow", "[getProduct] ccc")
         promise.resolve(products.toReadableArray())
-        Log.d("MobilyFlow", "[getProduct] ddd")
       } catch (error: Exception) {
-        Log.d("MobilyFlow", "[getProduct] catch")
         throwError(error, promise)
-        Log.d("MobilyFlow", "[getProduct] catch end")
       }
     }
   }
@@ -186,7 +180,11 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     }
   }
 
-  override fun openRefundDialog(uuid: String, productId: String, promise: Promise) {
+  override fun openRefundDialogForProduct(uuid: String?, productId: String?, promise: Promise) {
+    promise.reject("-1", "Not implemented")
+  }
+
+  override fun openRefundDialogForTransactionId(uuid: String?, transactionId: String?, promise: Promise) {
     promise.reject("-1", "Not implemented")
   }
 
@@ -209,12 +207,10 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
         }
 
         if (offerId != null) {
-          if (product.subscriptionProduct!!.baseOffer.id == offerId) {
-            purchaseOptions.setOffer(product.subscriptionProduct!!.baseOffer)
-          } else if (product.subscriptionProduct!!.freeTrial?.id == offerId) {
-            purchaseOptions.setOffer(product.subscriptionProduct!!.freeTrial)
+          if (product.subscription!!.freeTrial?.id == offerId) {
+            purchaseOptions.setOffer(product.subscription!!.freeTrial)
           } else {
-            val offer = product.subscriptionProduct!!.promotionalOffers.find { x -> x.id == offerId }
+            val offer = product.subscription!!.promotionalOffers.find { x -> x.id == offerId }
             if (offer != null) {
               purchaseOptions.setOffer(offer)
             }
@@ -222,7 +218,7 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
         }
 
         val status = sdk.purchaseProduct(reactApplicationContext.currentActivity!!, product, purchaseOptions)
-        promise.resolve(status.value)
+        promise.resolve(status.toReadableMap())
       } catch (error: Exception) {
         throwError(error, promise)
       }
@@ -234,7 +230,27 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
   }
 
   override fun getStoreCountry(uuid: String, promise: Promise) {
-    promise.reject("-1", "Not implemented")
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        val result = _sdkInstances[uuid]!!.getStoreCountry()
+        promise.resolve(result)
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
+    }
+  }
+
+  override fun isBillingAvailable(uuid: String, promise: Promise) {
+    val executor = Executors.newSingleThreadExecutor()
+    executor.execute {
+      try {
+        val result = _sdkInstances[uuid]!!.isBillingAvailable()
+        promise.resolve(result)
+      } catch (error: Exception) {
+        throwError(error, promise)
+      }
+    }
   }
 
   override fun isForwardingEnable(uuid: String, externalRef: String, promise: Promise) {

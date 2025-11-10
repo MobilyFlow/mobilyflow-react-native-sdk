@@ -1,4 +1,4 @@
-import { MobilyProduct, type MobilySubscriptionOffer, WebhookStatus } from 'mobilyflow-react-native-sdk';
+import { MobilyProduct, type MobilySubscriptionOffer, MobilyWebhookStatus } from 'mobilyflow-react-native-sdk';
 import { useCallback } from 'react';
 import { MobilyFlowService } from './mobilyflow-service';
 import { DialogManager, ProgressManager } from '@react-stateless-dialog/core';
@@ -15,13 +15,15 @@ export const usePurchaseProduct = () => {
         console.log(`Purchase ${product.identifier} ${offer?.ios_offerId}`);
         ProgressManager().show();
         const result = await MobilyFlowService.getSDK().purchaseProduct(product, { offer, quantity });
-        console.log('Purchase result = ', WebhookStatus[result]);
+        console.log('Purchase result = ', result);
         await queryClient.invalidateQueries({ queryKey: ['mobilyflow', 'entitlements'] });
         ProgressManager().hide();
-        await DialogManager().push(PurchaseResultDialog, { status: result }).waitIgnoreCancel();
+        await DialogManager().push(PurchaseResultDialog, { status: MobilyWebhookStatus.SUCCESS }).waitIgnoreCancel();
       } catch (error: any) {
         ProgressManager().hide();
-        await DialogManager().push(PurchaseResultDialog, { status: WebhookStatus.ERROR, error }).waitIgnoreCancel();
+        await DialogManager()
+          .push(PurchaseResultDialog, { status: MobilyWebhookStatus.ERROR, error })
+          .waitIgnoreCancel();
       }
     },
     [queryClient],

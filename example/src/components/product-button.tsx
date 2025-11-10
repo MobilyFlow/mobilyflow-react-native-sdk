@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, View } from 'react-native';
-import { ProductStatus, MobilyProduct, MobilySubscriptionOffer } from 'mobilyflow-react-native-sdk';
+import { MobilyProduct, MobilyProductStatus, MobilySubscriptionOffer } from 'mobilyflow-react-native-sdk';
 import { usePurchaseProduct } from '../services/use-purchase-product';
 import { useCallback } from 'react';
 
@@ -11,8 +11,7 @@ export type ProductButtonProps = {
 };
 
 export const ProductButton = (props: ProductButtonProps) => {
-  const { product, quantity, onPress } = props;
-  const offer = props.offer ?? product?.subscriptionProduct?.baseOffer;
+  const { product, quantity, onPress, offer } = props;
 
   const purchaseProduct = usePurchaseProduct();
 
@@ -43,7 +42,7 @@ export const ProductButton = (props: ProductButtonProps) => {
           borderRadius: 20,
           height: 20,
           width: 20,
-          backgroundColor: product.status === ProductStatus.AVAILABLE ? 'green' : 'red',
+          backgroundColor: product.status === MobilyProductStatus.AVAILABLE ? 'green' : 'red',
         }}
       />
       <Text>
@@ -52,14 +51,9 @@ export const ProductButton = (props: ProductButtonProps) => {
       </Text>
       <Text>{product.description}</Text>
       <Text>{product.identifier}</Text>
-      <Text>
-        {offer?.priceFormatted ??
-          product.oneTimeProduct?.priceFormatted ??
-          product.subscriptionProduct?.baseOffer.priceFormatted ??
-          '-'}
-      </Text>
-      {offer?.id && <Text>Offer: {offer.identifier}</Text>}
-      {offer?.id && <Text>{offer.countBillingCycle} cycles</Text>}
+      <Text>{offer?.priceFormatted ?? product.priceFormatted}</Text>
+      {offer && <Text>Offer: {offer.identifier}</Text>}
+      {offer && <Text>{offer.countBillingCycle} cycles</Text>}
     </TouchableOpacity>
   );
 };

@@ -3,6 +3,7 @@ export type ObjectTransformer = {
   mapping?: {
     [key in string]: (obj: any) => any;
   };
+  nullIfUndefined?: string[];
 };
 
 /**
@@ -36,7 +37,7 @@ export type ObjectTransformer = {
  */
 export const objectTransformer = <T extends any>(obj: T, tranformer: ObjectTransformer) => {
   if (!obj) {
-    return obj;
+    return null;
   }
 
   const anyObj = obj as any;
@@ -60,5 +61,14 @@ export const objectTransformer = <T extends any>(obj: T, tranformer: ObjectTrans
       }
     }
   }
+
+  if (tranformer.nullIfUndefined) {
+    for (const key of tranformer.nullIfUndefined) {
+      if (anyObj[key] && (anyObj[key] === undefined || Number.isNaN(anyObj[key]))) {
+        anyObj[key] = null;
+      }
+    }
+  }
+
   return anyObj as T;
 };

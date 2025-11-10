@@ -1,5 +1,5 @@
 import { MobilyProduct } from './mobily-product';
-import { objectTransformer } from '../utils/object-transformer';
+import { objectTransformer } from '../../utils/object-transformer';
 
 export class MobilySubscriptionGroup {
   id: string;
@@ -7,14 +7,15 @@ export class MobilySubscriptionGroup {
   referenceName: string;
   name: string;
   description: string;
-  ios_groupId: string;
-  extras: any;
-  products: MobilyProduct[];
+  extras: any | null;
+  Products: MobilyProduct[];
 
   static parseFromAPI(obj: MobilySubscriptionGroup) {
+    obj.Products ??= [];
     return objectTransformer(obj, {
+      nullIfUndefined: ['extras'],
       mapping: {
-        products: MobilyProduct.parseFromAPI,
+        Products: MobilyProduct.parseFromAPI,
       },
     });
   }

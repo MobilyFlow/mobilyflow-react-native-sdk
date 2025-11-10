@@ -1,11 +1,12 @@
-import { Platform, Text } from 'react-native';
-import { MobilyCustomerEntitlement, ProductType } from 'mobilyflow-react-native-sdk';
+import { Platform, Text, TouchableOpacity } from 'react-native';
+import { MobilyCustomerEntitlement, MobilyProductType } from 'mobilyflow-react-native-sdk';
 import { Box } from './uikit/Box';
 import { HStack } from './uikit/HStack';
 import { IconButton } from './icon-button';
 import { formatDate, formatPriceMillis } from '../utils/utils';
 import { useCallback } from 'react';
 import { MobilyFlowService } from '../services/mobilyflow-service';
+import { usePurchaseProduct } from '../services/use-purchase-product';
 
 export type EntitlementViewProps = {
   entitlement: MobilyCustomerEntitlement;
@@ -13,11 +14,17 @@ export type EntitlementViewProps = {
 
 export const EntitlementView = (props: EntitlementViewProps) => {
   const { entitlement } = props;
-  const product = entitlement.product;
+  const product = entitlement.Product;
 
   const handleRefund = useCallback(async () => {
-    await MobilyFlowService.getSDK().openRefundDialog(product);
+    await MobilyFlowService.getSDK().openRefundDialogForProduct(product);
   }, [product]);
+
+  const purchaseProduct = usePurchaseProduct();
+
+  const handleCancelEvolution = useCallback(async () => {
+    await purchaseProduct(entitlement.Product);
+  }, [purchaseProduct, entitlement]);
 
   return (
     <Box
@@ -34,48 +41,58 @@ export const EntitlementView = (props: EntitlementViewProps) => {
         <Text>{product.identifier}</Text>
       </Box>
       <Box p={10} gap={5}>
-        <Text>Type: {ProductType[entitlement.type]}</Text>
-        {entitlement.type === ProductType.ONE_TIME ? (
+        <Text>Type: {entitlement.type}</Text>
+        {entitlement.type === MobilyProductType.ONE_TIME ? (
           <>
-            <Text>Quantity: {entitlement.item.quantity}</Text>
+            <Text>Quantity: {entitlement.Item.quantity}</Text>
           </>
         ) : (
           <>
-            <Text>Start Date: {formatDate(entitlement.subscription.startDate)}</Text>
-            <Text>End Date: {formatDate(entitlement.subscription.endDate)}</Text>
-            <Text>Auto Renew: {entitlement.subscription.autoRenewEnable ? '✅' : '❌'}</Text>
-            <Text>Managed Here: {entitlement.subscription.isManagedByThisStoreAccount ? '✅' : '❌'}</Text>
-            {entitlement.subscription.hasPauseScheduled && (
-              <Text>Has Pause: ✅ (resume: {formatDate(entitlement.subscription.resumeDate)})</Text>
+            <Text>Start Date: {formatDate(entitlement.Subscription.startDate)}</Text>
+            <Text>End Date: {formatDate(entitlement.Subscription.endDate)}</Text>
+            <Text>Auto Renew: {entitlement.Subscription.autoRenewEnable ? '✅' : '❌'}</Text>
+            <Text>Managed Here: {entitlement.Subscription.isManagedByThisStoreAccount ? '✅' : '❌'}</Text>
+            {entitlement.Subscription.hasPauseScheduled && (
+              <Text>Has Pause: ✅ (resume: {formatDate(entitlement.Subscription.resumeDate)})</Text>
             )}
-            {entitlement.subscription.offer && <Text>Offer: {entitlement.subscription.offer.identifier}</Text>}
-            {!!entitlement.subscription.offerRemainingCycle && (
-              <Text>Offer Remaining Cycle: {entitlement.subscription.offerRemainingCycle}</Text>
+            {entitlement.Subscription.ProductOffer && (
+              <Text>Offer: {entitlement.Subscription.ProductOffer.identifier}</Text>
             )}
-            {entitlement.subscription.renewProduct?.identifier && (
+            {!!entitlement.Subscription.offerRemainingCycle && (
+              <Text>Offer Remaining Cycle: {entitlement.Subscription.offerRemainingCycle}</Text>
+            )}
+            {entitlement.Subscription.RenewProduct?.identifier && (
               <Text>
-                Renew To: {entitlement.subscription.renewProduct?.identifier}
-                {entitlement.subscription.renewProductOffer &&
-                  ` (${entitlement.subscription.renewProductOffer.identifier})`}
+                Renew To: {entitlement.Subscription.RenewProduct?.identifier}
+                {entitlement.Subscription.RenewProductOffer &&
+                  ` (${entitlement.Subscription.RenewProductOffer.identifier})`}
               </Text>
             )}
             <Text>
               Last Paid Price:{' '}
-              {formatPriceMillis(entitlement.subscription.lastPriceMillis, entitlement.subscription.currency)}
+              {formatPriceMillis(entitlement.Subscription.lastPriceMillis, entitlement.Subscription.currency)}
             </Text>
             <Text>
               Renew Price:{' '}
-              {formatPriceMillis(entitlement.subscription.renewPriceMillis, entitlement.subscription.currency)}
+              {formatPriceMillis(entitlement.Subscription.renewPriceMillis, entitlement.Subscription.currency)}
             </Text>
             <Text>
               Regular Price:{' '}
-              {formatPriceMillis(entitlement.subscription.regularPriceMillis, entitlement.subscription.currency)}
+              {formatPriceMillis(entitlement.Subscription.regularPriceMillis, entitlement.Subscription.currency)}
             </Text>
+            {entitlement.Subscription.RenewProduct && (
+              <Box alignItems="center" mt={10}>
+                <TouchableOpacity onPress={handleCancelEvolution}>
+                  <Text style={{ textDecorationLine: 'underline' }}>Cancel Evolution</Text>
+                </TouchableOpacity>
+              </Box>
+            )}
+            {Platform.OS === 'ios' && <Text>iOS Group ID: {entitlement.Product.subscription.ios_groupId}</Text>}
           </>
         )}
         <HStack gap={5} mt={10}>
           {Platform.OS === 'ios' &&
-            (product.type === ProductType.SUBSCRIPTION || !product.oneTimeProduct.isConsumable) && (
+            (product.type === MobilyProductType.SUBSCRIPTION || !product.oneTime.isConsumable) && (
               <IconButton icon="credit-card-refund-outline" onPress={handleRefund} />
             )}
         </HStack>

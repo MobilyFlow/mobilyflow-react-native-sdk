@@ -4,7 +4,7 @@ import { Select } from '../../components/select/select';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MobilyEnvironment } from 'mobilyflow-react-native-sdk';
 import { Button } from '../../components/button';
-import { ActivityIndicator, Platform, ScrollView } from 'react-native';
+import { ActivityIndicator, ScrollView } from 'react-native';
 import { useMobilyflowParams } from '../../services/use-mobilyflow-params';
 import { MobilyFlowService } from '../../services/mobilyflow-service';
 import { useMobilyflowStore } from '../../stores/mobilyflow-store';
@@ -24,7 +24,7 @@ export const HomeScreen = () => {
   useEffect(() => {
     if (!isMobilyflowLoading) {
       (async () => {
-        setStoreCountry(Platform.OS === 'ios' ? await MobilyFlowService.getSDK().getStoreCountry() : '-');
+        setStoreCountry(await MobilyFlowService.getSDK().getStoreCountry());
         setMobilyFlowCustomerId((await MobilyFlowService.getSDK().getCustomer())?.id);
       })();
 

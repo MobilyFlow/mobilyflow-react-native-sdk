@@ -45,7 +45,7 @@ export const EntitlementsScreen = () => {
       <ScrollView style={{ alignSelf: 'stretch', marginTop: 20, flex: 1 }}>
         <Box alignItems="stretch" alignSelf="stretch" gap={10} p={10}>
           {entitlements?.map((entitlement) => (
-            <EntitlementView key={entitlement.product.id} entitlement={entitlement} />
+            <EntitlementView key={entitlement.Product.id} entitlement={entitlement} />
           ))}
         </Box>
         <Box gap={10} mt={30} mx={20} mb={20} style={{ maxWidth: 500 }}>

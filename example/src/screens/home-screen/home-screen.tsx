@@ -10,6 +10,7 @@ import { MobilyFlowService } from '../../services/mobilyflow-service';
 import { useMobilyflowStore } from '../../stores/mobilyflow-store';
 import { getMobilyflowErrorLabel } from '../../utils/utils';
 import { useMobilyflowRefresh } from '../../services/use-mobilyflow-refresh';
+import { MOBILYFLOW_API_EXTRA_URLS } from '../../../env';
 
 export const HomeScreen = () => {
   const { customerId, environment, apiUrl } = useMobilyflowParams();
@@ -82,14 +83,7 @@ export const HomeScreen = () => {
             <Text>MobilyFlow API URL</Text>
             <Select
               placeholder="https://api.mobilyflow.com/v1/"
-              data={[
-                { label: 'production', value: null },
-                { label: 'https://api-staging.mobilyflow.com/v1/', value: 'https://api-staging.mobilyflow.com/v1/' },
-                {
-                  label: 'https://mobilyflow.eu-1.sharedwithexpose.com/v1/',
-                  value: 'https://mobilyflow.eu-1.sharedwithexpose.com/v1/',
-                },
-              ]}
+              data={[{ label: 'production', value: null }, ...MOBILYFLOW_API_EXTRA_URLS]}
               value={apiUrl}
               onChange={MobilyFlowService.setApiURL}
             />

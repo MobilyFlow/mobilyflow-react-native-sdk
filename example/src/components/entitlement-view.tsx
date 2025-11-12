@@ -80,6 +80,7 @@ export const EntitlementView = (props: EntitlementViewProps) => {
               Regular Price:{' '}
               {formatPriceMillis(entitlement.Subscription.regularPriceMillis, entitlement.Subscription.currency)}
             </Text>
+            {Platform.OS === 'ios' && <Text>iOS Group ID: {entitlement.Product.subscription.ios_groupId}</Text>}
             {entitlement.Subscription.RenewProduct && (
               <Box alignItems="center" mt={10}>
                 <TouchableOpacity onPress={handleCancelEvolution}>
@@ -87,7 +88,6 @@ export const EntitlementView = (props: EntitlementViewProps) => {
                 </TouchableOpacity>
               </Box>
             )}
-            {Platform.OS === 'ios' && <Text>iOS Group ID: {entitlement.Product.subscription.ios_groupId}</Text>}
           </>
         )}
         <HStack gap={5} mt={10}>

@@ -3,6 +3,7 @@ import { MMKV } from 'react-native-mmkv';
 import { Listener as MMKVListener } from 'react-native-mmkv/lib/typescript/src/Types';
 import { useMobilyflowStore } from '../stores/mobilyflow-store';
 import { queryClient } from '../config/query-client';
+import { MOBILYFLOW_API_KEY, MOBILYFLOW_APP_ID } from '../../env';
 
 export class MobilyFlowService {
   private static sdk: MobilyPurchaseSDK;
@@ -18,19 +19,11 @@ export class MobilyFlowService {
   public static init() {
     this.destroy();
 
-    // TODO: Use real env
-    const env = {
-      MOBILYFLOW_APP_ID: 'caecc000-45ce-49b3-b218-46c1d985ae85',
-      MOBILYFLOW_API_KEY: '7aa18f9720a5c9731d17f5c54e89bdd218647f71269eed2f6c27c8fa5924da84',
-      // MOBILYFLOW_APP_ID: 'e84c9576-2642-4267-80d3-1928eda8e06d',
-      // MOBILYFLOW_API_KEY: '29aa51e84cd97fd48f1e05262d11f0a8adead84222b11a7fae7cfd9584ba94d5',
-    };
-
     this.customerId = this.storage.getString('customerId');
     this.apiURL = this.storage.getString('apiURL');
     this.environment = (this.storage.getString('environment') as MobilyEnvironment) ?? MobilyEnvironment.DEVELOPMENT;
 
-    this.sdk = new MobilyPurchaseSDK(env.MOBILYFLOW_APP_ID, env.MOBILYFLOW_API_KEY, this.environment, {
+    this.sdk = new MobilyPurchaseSDK(MOBILYFLOW_APP_ID, MOBILYFLOW_API_KEY, this.environment, {
       apiURL: this.apiURL,
       debug: true,
     });
@@ -101,7 +94,11 @@ export class MobilyFlowService {
     }
 
     this.apiURL = apiURL;
-    this.storage.set('apiURL', apiURL);
+    if (apiURL) {
+      this.storage.set('apiURL', apiURL);
+    } else {
+      this.storage.delete('apiURL');
+    }
 
     this.init();
     await this.login();

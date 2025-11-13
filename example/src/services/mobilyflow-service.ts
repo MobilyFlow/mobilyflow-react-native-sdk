@@ -94,7 +94,11 @@ export class MobilyFlowService {
     }
 
     this.apiURL = apiURL;
-    this.storage.set('apiURL', apiURL);
+    if (apiURL) {
+      this.storage.set('apiURL', apiURL);
+    } else {
+      this.storage.delete('apiURL');
+    }
 
     this.init();
     await this.login();

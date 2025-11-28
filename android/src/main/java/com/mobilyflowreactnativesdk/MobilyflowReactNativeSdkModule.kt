@@ -60,7 +60,7 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
     val executor = Executors.newSingleThreadExecutor()
     executor.execute {
       try {
-        val customer = _sdkInstances[uuid]!!.login(externalRef)
+        val customer = _sdkInstances[uuid]!!.login(externalRef, reactApplicationContext.currentActivity)
         promise.resolve(customer.toReadableMap())
       } catch (error: Exception) {
         throwError(error, promise)
@@ -207,8 +207,8 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) : Na
         }
 
         if (offerId != null) {
-          if (product.subscription!!.freeTrial?.id == offerId) {
-            purchaseOptions.setOffer(product.subscription!!.freeTrial)
+          if (product.subscription!!.introductoryOffer?.id == offerId) {
+            purchaseOptions.setOffer(product.subscription!!.introductoryOffer)
           } else {
             val offer = product.subscription!!.promotionalOffers.find { x -> x.id == offerId }
             if (offer != null) {

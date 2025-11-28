@@ -9,14 +9,14 @@ export class MobilySubscriptionProduct {
   groupId: string;
   ios_groupId: string | null;
 
-  freeTrial: MobilySubscriptionOffer | null;
+  introductoryOffer: MobilySubscriptionOffer | null;
   promotionalOffers: MobilySubscriptionOffer[];
 
   static parseFromAPI(obj: MobilySubscriptionProduct) {
     return objectTransformer(obj, {
-      nullIfUndefined: ['freeTrial', 'ios_groupId'],
+      nullIfUndefined: ['introductoryOffer', 'ios_groupId'],
       mapping: {
-        freeTrial: MobilySubscriptionOffer.parseFromAPI,
+        introductoryOffer: MobilySubscriptionOffer.parseFromAPI,
         promotionalOffers: MobilySubscriptionOffer.parseFromAPI,
       },
     });

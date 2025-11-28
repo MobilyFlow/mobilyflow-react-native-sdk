@@ -2,6 +2,7 @@ import type { MobilyProductStatus } from '../../enums/mobily-product-status';
 import type { PeriodUnit } from '../../enums/period-unit';
 import { objectTransformer } from '../../utils/object-transformer';
 import { MobilyProductOfferType } from '../../enums/mobily-product-offer-type';
+import { MobilyProductOfferPricingMode } from '../../enums/mobily-product-offer-pricing-mode';
 
 export class MobilySubscriptionOffer {
   id: string;
@@ -12,6 +13,7 @@ export class MobilySubscriptionOffer {
   currencyCode: string;
   priceFormatted: string;
   type: MobilyProductOfferType;
+  pricingMode: MobilyProductOfferPricingMode;
   periodCount: number;
   periodUnit: PeriodUnit;
   countBillingCycle: number;

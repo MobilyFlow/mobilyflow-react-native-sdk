@@ -197,8 +197,8 @@ RCT_EXPORT_MODULE()
   }
 
   if (offerId != nil) {
-    if (product.subscription.freeTrial != nil && [product.subscription.freeTrial.id isEqual:offerId]) {
-      purchaseOptions = [purchaseOptions setOffer:product.subscription.freeTrial];
+    if (product.subscription.introductoryOffer != nil && [product.subscription.introductoryOffer.id isEqual:offerId]) {
+      purchaseOptions = [purchaseOptions setOffer:product.subscription.introductoryOffer];
     } else {
       for (MobilySubscriptionOffer *off in product.subscription.promotionalOffers) {
         if ([off.id isEqual:offerId]) {

@@ -1,6 +1,10 @@
-import { MobilyProduct, type MobilySubscriptionOffer, MobilyWebhookStatus } from 'mobilyflow-react-native-sdk';
+import {
+  MobilyProduct,
+  MobilyPurchaseSDK,
+  type MobilySubscriptionOffer,
+  MobilyWebhookStatus,
+} from 'mobilyflow-react-native-sdk';
 import { useCallback } from 'react';
-import { MobilyFlowService } from './mobilyflow-service';
 import { DialogManager, ProgressManager } from '@react-stateless-dialog/core';
 import { PurchaseResultDialog } from '../components/dialog/purchase-result-dialog';
 import { useQueryClient } from '@tanstack/react-query';
@@ -14,7 +18,7 @@ export const usePurchaseProduct = () => {
       try {
         console.log(`Purchase ${product.identifier} ${offer?.ios_offerId}`);
         ProgressManager().show();
-        const result = await MobilyFlowService.getSDK().purchaseProduct(product, { offer, quantity });
+        const result = await MobilyPurchaseSDK.purchaseProduct(product, { offer, quantity });
         console.log('Purchase result = ', result);
         await queryClient.invalidateQueries({ queryKey: ['mobilyflow', 'entitlements'] });
         ProgressManager().hide();

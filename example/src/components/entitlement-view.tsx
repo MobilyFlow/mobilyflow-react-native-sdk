@@ -1,11 +1,10 @@
 import { Platform, Text, TouchableOpacity } from 'react-native';
-import { MobilyCustomerEntitlement, MobilyProductType } from 'mobilyflow-react-native-sdk';
+import { MobilyCustomerEntitlement, MobilyProductType, MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
 import { Box } from './uikit/Box';
 import { HStack } from './uikit/HStack';
 import { IconButton } from './icon-button';
 import { formatDate, formatPriceMillis } from '../utils/utils';
 import { useCallback } from 'react';
-import { MobilyFlowService } from '../services/mobilyflow-service';
 import { usePurchaseProduct } from '../services/use-purchase-product';
 
 export type EntitlementViewProps = {
@@ -17,7 +16,7 @@ export const EntitlementView = (props: EntitlementViewProps) => {
   const product = entitlement.Product;
 
   const handleRefund = useCallback(async () => {
-    await MobilyFlowService.getSDK().openRefundDialogForProduct(product);
+    await MobilyPurchaseSDK.openRefundDialogForProduct(product);
   }, [product]);
 
   const purchaseProduct = usePurchaseProduct();

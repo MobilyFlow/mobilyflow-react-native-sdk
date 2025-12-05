@@ -1,5 +1,7 @@
 package com.mobilyflowreactnativesdk
 
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
@@ -13,7 +15,6 @@ import com.mobilyflow.mobilypurchasesdk.Exceptions.MobilyTransferOwnershipExcept
 import com.mobilyflow.mobilypurchasesdk.MobilyPurchaseSDK
 import com.mobilyflow.mobilypurchasesdk.MobilyPurchaseSDKOptions
 import com.mobilyflow.mobilypurchasesdk.Models.Internal.PurchaseOptions
-import java.util.UUID
 import java.util.concurrent.Executors
 
 @ReactModule(name = MobilyflowReactNativeSdkModule.NAME)
@@ -43,10 +44,8 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) :
     }
 
     val realEnvironment = MobilyEnvironment.entries.find { x -> x.value == environment }
-
-    // TODO: currentActivity may be null
     MobilyPurchaseSDK.initialize(
-      reactApplicationContext.currentActivity!!,
+      reactApplicationContext.currentActivity ?: reactApplicationContext,
       appId,
       apiKey,
       realEnvironment!!,
@@ -194,8 +193,9 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) :
     val executor = Executors.newSingleThreadExecutor()
     executor.execute {
       try {
-        if (reactApplicationContext.currentActivity == null) {
-          throw MobilyException(MobilyException.Type.UNKNOWN_ERROR)
+        val currentActivity = reactApplicationContext.currentActivity
+        if (currentActivity == null) {
+          throw IllegalStateException("You cannot call purchaseProduct while activity isn't available")
         }
 
         val purchaseOptions = PurchaseOptions()
@@ -217,9 +217,8 @@ class MobilyflowReactNativeSdkModule(reactContext: ReactApplicationContext) :
           }
         }
 
-        // TODO: currentActivity may be null
         val status =
-          MobilyPurchaseSDK.purchaseProduct(reactApplicationContext.currentActivity!!, product, purchaseOptions)
+          MobilyPurchaseSDK.purchaseProduct(currentActivity, product, purchaseOptions)
         promise.resolve(status.toReadableMap())
       } catch (error: Exception) {
         throwError(error, promise)

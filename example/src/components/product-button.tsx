@@ -14,6 +14,7 @@ export const ProductButton = (props: ProductButtonProps) => {
   const { product, quantity, onPress, offer } = props;
 
   const purchaseProduct = usePurchaseProduct();
+  const effectiveOffer = offer ?? product.subscription?.introductoryOffer;
 
   const handlePress = useCallback(async () => {
     if (onPress) {
@@ -51,9 +52,9 @@ export const ProductButton = (props: ProductButtonProps) => {
       </Text>
       <Text>{product.description}</Text>
       <Text>{product.identifier}</Text>
-      <Text>{offer?.priceFormatted ?? product.priceFormatted}</Text>
-      {offer && <Text>Offer: {offer.identifier}</Text>}
-      {offer && <Text>{offer.countBillingCycle} cycles</Text>}
+      <Text>{effectiveOffer?.priceFormatted ?? product.priceFormatted}</Text>
+      {effectiveOffer && <Text>Offer: {effectiveOffer.identifier}</Text>}
+      {effectiveOffer && <Text>{effectiveOffer.countBillingCycle} cycles</Text>}
     </TouchableOpacity>
   );
 };

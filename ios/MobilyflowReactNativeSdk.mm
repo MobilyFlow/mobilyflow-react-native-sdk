@@ -19,6 +19,9 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSArray<NSUUID*>*)parseUUIDArray:(NSArray<NSString*>*)array {
+  if (array == nil) {
+    return nil;
+  }
   NSMutableArray* result = [[NSMutableArray alloc] initWithCapacity:[array count]];
   for (int i = 0; i < [array count]; i++) {
     result[i] = [self parseUUID:array[i]];
@@ -107,7 +110,6 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)getEntitlements:(NSArray *)productIds resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-
   [MobilyPurchaseSDK getEntitlementsWithProductIds:[self parseUUIDArray:productIds] completionHandler:^(NSArray<MobilyCustomerEntitlement *> * _Nullable entitlements, NSError * _Nullable error) {
     if (error) {
       reject([NSString stringWithFormat:@"%ld", error.code], error.description, error);

@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { MobilyFlowService } from './services/mobilyflow-service';
 import { useMobilyflowStore } from './stores/mobilyflow-store';
 import { queryClient } from './config/query-client';
+import { MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
 
 const SAFE_AREA: ViewStyle = { flex: 1, backgroundColor: 'black' };
 const FLEX: ViewStyle = { flex: 1 };
@@ -24,7 +25,7 @@ export default function App() {
         useMobilyflowStore.setState({ isLoading: false, error: null });
 
         console.log('SubGroup (test_group_managed)');
-        let group = await MobilyFlowService.getSDK().getSubscriptionGroupById('7169b477-c649-4981-91ef-f3c0d7fa64ca');
+        let group = await MobilyPurchaseSDK.getSubscriptionGroupById('7169b477-c649-4981-91ef-f3c0d7fa64ca');
         for (const product of group.Products) {
           console.log(`Product: ${product.identifier} / ${product.status}`);
         }

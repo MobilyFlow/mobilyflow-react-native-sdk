@@ -18,38 +18,34 @@ type PurchaseOptions = {
 };
 
 export interface Spec extends TurboModule {
-  instantiate(appId: string, apiKey: string, environment: string, options?: MobilyPurchaseSDKOptions): string;
-  close(uuid: string): void;
+  initialize(appId: string, apiKey: string, environment: string, options?: MobilyPurchaseSDKOptions): void;
+  close(): void;
 
-  login(uuid: string, externalRef: string): Promise<MobilyCustomer>;
-  logout(uuid: string): void;
-  getProducts(uuid: string, identifiers: string[], onlyAvailable: boolean): Promise<MobilyProduct[]>;
-  getSubscriptionGroups(
-    uuid: string,
-    identifiers: string[],
-    onlyAvailable: boolean
-  ): Promise<MobilySubscriptionGroup[]>;
-  getSubscriptionGroupById(uuid: string, id: string): Promise<MobilySubscriptionGroup>;
+  login(externalRef: string): Promise<MobilyCustomer>;
+  logout(): void;
+  getProducts(identifiers: string[], onlyAvailable: boolean): Promise<MobilyProduct[]>;
+  getSubscriptionGroups(identifiers: string[], onlyAvailable: boolean): Promise<MobilySubscriptionGroup[]>;
+  getSubscriptionGroupById(id: string): Promise<MobilySubscriptionGroup>;
 
-  getEntitlementForSubscription(uuid: string, subscriptionGroupId: string): Promise<MobilyCustomerEntitlement | null>;
-  getEntitlement(uuid: string, productId: string): Promise<MobilyCustomerEntitlement | null>;
-  getEntitlements(uuid: string, productIds?: string[]): Promise<MobilyCustomerEntitlement[]>;
-  getExternalEntitlements(uuid: string): Promise<MobilyCustomerEntitlement[]>;
+  getEntitlementForSubscription(subscriptionGroupId: string): Promise<MobilyCustomerEntitlement | null>;
+  getEntitlement(productId: string): Promise<MobilyCustomerEntitlement | null>;
+  getEntitlements(productIds?: string[]): Promise<MobilyCustomerEntitlement[]>;
+  getExternalEntitlements(): Promise<MobilyCustomerEntitlement[]>;
 
-  requestTransferOwnership(uuid: string): Promise<MobilyTransferOwnershipStatus>;
-  openManageSubscription(uuid: string): Promise<void>;
-  openRefundDialogForProduct(uuid: string, productId: string): Promise<string>;
-  openRefundDialogForTransactionId(uuid: string, transactionId: string): Promise<string>;
+  requestTransferOwnership(): Promise<MobilyTransferOwnershipStatus>;
+  openManageSubscription(): Promise<void>;
+  openRefundDialogForProduct(productId: string): Promise<string>;
+  openRefundDialogForTransactionId(transactionId: string): Promise<string>;
 
-  purchaseProduct(uuid: string, productId: string, options?: PurchaseOptions): Promise<MobilyEvent>;
+  purchaseProduct(productId: string, options?: PurchaseOptions): Promise<MobilyEvent>;
 
-  sendDiagnostic(uuid: string): void;
-  getStoreCountry(uuid: string): Promise<string | null>;
-  isBillingAvailable(uuid: string): Promise<boolean>;
-  isForwardingEnable(uuid: string, externalRef: string): Promise<boolean>;
+  sendDiagnostic(): Promise<void>;
+  getStoreCountry(): Promise<string | null>;
+  isBillingAvailable(): Promise<boolean>;
+  isForwardingEnable(externalRef: string): Promise<boolean>;
 
-  getCustomer(uuid: string): Promise<MobilyCustomer | null>;
-  getSDKVersion(uuid: string): Promise<string>;
+  getCustomer(): Promise<MobilyCustomer | null>;
+  getSDKVersion(): Promise<string>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('MobilyflowReactNativeSdk');

@@ -2,7 +2,7 @@ import { Box } from '../../components/uikit/Box';
 import { Text } from '../../components/uikit/text';
 import { Select } from '../../components/select/select';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { MobilyEnvironment } from 'mobilyflow-react-native-sdk';
+import { MobilyEnvironment, MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
 import { Button } from '../../components/button';
 import { ActivityIndicator, ScrollView } from 'react-native';
 import { useMobilyflowParams } from '../../services/use-mobilyflow-params';
@@ -25,8 +25,8 @@ export const HomeScreen = () => {
   useEffect(() => {
     if (!isMobilyflowLoading) {
       (async () => {
-        setStoreCountry(await MobilyFlowService.getSDK().getStoreCountry());
-        setMobilyFlowCustomerId((await MobilyFlowService.getSDK().getCustomer())?.id);
+        setStoreCountry(await MobilyPurchaseSDK.getStoreCountry());
+        setMobilyFlowCustomerId((await MobilyPurchaseSDK.getCustomer())?.id);
       })();
 
       MobilyFlowService.addCustomerChangeListener((customer) => {
@@ -38,15 +38,15 @@ export const HomeScreen = () => {
   const handleRefresh = useMobilyflowRefresh();
 
   const handleManageSubscriptions = useCallback(async () => {
-    await MobilyFlowService.getSDK().openManageSubscription();
+    await MobilyPurchaseSDK.openManageSubscription();
   }, []);
 
   const handleTransferOwnership = useCallback(async () => {
-    await MobilyFlowService.getSDK().requestTransferOwnership();
+    await MobilyPurchaseSDK.requestTransferOwnership();
   }, []);
 
-  const handleSendDiagnostic = useCallback(() => {
-    MobilyFlowService.getSDK().sendDiagnostic();
+  const handleSendDiagnostic = useCallback(async () => {
+    await MobilyPurchaseSDK.sendDiagnostic();
   }, []);
 
   return (

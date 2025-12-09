@@ -1,8 +1,7 @@
 import { Box } from '../../components/uikit/Box';
 import { Text } from '../../components/uikit/text';
-import { MobilyProductType } from 'mobilyflow-react-native-sdk';
+import { MobilyProductType, MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
 import { useQuery } from '@tanstack/react-query';
-import { MobilyFlowService } from '../../services/mobilyflow-service';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { ProductButton } from '../../components/product-button';
 
@@ -15,7 +14,7 @@ export const OneTimeScreen = () => {
     queryKey: ['mobilyflow', 'products'],
     queryFn: async () => {
       console.log('[Mobilyflow] getProducts');
-      const result = await MobilyFlowService.getSDK().getProducts();
+      const result = await MobilyPurchaseSDK.getProducts();
       console.log('[Mobilyflow] getProducts done');
       return result;
     },

@@ -28,18 +28,20 @@ export const PurchaseSubscriptionDialog: DialogComponent<PurchaseSubscriptionDia
 
   return (
     <BaseDialog title={product.identifier} onCancel={onCancel}>
-      <ScrollView>
-        <Box h={300} p={20} gap={10}>
-          <ProductButton product={product} onPress={handlePurchase} />
-          {product?.subscription?.promotionalOffers?.length > 0 && (
-            <Box gap={10} px={20}>
-              {product?.subscription?.promotionalOffers?.map((offer) => (
-                <ProductButton key={offer.id} product={product} offer={offer} onPress={() => handlePurchase(offer)} />
-              ))}
-            </Box>
-          )}
-        </Box>
-      </ScrollView>
+      <Box h={Math.min(500, ((product?.subscription?.promotionalOffers?.length || 0) + 1) * 135)}>
+        <ScrollView>
+          <Box p={20} gap={10}>
+            <ProductButton product={product} onPress={handlePurchase} />
+            {product?.subscription?.promotionalOffers?.length > 0 && (
+              <Box gap={10} px={20}>
+                {product?.subscription?.promotionalOffers?.map((offer) => (
+                  <ProductButton key={offer.id} product={product} offer={offer} onPress={() => handlePurchase(offer)} />
+                ))}
+              </Box>
+            )}
+          </Box>
+        </ScrollView>
+      </Box>
     </BaseDialog>
   );
 };

@@ -1,11 +1,11 @@
 import { Box } from '../../components/uikit/Box';
 import { Text } from '../../components/uikit/text';
 import { useQuery } from '@tanstack/react-query';
-import { MobilyFlowService } from '../../services/mobilyflow-service';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { SubscriptionGroupView } from '../../components/subscription-group-view';
 import { Button } from '../../components/button';
 import { useMobilyflowRefresh } from '../../services/use-mobilyflow-refresh';
+import { MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
 
 export const SubscriptionsScreen = () => {
   const {
@@ -16,7 +16,7 @@ export const SubscriptionsScreen = () => {
     queryKey: ['mobilyflow', 'subscription-groups'],
     queryFn: async () => {
       console.log('[Mobilyflow] getSubscriptionGroups');
-      return MobilyFlowService.getSDK().getSubscriptionGroups();
+      return MobilyPurchaseSDK.getSubscriptionGroups();
     },
   });
 
@@ -43,7 +43,7 @@ export const SubscriptionsScreen = () => {
         </Box>
         <Box gap={10} mt={30} mx={20} mb={20} style={{ maxWidth: 500 }}>
           <Button title="Refresh" onPress={handleRefresh} />
-          <Button title="Manage subscriptions" onPress={() => MobilyFlowService.getSDK().openManageSubscription()} />
+          <Button title="Manage subscriptions" onPress={() => MobilyPurchaseSDK.openManageSubscription()} />
         </Box>
       </ScrollView>
     </Box>

@@ -1,4 +1,4 @@
 export enum MobilyProductOfferType {
-  FREE_TRIAL = 'free_trial',
-  RECURRING = 'recurring',
+  INTRODUCTORY = 'INTRODUCTORY',
+  DEVELOPER_DETERMINED = 'DEVELOPER_DETERMINED',
 }

@@ -10,226 +10,228 @@ import { MobilyCustomer } from './models/mobily-customer';
 import { PurchaseOptions } from './models/internal/purchase-options';
 import { MobilyTransferOwnershipStatus } from './enums/mobily-transfer-ownership-status';
 import { MobilyEvent } from './models/mobily-event';
-import { MobilyEnvironment } from './enums/mobily-environment';
 import { MobilyRefundDialogResult } from './enums/mobily-refund-dialog-result';
 
-export class MobilyPurchaseSDK {
-  private _uuid: string;
-
-  constructor(appId: string, apiKey: string, environment: MobilyEnvironment, options?: MobilyPurchaseSDKOptions) {
-    this._uuid = MobilyflowReactNativeSdk.instantiate(appId, apiKey, environment, options ?? {});
-  }
-
-  private throwError(error: any) {
-    if (RNPlatform.OS === 'android') {
-      switch (error.name) {
-        case 'com.mobilyflow.mobilypurchasesdk.Exceptions.MobilyException':
-          return new MobilyError(parseInt(error.code, 10), error.message, error.nativeStackAndroid);
-        case 'com.mobilyflow.mobilypurchasesdk.Exceptions.MobilyPurchaseException':
-          return new MobilyPurchaseError(parseInt(error.code, 10), error.message, error.nativeStackAndroid);
-        case 'com.mobilyflow.mobilypurchasesdk.Exceptions.MobilyTransferOwnershipException':
-          return new MobilyTransferOwnershipError(parseInt(error.code, 10), error.message, error.nativeStackAndroid);
-      }
-    } else {
-      switch (error.domain) {
-        case 'MobilyflowSDK.MobilyError':
-          return new MobilyError(parseInt(error.code, 10), error.message, error.nativeStackIOS);
-        case 'MobilyflowSDK.MobilyPurchaseError':
-          return new MobilyPurchaseError(parseInt(error.code, 10), error.message, error.nativeStackIOS);
-        case 'MobilyflowSDK.MobilyTransferOwnershipError':
-          return new MobilyTransferOwnershipError(parseInt(error.code, 10), error.message, error.nativeStackIOS);
-      }
+function throwError(error: any) {
+  if (RNPlatform.OS === 'android') {
+    switch (error.name) {
+      case 'com.mobilyflow.mobilypurchasesdk.Exceptions.MobilyException':
+        return new MobilyError(parseInt(error.code, 10), error.message, error.nativeStackAndroid);
+      case 'com.mobilyflow.mobilypurchasesdk.Exceptions.MobilyPurchaseException':
+        return new MobilyPurchaseError(parseInt(error.code, 10), error.message, error.nativeStackAndroid);
+      case 'com.mobilyflow.mobilypurchasesdk.Exceptions.MobilyTransferOwnershipException':
+        return new MobilyTransferOwnershipError(parseInt(error.code, 10), error.message, error.nativeStackAndroid);
     }
-
-    return error;
+  } else {
+    switch (error.domain) {
+      case 'MobilyflowSDK.MobilyError':
+        return new MobilyError(parseInt(error.code, 10), error.message, error.nativeStackIOS);
+      case 'MobilyflowSDK.MobilyPurchaseError':
+        return new MobilyPurchaseError(parseInt(error.code, 10), error.message, error.nativeStackIOS);
+      case 'MobilyflowSDK.MobilyTransferOwnershipError':
+        return new MobilyTransferOwnershipError(parseInt(error.code, 10), error.message, error.nativeStackIOS);
+    }
   }
 
-  close() {
+  return error;
+}
+
+export const MobilyPurchaseSDK = {
+  initialize: (appId: string, apiKey: string, environment: string, options?: MobilyPurchaseSDKOptions) => {
     try {
-      MobilyflowReactNativeSdk.close(this._uuid);
+      MobilyflowReactNativeSdk.initialize(appId, apiKey, environment, options ?? {});
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async login(externalRef: string): Promise<MobilyCustomer> {
+  close: () => {
     try {
-      const customer = await MobilyflowReactNativeSdk.login(this._uuid, externalRef);
+      MobilyflowReactNativeSdk.close();
+    } catch (error: any) {
+      throw throwError(error);
+    }
+  },
+
+  login: async (externalRef: string): Promise<MobilyCustomer> => {
+    try {
+      const customer = await MobilyflowReactNativeSdk.login(externalRef);
       return MobilyCustomer.parseFromAPI(customer);
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  logout() {
+  logout: () => {
     try {
-      return MobilyflowReactNativeSdk.logout(this._uuid);
+      return MobilyflowReactNativeSdk.logout();
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async getProducts(identifiers?: string[], onlyAvailable = false): Promise<MobilyProduct[]> {
+  getProducts: async (identifiers?: string[], onlyAvailable = false): Promise<MobilyProduct[]> => {
     try {
-      const products = await MobilyflowReactNativeSdk.getProducts(this._uuid, identifiers, onlyAvailable);
+      const products = await MobilyflowReactNativeSdk.getProducts(identifiers, onlyAvailable);
       return products.map(MobilyProduct.parseFromAPI);
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async getSubscriptionGroups(identifiers?: string[], onlyAvailable = false): Promise<MobilySubscriptionGroup[]> {
+  getSubscriptionGroups: async (identifiers?: string[], onlyAvailable = false): Promise<MobilySubscriptionGroup[]> => {
     try {
-      const groups = await MobilyflowReactNativeSdk.getSubscriptionGroups(this._uuid, identifiers, onlyAvailable);
+      const groups = await MobilyflowReactNativeSdk.getSubscriptionGroups(identifiers, onlyAvailable);
       return groups.map(MobilySubscriptionGroup.parseFromAPI);
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async getSubscriptionGroupById(id: string): Promise<MobilySubscriptionGroup> {
+  getSubscriptionGroupById: async (id: string): Promise<MobilySubscriptionGroup> => {
     try {
-      const group = await MobilyflowReactNativeSdk.getSubscriptionGroupById(this._uuid, id);
+      const group = await MobilyflowReactNativeSdk.getSubscriptionGroupById(id);
       return MobilySubscriptionGroup.parseFromAPI(group);
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async getEntitlementForSubscription(subscriptionGroupId: string): Promise<MobilyCustomerEntitlement | null> {
+  getEntitlementForSubscription: async (subscriptionGroupId: string): Promise<MobilyCustomerEntitlement | null> => {
     try {
-      const entitlement = await MobilyflowReactNativeSdk.getEntitlementForSubscription(this._uuid, subscriptionGroupId);
+      const entitlement = await MobilyflowReactNativeSdk.getEntitlementForSubscription(subscriptionGroupId);
       return MobilyCustomerEntitlement.parseFromAPI(entitlement);
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async getEntitlement(productId: string): Promise<MobilyCustomerEntitlement | null> {
+  getEntitlement: async (productId: string): Promise<MobilyCustomerEntitlement | null> => {
     try {
-      const entitlement = await MobilyflowReactNativeSdk.getEntitlement(this._uuid, productId);
+      const entitlement = await MobilyflowReactNativeSdk.getEntitlement(productId);
       return MobilyCustomerEntitlement.parseFromAPI(entitlement);
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async getEntitlements(productIds?: string[]): Promise<MobilyCustomerEntitlement[]> {
+  getEntitlements: async (productIds?: string[]): Promise<MobilyCustomerEntitlement[]> => {
     try {
-      const entitlements = await MobilyflowReactNativeSdk.getEntitlements(this._uuid, productIds);
+      const entitlements = await MobilyflowReactNativeSdk.getEntitlements(productIds);
       return entitlements.map(MobilyCustomerEntitlement.parseFromAPI);
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async getExternalEntitlements(): Promise<MobilyCustomerEntitlement[]> {
+  getExternalEntitlements: async (): Promise<MobilyCustomerEntitlement[]> => {
     try {
-      const entitlements = await MobilyflowReactNativeSdk.getExternalEntitlements(this._uuid);
+      const entitlements = await MobilyflowReactNativeSdk.getExternalEntitlements();
       return entitlements.map(MobilyCustomerEntitlement.parseFromAPI);
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async requestTransferOwnership(): Promise<MobilyTransferOwnershipStatus> {
+  requestTransferOwnership: async (): Promise<MobilyTransferOwnershipStatus> => {
     try {
-      return await MobilyflowReactNativeSdk.requestTransferOwnership(this._uuid);
+      return await MobilyflowReactNativeSdk.requestTransferOwnership();
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async openManageSubscription() {
+  openManageSubscription: async () => {
     try {
-      return await MobilyflowReactNativeSdk.openManageSubscription(this._uuid);
+      return await MobilyflowReactNativeSdk.openManageSubscription();
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async openRefundDialogForProduct(product: MobilyProduct): Promise<MobilyRefundDialogResult> {
+  openRefundDialogForProduct: async (product: MobilyProduct): Promise<MobilyRefundDialogResult> => {
     if (RNPlatform.OS === 'android') {
       throw new Error('openRefundDialog not implemented on Android');
     } else {
       try {
-        const result = await MobilyflowReactNativeSdk.openRefundDialogForProduct(this._uuid, product.id);
+        const result = await MobilyflowReactNativeSdk.openRefundDialogForProduct(product.id);
         return result as MobilyRefundDialogResult;
       } catch (error: any) {
-        throw this.throwError(error);
+        throw throwError(error);
       }
     }
-  }
-  async openRefundDialogForTransactionId(transactionId: string): Promise<MobilyRefundDialogResult> {
+  },
+
+  openRefundDialogForTransactionId: async (transactionId: string): Promise<MobilyRefundDialogResult> => {
     if (RNPlatform.OS === 'android') {
       throw new Error('openRefundDialog not implemented on Android');
     } else {
       try {
-        const result = await MobilyflowReactNativeSdk.openRefundDialogForTransactionId(this._uuid, transactionId);
+        const result = await MobilyflowReactNativeSdk.openRefundDialogForTransactionId(transactionId);
         return result as MobilyRefundDialogResult;
       } catch (error: any) {
-        throw this.throwError(error);
+        throw throwError(error);
       }
     }
-  }
+  },
 
-  async purchaseProduct(product: MobilyProduct, options?: PurchaseOptions): Promise<MobilyEvent> {
+  purchaseProduct: async (product: MobilyProduct, options?: PurchaseOptions): Promise<MobilyEvent> => {
     try {
-      return await MobilyflowReactNativeSdk.purchaseProduct(this._uuid, product.id, {
+      return await MobilyflowReactNativeSdk.purchaseProduct(product.id, {
         offerId: options?.offer?.id || null,
         quantity: options?.quantity || null,
       });
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  sendDiagnostic() {
+  sendDiagnostic: async () => {
     try {
-      return MobilyflowReactNativeSdk.sendDiagnostic(this._uuid);
+      return await MobilyflowReactNativeSdk.sendDiagnostic();
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async getStoreCountry(): Promise<string | null> {
+  getStoreCountry: async (): Promise<string | null> => {
     try {
-      return await MobilyflowReactNativeSdk.getStoreCountry(this._uuid);
+      return await MobilyflowReactNativeSdk.getStoreCountry();
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async isBillingAvailable(): Promise<boolean> {
+  isBillingAvailable: async (): Promise<boolean> => {
     try {
-      return await MobilyflowReactNativeSdk.isBillingAvailable(this._uuid);
+      return await MobilyflowReactNativeSdk.isBillingAvailable();
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async isForwardingEnable(externalRef: string) {
+  isForwardingEnable: async (externalRef: string) => {
     try {
-      return await MobilyflowReactNativeSdk.isForwardingEnable(this._uuid, externalRef);
+      return await MobilyflowReactNativeSdk.isForwardingEnable(externalRef);
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async getCustomer() {
+  getCustomer: async () => {
     try {
-      const customer = await MobilyflowReactNativeSdk.getCustomer(this._uuid);
+      const customer = await MobilyflowReactNativeSdk.getCustomer();
       return MobilyCustomer.parseFromAPI(customer);
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
+  },
 
-  async getSDKVersion() {
+  getSDKVersion: async () => {
     try {
-      return await MobilyflowReactNativeSdk.getSDKVersion(this._uuid);
+      return await MobilyflowReactNativeSdk.getSDKVersion();
     } catch (error: any) {
-      throw this.throwError(error);
+      throw throwError(error);
     }
-  }
-}
+  },
+};

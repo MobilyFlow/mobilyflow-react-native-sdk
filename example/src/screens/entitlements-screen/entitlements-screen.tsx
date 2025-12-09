@@ -19,6 +19,7 @@ export const EntitlementsScreen = () => {
       return await MobilyPurchaseSDK.getEntitlements();
     },
     staleTime: 0,
+    refetchInterval: 120 * 1000,
   });
 
   const {

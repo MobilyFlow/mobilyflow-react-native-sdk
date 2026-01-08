@@ -1,9 +1,13 @@
 import { Box } from '../../components/uikit/Box';
 import { Text } from '../../components/uikit/text';
-import { MobilyProductType, MobilyPurchaseSDK } from 'mobilyflow-react-native-sdk';
+import { MobilyProductType, MobilyPurchaseSDK, MobilyProduct } from 'mobilyflow-react-native-sdk';
 import { useQuery } from '@tanstack/react-query';
-import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { ActivityIndicator, ScrollView, View, Platform } from 'react-native';
 import { ProductButton } from '../../components/product-button';
+import { usePurchaseProduct } from '../../services/use-purchase-product';
+import { DialogManager } from '@react-stateless-dialog/core';
+import { useCallback } from 'react';
+import { PurchaseMultiQuantityProductDialog } from '../../components/dialog/purchase-multi-quantity-product-dialog';
 
 export const OneTimeScreen = () => {
   const {
@@ -21,6 +25,18 @@ export const OneTimeScreen = () => {
   });
 
   const products = data?.filter((x) => x.type === MobilyProductType.ONE_TIME);
+
+  const purchaseProduct = usePurchaseProduct();
+  const handlePurchase = useCallback(
+    async (product: MobilyProduct) => {
+      if (Platform.OS === 'ios' && product?.oneTime?.isMultiQuantity) {
+        await DialogManager().push(PurchaseMultiQuantityProductDialog, { product }).waitIgnoreCancel();
+      } else {
+        await purchaseProduct(product);
+      }
+    },
+    [purchaseProduct],
+  );
 
   if (isLoading) {
     return (
@@ -41,7 +57,7 @@ export const OneTimeScreen = () => {
         <Box alignItems="stretch" alignSelf="stretch" gap={10} p={10}>
           {products?.map((product) => (
             <Box key={product.id} gap={1}>
-              <ProductButton product={product} />
+              <ProductButton product={product} onPress={() => handlePurchase(product)} />
             </Box>
           ))}
         </Box>
